@@ -25,7 +25,10 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 	AnalizadorLexico::token token;
 	token.id = TOKEN_IDENTIFICADOR;
 	token.puntero = lexico->identificador;
+	lexico->mtx.lock();
 	lexico->colaDeTokens.push(token);
+	lexico->mtx.unlock();
+	sem_post(&(lexico->semaforo));
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();

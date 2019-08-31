@@ -1,7 +1,13 @@
 #include <iostream>
 #include "lexico.h"
+#include <pthread.h>
 
 using namespace std;
+
+void *worker_thread(void *arg)
+{
+	((AnalizadorLexico *) arg)->analizarCodigo();
+}
 
 int main(int argc, char** argv){
 	char* rutaCodigoFuente;
@@ -12,7 +18,8 @@ int main(int argc, char** argv){
 	}
 
 	AnalizadorLexico ana(rutaCodigoFuente);
-	ana.analizarCodigo();
+	pthread_t my_thread;
+	pthread_create(&my_thread, NULL, &worker_thread, (void *) &ana);
 
 	//Leer todos los tokens que generó en léxico (no será así el procedimiento real, pero para probar)
 	AnalizadorLexico::token token;
@@ -22,6 +29,9 @@ int main(int argc, char** argv){
 			break;
 		cout << token.puntero << endl;
 	}
+
+	pthread_join(my_thread, NULL);
+	pthread_exit(NULL);
 
 	return 0;
 }

@@ -6,6 +6,8 @@
 #include "accionessemanticas.h"
 #include <queue>
 #include <unordered_map>
+#include <mutex>
+#include <semaphore.h>
 
 using namespace std;
 
@@ -66,6 +68,9 @@ class AnalizadorLexico{
 		unordered_map<string, registroIdentificador> tablaSimbolosIdentificadores;
 		queue<token> colaDeTokens;
 		friend class AccionesSemanticas;
+
+		sem_t semaforo;
+		mutex mtx;
 };
 
 #endif

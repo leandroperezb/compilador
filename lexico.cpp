@@ -9,6 +9,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 
 AnalizadorLexico::AnalizadorLexico(char* ruta){
 	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
+	sem_init(&semaforo, 0, 0);
 	//**PRECARGAR TABLA DE SÍMBOLOS DE IDENTIFICADORES**
 	inicializarMatrizDeTransiciones();
 }
@@ -57,7 +58,11 @@ void AnalizadorLexico::analizarCodigo(){
 
 	AnalizadorLexico::token tokenFinal;
 	tokenFinal.id = TOKEN_FINAL;
+	mtx.lock();
 	colaDeTokens.push(tokenFinal);
+	mtx.unlock();
+	sem_post(&semaforo);
+	
 
 	infile.close();
 }
@@ -67,7 +72,10 @@ void AnalizadorLexico::aumentarLinea(){ contadorLineas++; }
 void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
 
 AnalizadorLexico::token AnalizadorLexico::getToken(){
+	sem_wait(&semaforo);
+	mtx.lock();
 	token resultado = colaDeTokens.front();
 	colaDeTokens.pop();
+	mtx.unlock();
 	return resultado;
 }
