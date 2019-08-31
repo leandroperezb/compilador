@@ -10,6 +10,7 @@ void AnalizadorLexico::inicializarEstadoInicial(){
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
 }
 
 
@@ -22,4 +23,5 @@ void AnalizadorLexico::inicializarEstadoLeyendoIdentificador(){
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_MAYOR] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinalIdentificador};
 }

@@ -47,29 +47,32 @@ void AnalizadorLexico::analizarCodigo(){
 		estadoActual = accion.nuevoEstado;
 	}
 
-	//Cuando termina, si no está en el estado inicial, finalizar el token actual (accion a realizar con EOF)
-	if (estadoActual != ESTADO_INICIAL){
-		c = '\n';
-		accion = matrizTransiciones[estadoActual][categorizarCaracter(c)];
-		if (accion.accionSemantica != nullptr)
-			accion.accionSemantica(this, c);
-		estadoActual = accion.nuevoEstado;
-	}
+	//Cuando termina, ejecutar la última acción semántica con el fin de archivo
+	accion = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO];
+	if (accion.accionSemantica != nullptr)
+		accion.accionSemantica(this, c);
+	estadoActual = accion.nuevoEstado;
 
-	AnalizadorLexico::token tokenFinal;
-	tokenFinal.id = TOKEN_FINAL;
-	mtx.lock();
-	colaDeTokens.push(tokenFinal);
-	mtx.unlock();
-	sem_post(&semaforo);
-	
 
 	infile.close();
 }
 
-void AnalizadorLexico::aumentarLinea(){ contadorLineas++; }
-
 void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
+
+void AnalizadorLexico::agregarSiNoExiste(string key, registroIdentificador r){
+	auto search = tablaSimbolosIdentificadores.find(key);
+	if (search == tablaSimbolosIdentificadores.end()) {
+		//Si no existe 'key' en la tabla de símbolos:
+		tablaSimbolosIdentificadores.insert({key, r});
+	}
+}
+
+void AnalizadorLexico::guardarToken(token nuevoToken){
+	mtx.lock();
+	colaDeTokens.push(nuevoToken);
+	mtx.unlock();
+	sem_post(&semaforo);
+}
 
 AnalizadorLexico::token AnalizadorLexico::getToken(){
 	sem_wait(&semaforo);

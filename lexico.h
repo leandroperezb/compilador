@@ -23,6 +23,7 @@ using namespace std;
 #define CATEGORIA_MAYOR 5
 #define CATEGORIA_OPERADOR 6
 #define CATEGORIA_INVALIDO 7
+#define CATEGORIA_FIN_ARCHIVO 8
 
 
 #define TOKEN_IDENTIFICADOR 0
@@ -42,7 +43,6 @@ class AnalizadorLexico{
 		};
 
 		void analizarCodigo();
-		void aumentarLinea();
 		void retrocederLectura();
 
 	private:
@@ -57,7 +57,7 @@ class AnalizadorLexico{
 		int categorizarCaracter(char& c);
 
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
-		transicion matrizTransiciones[2][8];
+		transicion matrizTransiciones[2][9];
 		void inicializarMatrizDeTransiciones();
 		void inicializarEstadoInicial();
 		void inicializarEstadoLeyendoIdentificador();
@@ -66,7 +66,9 @@ class AnalizadorLexico{
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
 		unordered_map<string, registroIdentificador> tablaSimbolosIdentificadores;
+		void agregarSiNoExiste(string key, registroIdentificador r);
 		queue<token> colaDeTokens;
+		void guardarToken(token nuevoToken);
 		friend class AccionesSemanticas;
 
 		sem_t semaforo;

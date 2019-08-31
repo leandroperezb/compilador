@@ -1,6 +1,11 @@
 #include "accionessemanticas.h"
 #include "lexico.h"
 
+void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token;
+	token.id = TOKEN_FINAL;
+	lexico->guardarToken(token);
+}
 
 //Identificadores y constantes
 void AccionesSemanticas::iniciarIdentificador(AnalizadorLexico* lexico, char& c){
@@ -13,25 +18,23 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 //Identificadores
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
 	//Agregar a la tabla de símbolos:
-	auto search = lexico->tablaSimbolosIdentificadores.find(lexico->identificador);
-	if (search == lexico->tablaSimbolosIdentificadores.end()) {
-		//Si no existe previamente en la tabla de símbolos:
-		AnalizadorLexico::registroIdentificador registro;
-		registro.esPalabraReservada = false; //Sabemos esto porque a la spalabras reservadas las habremos precargado
-		lexico->tablaSimbolosIdentificadores.insert({lexico->identificador, registro});
-	}
+	AnalizadorLexico::registroIdentificador registro;
+	registro.esPalabraReservada = false;
+	lexico->agregarSiNoExiste(lexico->identificador, registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;
 	token.id = TOKEN_IDENTIFICADOR;
 	token.puntero = lexico->identificador;
-	lexico->mtx.lock();
-	lexico->colaDeTokens.push(token);
-	lexico->mtx.unlock();
-	sem_post(&(lexico->semaforo));
+	lexico->guardarToken(token);
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();
+}
+
+void AccionesSemanticas::tokenFinalIdentificador(AnalizadorLexico* lexico, char& c){
+	AccionesSemanticas::terminarIdentificador(lexico, c);
+	AccionesSemanticas::tokenFinal(lexico, c);
 }
 
 //Constantes
