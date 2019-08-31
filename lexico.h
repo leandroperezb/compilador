@@ -22,8 +22,9 @@ using namespace std;
 #define CATEGORIA_MENOR 4
 #define CATEGORIA_MAYOR 5
 #define CATEGORIA_OPERADOR 6
-#define CATEGORIA_INVALIDO 7
-#define CATEGORIA_FIN_ARCHIVO 8
+#define CATEGORIA_ENDLINE 7
+#define CATEGORIA_INVALIDO 8
+#define CATEGORIA_FIN_ARCHIVO 9
 
 
 #define TOKEN_IDENTIFICADOR 0
@@ -57,7 +58,7 @@ class AnalizadorLexico{
 		int categorizarCaracter(char& c);
 
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
-		transicion matrizTransiciones[2][9];
+		transicion matrizTransiciones[2][10];
 		void inicializarMatrizDeTransiciones();
 		void inicializarEstadoInicial();
 		void inicializarEstadoLeyendoIdentificador();

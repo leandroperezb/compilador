@@ -27,6 +27,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 			return CATEGORIA_DOSPUNTOS;
 		case '=':
 			return CATEGORIA_IGUAL;
+		case '\n':
+			return CATEGORIA_ENDLINE;
 		default:
 			return CATEGORIA_INVALIDO;
 	}

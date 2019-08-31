@@ -7,6 +7,10 @@ void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
 	lexico->guardarToken(token);
 }
 
+void AccionesSemanticas::nuevaLinea(AnalizadorLexico* lexico, char& c){
+	lexico->contadorLineas++;
+}
+
 //Identificadores y constantes
 void AccionesSemanticas::iniciarIdentificador(AnalizadorLexico* lexico, char& c){
 	lexico->identificador = c;
@@ -17,6 +21,14 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 
 //Identificadores
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
+	//Control de longitud máxima
+	if (lexico->identificador.length() > 25){
+		//Warning **HAY QUE MODIFICAR ESTO. NO ESTÁ BUENO IMPRIMIR ACÁ**
+		string warning = "Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
+		cout << warning;
+		lexico->identificador.resize(25);
+	}
+
 	//Agregar a la tabla de símbolos:
 	AnalizadorLexico::registroIdentificador registro;
 	registro.esPalabraReservada = false;
