@@ -101,10 +101,9 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	if(c == '='){
 		token.id = TOKEN_MENORIGUAL;
-	}else if(c == '>'){
+	} else if(c == '>'){
 		token.id = TOKEN_DISTINTO;
-	}
-	{
+	} else{
 		token.id = TOKEN_MENOR;
 		lexico->retrocederLectura();
 	}
@@ -140,18 +139,24 @@ void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
 		break;
 	case '/':
 		token.id = TOKEN_DIVISION;
+		break;
 	case '*':
 		token.id = TOKEN_MULTIPLICACION;
+		break;
 	case '(':
 		token.id = TOKEN_PARENTESISAPERTURA;
+		break;
 	case ')':
 		token.id = TOKEN_PARENTESISCIERRE;
+		break;
 	case ',':
 		token.id = TOKEN_COMA;
+		break;
 	case ';':
 		token.id = TOKEN_PUNTOCOMA;
-	
+		break;
 	default:
 		break;
 	}
+	lexico->guardarToken(token);
 }

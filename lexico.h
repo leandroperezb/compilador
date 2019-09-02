@@ -32,17 +32,15 @@ using namespace std;
 #define CATEGORIA_IGUAL 3
 #define CATEGORIA_MENOR 4
 #define CATEGORIA_MAYOR 5
+//Acá van los parentesis, coma y punto y coma tambien.
 #define CATEGORIA_OPERADOR 6
 #define CATEGORIA_ENDLINE 7
 #define CATEGORIA_INVALIDO 8
 #define CATEGORIA_FIN_ARCHIVO 9
 #define CATEGORIA_ESPACIO 10
 #define CATEGORIA_COMENTARIO 11
-#define CATEGORIA_PUNTOYCOMA 12
-#define CATEGORIA_COMA 13
-#define CATEGORIA_PARENTESIS 14
-#define CATEGORIA_CADENA 15
-#define CATEGORIA_GUIONBAJO 16
+#define CATEGORIA_CADENA 12
+#define CATEGORIA_GUIONBAJO 13
 
 // TOKENS
 #define TOKEN_IDENTIFICADOR 0
@@ -62,7 +60,6 @@ using namespace std;
 #define TOKEN_MULTIPLICACION 14
 #define TOKEN_COMA 15
 #define TOKEN_PUNTOCOMA 16
-
 
 #define TOKEN_FINAL -1
 
@@ -108,6 +105,8 @@ class AnalizadorLexico{
 		void inicializarEstadoInicial();
 		void inicializarEstadoLeyendoIdentificador();
 		void inicializarEstadoLeyendoConstante();
+		void inicializarEstadoLeyendoMenor();
+		void inicializarEstadoLeyendoMayor();
 
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
