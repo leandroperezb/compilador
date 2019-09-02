@@ -42,6 +42,7 @@ using namespace std;
 #define CATEGORIA_COMA 13
 #define CATEGORIA_PARENTESIS 14
 #define CATEGORIA_CADENA 15
+#define CATEGORIA_GUIONBAJO 16
 
 // TOKENS
 #define TOKEN_IDENTIFICADOR 0
@@ -61,8 +62,8 @@ using namespace std;
 #define TOKEN_FINAL -1
 
 
-const int cantEstados = 2;
-const int cantCategorias = 16;
+const int cantEstados = 9;
+const int cantCategorias = 17;
 
 class AnalizadorLexico{
 	public:
@@ -75,6 +76,11 @@ class AnalizadorLexico{
 
 		struct registroIdentificador{ //**FALTA DEFINIR LA ESTRUCTURA DE LA TABLA DE SÍMBOLOS**
 			bool esPalabraReservada;
+		};
+
+		struct registroConstante{
+			bool esUlong;
+			unsigned long long valor;
 		};
 
 		void analizarCodigo();
@@ -96,12 +102,17 @@ class AnalizadorLexico{
 		void inicializarMatrizDeTransiciones();
 		void inicializarEstadoInicial();
 		void inicializarEstadoLeyendoIdentificador();
+		void inicializarEstadoLeyendoConstante();
 
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
 		unordered_map<string, registroIdentificador> tablaSimbolosIdentificadores;
 		void agregarSiNoExiste(string key, registroIdentificador r);
+
+		unordered_map<string, registroConstante> tablaSimbolosConstantes;
+		void agregarSiNoExiste(string key, registroConstante r);
+
 		queue<token> colaDeTokens;
 		void guardarToken(token nuevoToken);
 		friend class AccionesSemanticas;

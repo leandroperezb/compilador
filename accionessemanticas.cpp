@@ -51,10 +51,37 @@ void AccionesSemanticas::tokenFinalIdentificador(AnalizadorLexico* lexico, char&
 
 //Constantes
 void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
-	//**ENTREGAR EL TOKEN**
+	unsigned long long numero = 0;
+	for (int i = 0; i < lexico->identificador.length(); i++){
+		numero = numero * 10 + int(lexico->identificador[i]) - 48;
+		if (numero > 4294967295LL){
+			string warning = "Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
+			cout << warning;
+			lexico->identificador = "";
+			lexico->retrocederLectura();
+			return;
+		}
+	}
+
+	//Agregar a la tabla de símbolos:
+	AnalizadorLexico::registroConstante registro;
+	registro.esUlong = (numero > 32767); registro.valor = numero;
+	lexico->agregarSiNoExiste(lexico->identificador, registro);
+
+	//Poner un nuevo token en la cola de tokens listos (para entregar)
+	AnalizadorLexico::token token;
+	token.id = TOKEN_CONSTANTE;
+	token.puntero = lexico->identificador;
+	lexico->guardarToken(token);
+	
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();
+}
+
+void AccionesSemanticas::tokenFinalConstante(AnalizadorLexico* lexico, char& c){
+	AccionesSemanticas::terminarConstante(lexico, c);
+	AccionesSemanticas::tokenFinal(lexico, c);
 }
 
 //Mayor( o Igual)

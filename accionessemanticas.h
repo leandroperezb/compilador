@@ -22,6 +22,7 @@ class AccionesSemanticas{
 
 		//Constantes
 		static void terminarConstante(AnalizadorLexico* lexico, char& c);
+		static void tokenFinalConstante(AnalizadorLexico* lexico, char& c);
 		 
 		 //Mayor(o Igual)
 		 static void terminarMayor(AnalizadorLexico* lexico, char& c);

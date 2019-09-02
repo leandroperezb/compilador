@@ -5,6 +5,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	//**COMPLETAR CON TODAS LAS INICIALIZACIONES**
 	inicializarEstadoInicial();
 	inicializarEstadoLeyendoIdentificador();
+	inicializarEstadoLeyendoConstante();
 }
 
 AnalizadorLexico::AnalizadorLexico(char* ruta){
@@ -57,6 +58,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 			return CATEGORIA_PUNTOYCOMA;
 		case ',':
 			return CATEGORIA_COMA;
+		case '_':
+			return CATEGORIA_GUIONBAJO;
 		default:
 			return CATEGORIA_INVALIDO;
 	}
@@ -94,6 +97,14 @@ void AnalizadorLexico::agregarSiNoExiste(string key, registroIdentificador r){
 	if (search == tablaSimbolosIdentificadores.end()) {
 		//Si no existe 'key' en la tabla de símbolos:
 		tablaSimbolosIdentificadores.insert({key, r});
+	}
+}
+
+void AnalizadorLexico::agregarSiNoExiste(string key, registroConstante r){
+	auto search = tablaSimbolosConstantes.find(key);
+	if (search == tablaSimbolosConstantes.end()) {
+		//Si no existe 'key' en la tabla de símbolos:
+		tablaSimbolosConstantes.insert({key, r});
 	}
 }
 
