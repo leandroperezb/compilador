@@ -96,12 +96,15 @@ void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
 	token.puntero = "";
 	lexico->guardarToken(token);
 }
-//Menor(o Igual)
+//Menor(o Igual, o distinto)
 void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	if(c == '='){
 		token.id = TOKEN_MENORIGUAL;
-	}else{
+	}else if(c == '>'){
+		token.id = TOKEN_DISTINTO;
+	}
+	{
 		token.id = TOKEN_MENOR;
 		lexico->retrocederLectura();
 	}
@@ -122,4 +125,33 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 		TOKEN_ASIGNACION, ""
 	};
 	lexico->guardarToken(token);
+}
+
+//Operadores('+', '-', '/', '*', '(', ')', ',', ';')
+void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
+	AnalizadorLexico::token token;
+	token.puntero = "";
+	switch (c){
+	case '+':
+		token.id = TOKEN_SUMA;
+		break;
+	case '-':
+		token.id = TOKEN_RESTA;
+		break;
+	case '/':
+		token.id = TOKEN_DIVISION;
+	case '*':
+		token.id = TOKEN_MULTIPLICACION;
+	case '(':
+		token.id = TOKEN_PARENTESISAPERTURA;
+	case ')':
+		token.id = TOKEN_PARENTESISCIERRE;
+	case ',':
+		token.id = TOKEN_COMA;
+	case ';':
+		token.id = TOKEN_PUNTOCOMA;
+	
+	default:
+		break;
+	}
 }
