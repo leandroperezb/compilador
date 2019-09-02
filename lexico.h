@@ -22,8 +22,8 @@ using namespace std;
 #define ESTADO_LEYENDO_ASIGNACION 6
 #define ESTADO_LEYENDO_COMENTARIO 7
 #define ESTADO_LEYENDO_STRING 8
-
-#define ESTADO_FINAL 9
+// Al finalizar volvemos al principio
+#define ESTADO_FINAL 0
 
 // CATEGORIAS
 #define CATEGORIA_DIGITO 0
@@ -45,16 +45,14 @@ using namespace std;
 
 // TOKENS
 #define TOKEN_IDENTIFICADOR 0
-#define TOKEN_CONSTANTE
-#define TOKEN_MENOR
-#define TOKEN_MENORIGUAL
-#define TOKEN_MAYOR
-#define TOKEN_MAYORIGUAL
-#define TOKEN_
-#define TOKEN_
-#define TOKEN_
-#define TOKEN_
-#define TOKEN_
+#define TOKEN_CONSTANTE 1
+#define TOKEN_MAYOR 2
+#define TOKEN_MAYORIGUAL 3
+#define TOKEN_MENOR 4
+#define TOKEN_MENORIGUAL 5
+#define TOKEN_IGUAL 6
+#define TOKEN_ASIGNACION 7
+
 #define TOKEN_FINAL -1
 
 
