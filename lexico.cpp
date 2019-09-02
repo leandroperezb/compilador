@@ -29,6 +29,34 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 			return CATEGORIA_IGUAL;
 		case '\n':
 			return CATEGORIA_ENDLINE;
+		case '<':
+			return CATEGORIA_MENOR;
+		case '>':
+			return CATEGORIA_MAYOR;
+		case '/':
+			return CATEGORIA_OPERADOR;
+		case '*':
+			return CATEGORIA_OPERADOR;
+		case '+':
+			return CATEGORIA_OPERADOR;
+		case '-':
+			return CATEGORIA_OPERADOR;
+		case ' ':
+			return CATEGORIA_ESPACIO;
+		case '\t':
+			return CATEGORIA_ESPACIO;
+		case '#':
+			return CATEGORIA_COMENTARIO;
+		case '%':
+			return CATEGORIA_CADENA;
+		case '(':
+			return CATEGORIA_PARENTESIS;
+		case ')':
+			return CATEGORIA_PARENTESIS;
+		case ';':
+			return CATEGORIA_PUNTOYCOMA;
+		case ',':
+			return CATEGORIA_COMA;
 		default:
 			return CATEGORIA_INVALIDO;
 	}

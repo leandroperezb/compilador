@@ -25,10 +25,20 @@ using namespace std;
 #define CATEGORIA_ENDLINE 7
 #define CATEGORIA_INVALIDO 8
 #define CATEGORIA_FIN_ARCHIVO 9
+#define CATEGORIA_ESPACIO 10
+#define CATEGORIA_COMENTARIO 11
+#define CATEGORIA_PUNTOYCOMA 12
+#define CATEGORIA_COMA 13
+#define CATEGORIA_PARENTESIS 14
+#define CATEGORIA_CADENA 15
 
 
 #define TOKEN_IDENTIFICADOR 0
 #define TOKEN_FINAL -1
+
+
+const int cantEstados = 2;
+const int cantCategorias = 16;
 
 class AnalizadorLexico{
 	public:
@@ -58,7 +68,7 @@ class AnalizadorLexico{
 		int categorizarCaracter(char& c);
 
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
-		transicion matrizTransiciones[2][10];
+		transicion matrizTransiciones[cantEstados][cantCategorias];
 		void inicializarMatrizDeTransiciones();
 		void inicializarEstadoInicial();
 		void inicializarEstadoLeyendoIdentificador();
