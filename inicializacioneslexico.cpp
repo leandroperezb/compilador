@@ -12,6 +12,12 @@ void AnalizadorLexico::inicializarEstadoInicial(){
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::nuevaLinea};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_PUNTOYCOMA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_COMA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_PARENTESIS] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_CADENA] = {ESTADO_INICIAL, nullptr};
 }
 
 
@@ -26,4 +32,11 @@ void AnalizadorLexico::inicializarEstadoLeyendoIdentificador(){
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinalIdentificador};
+	
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_PUNTOYCOMA] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_COMA] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_PARENTESIS] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_CADENA] = {ESTADO_INICIAL, &AccionesSemanticas::terminarIdentificador};
 }
