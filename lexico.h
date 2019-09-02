@@ -52,6 +52,11 @@ using namespace std;
 #define TOKEN_MENORIGUAL 5
 #define TOKEN_IGUAL 6
 #define TOKEN_ASIGNACION 7
+#define TOKEN_PARENTESISAPERTURA 8
+#define TOKEN_PARENTESISCIERRE 9
+#define TOKEN_SUMA 10
+#define TOKEN_RESTA 11
+
 
 #define TOKEN_FINAL -1
 

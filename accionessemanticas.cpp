@@ -56,3 +56,43 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	lexico->identificador = "";
 	lexico->retrocederLectura();
 }
+
+//Mayor( o Igual)
+void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token;
+	if(c == '='){
+		token.id = TOKEN_MAYORIGUAL;
+	}else{
+		token.id = TOKEN_MAYOR;
+		lexico->retrocederLectura();
+	}
+	token.puntero = "";
+	lexico->guardarToken(token);
+}
+//Menor(o Igual)
+void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token;
+	if(c == '='){
+		token.id = TOKEN_MENORIGUAL;
+	}else{
+		token.id = TOKEN_MENOR;
+		lexico->retrocederLectura();
+	}
+	token.puntero = "";
+	lexico->guardarToken(token);
+}
+//Igualdad
+void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token = {
+		TOKEN_IGUAL, ""
+	};
+	lexico->guardarToken(token);
+}
+
+//Asignacion
+void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token = {
+		TOKEN_ASIGNACION, ""
+	};
+	lexico->guardarToken(token);
+}
