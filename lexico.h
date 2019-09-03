@@ -105,15 +105,6 @@ class AnalizadorLexico{
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
 		transicion matrizTransiciones[cantEstados][cantCategorias];
 		void inicializarMatrizDeTransiciones();
-		void inicializarEstadoInicial();
-		void inicializarEstadoLeyendoIdentificador();
-		void inicializarEstadoLeyendoConstante();
-		void inicializarEstadoLeyendoMenor();
-		void inicializarEstadoLeyendoMayor();
-		void inicializarEstadoLeyendoIgual();
-		void inicializarEstadoLeyendoAsignacion();
-		void inicializarEstadoLeyendoComentario();
-		void inicializarEstadoLeyendoCadena();
 
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes

@@ -1,18 +1,5 @@
 #include "lexico.h"
 
-
-void AnalizadorLexico::inicializarMatrizDeTransiciones(){
-	inicializarEstadoInicial();
-	inicializarEstadoLeyendoIdentificador();
-	inicializarEstadoLeyendoConstante();
-	inicializarEstadoLeyendoMenor();
-	inicializarEstadoLeyendoMayor();
-	inicializarEstadoLeyendoComentario();
-	inicializarEstadoLeyendoIgual();
-	inicializarEstadoLeyendoCadena();
-	inicializarEstadoLeyendoAsignacion();
-}
-
 AnalizadorLexico::AnalizadorLexico(char* ruta){
 	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 	sem_init(&semaforo, 0, 0);
