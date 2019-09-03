@@ -1,10 +1,7 @@
 #include "lexico.h"
-#include <unordered_map>
-#include <iterator> 
 
 
 void AnalizadorLexico::inicializarMatrizDeTransiciones(){
-	//**COMPLETAR CON TODAS LAS INICIALIZACIONES**
 	inicializarEstadoInicial();
 	inicializarEstadoLeyendoIdentificador();
 	inicializarEstadoLeyendoConstante();
@@ -14,7 +11,13 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	inicializarEstadoLeyendoIgual();
 	inicializarEstadoLeyendoCadena();
 	inicializarEstadoLeyendoAsignacion();
+}
 
+AnalizadorLexico::AnalizadorLexico(char* ruta){
+	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
+	sem_init(&semaforo, 0, 0);
+
+	//Precarga de palabras reservadas
 	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
 	for (int i= 0 ; i< 12; i++){
 		registroIdentificador registro;
@@ -23,23 +26,10 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 		tablaSimbolosIdentificadores.insert({arr[i], registro});
 	}
 
-	//solo para verificar carga
-	unordered_map< string , registroIdentificador>::iterator it;
-	for (it = tablaSimbolosIdentificadores.begin(); it != tablaSimbolosIdentificadores.end(); ++it)
-		cout << '\t' << it->first 
-            << '\t' << it->second.esPalabraReservada
-			<< '\t' << it->second.id <<	'\n'; 
-}
-
-AnalizadorLexico::AnalizadorLexico(char* ruta){
-	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
-	sem_init(&semaforo, 0, 0);
-	//**PRECARGAR TABLA DE SÍMBOLOS DE IDENTIFICADORES**
 	inicializarMatrizDeTransiciones();
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
-	//**FALTA COMPLETAR CON TODAS LAS CATEGORÍAS NECESARIAS**
 	switch(c) {
 		case '0' ... '9':
 			return CATEGORIA_DIGITO;
@@ -69,6 +59,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 			return CATEGORIA_ESPACIO;
 		case '\t':
 			return CATEGORIA_ESPACIO;
+		case '\r':
+			return CATEGORIA_ESPACIO;
 		case '#':
 			return CATEGORIA_COMENTARIO;
 		case '%':
@@ -97,16 +89,14 @@ void AnalizadorLexico::analizarCodigo(){
 	char c; transicion accion;
 	while((infile.get(c), infile.eof()) == false){
 		//Por cada carácter, ejecutar la acción semántica (si existe) e ir al nuevo estado
-		accion.nuevoEstado = matrizTransiciones[estadoActual][categorizarCaracter(c)].nuevoEstado;
-		accion.accionSemantica = matrizTransiciones[estadoActual][categorizarCaracter(c)].accionSemantica;
+		accion = matrizTransiciones[estadoActual][categorizarCaracter(c)];
 		if (accion.accionSemantica != nullptr)
 			accion.accionSemantica(this, c);
 		estadoActual = accion.nuevoEstado;
 	}
 
 	//Cuando termina, ejecutar la última acción semántica con el fin de archivo
-	accion.nuevoEstado = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO].nuevoEstado;
-	accion.accionSemantica = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO].accionSemantica;
+	accion = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO];
 	if (accion.accionSemantica != nullptr)
 		accion.accionSemantica(this, c);
 	estadoActual = accion.nuevoEstado;

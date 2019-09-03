@@ -26,9 +26,11 @@ class AccionesSemanticas{
 		 
 		//Mayor(o Igual)
 		static void terminarMayor(AnalizadorLexico* lexico, char& c);
+		static void terminarFinalMayor(AnalizadorLexico* lexico, char& c);
 		 
 		//Menor(o Igual)
 		static void terminarMenor(AnalizadorLexico* lexico, char& c);
+		static void terminarFinalMenor(AnalizadorLexico* lexico, char& c);
 
 		//Igualdad
 		static void entregarIgual(AnalizadorLexico* lexico, char& c);
@@ -38,6 +40,7 @@ class AccionesSemanticas{
 
 		//Cadena
 		static void entregarCadena(AnalizadorLexico* lexico, char& c);
+		static void entregarFinalCadena(AnalizadorLexico* lexico, char& c);
 
 		//Operadores('+', '-', '/', '*', '(', ')', ',', ';')
 		static void entregarOperador(AnalizadorLexico* lexico, char& c);

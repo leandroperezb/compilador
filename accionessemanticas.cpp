@@ -97,6 +97,12 @@ void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
 	token.puntero = "";
 	lexico->guardarToken(token);
 }
+
+void AccionesSemanticas::terminarFinalMayor(AnalizadorLexico* lexico, char& c){
+	AccionesSemanticas::terminarMayor(lexico, c);
+	AccionesSemanticas::tokenFinal(lexico, c);
+}
+
 //Menor(o Igual, o distinto)
 void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
@@ -110,6 +116,11 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	}
 	token.puntero = "";
 	lexico->guardarToken(token);
+}
+
+void AccionesSemanticas::terminarFinalMenor(AnalizadorLexico* lexico, char& c){
+	AccionesSemanticas::terminarMenor(lexico, c);
+	AccionesSemanticas::tokenFinal(lexico, c);
 }
 
 //Igualdad
@@ -140,6 +151,11 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	token.puntero = lexico->identificador;
 	lexico->identificador = "";
 	lexico->guardarToken(token);
+}
+
+void AccionesSemanticas::entregarFinalCadena(AnalizadorLexico* lexico, char& c){
+	AccionesSemanticas::entregarCadena(lexico, c);
+	AccionesSemanticas::tokenFinal(lexico, c);
 }
 
 //Operadores('+', '-', '/', '*', '(', ')', ',', ';')
