@@ -51,13 +51,13 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 		case '%':
 			return CATEGORIA_CADENA;
 		case '(':
-			return CATEGORIA_PARENTESIS;
+			return CATEGORIA_OPERADOR;
 		case ')':
-			return CATEGORIA_PARENTESIS;
+			return CATEGORIA_OPERADOR;
 		case ';':
-			return CATEGORIA_PUNTOYCOMA;
+			return CATEGORIA_OPERADOR;
 		case ',':
-			return CATEGORIA_COMA;
+			return CATEGORIA_OPERADOR;
 		case '_':
 			return CATEGORIA_GUIONBAJO;
 		default:
