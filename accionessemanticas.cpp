@@ -110,6 +110,10 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	token.puntero = "";
 	lexico->guardarToken(token);
 }
+//comentario
+void AccionesSemanticas::terminarComentario(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token;
+}
 //Igualdad
 void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {

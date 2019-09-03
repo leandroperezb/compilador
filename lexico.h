@@ -107,6 +107,7 @@ class AnalizadorLexico{
 		void inicializarEstadoLeyendoConstante();
 		void inicializarEstadoLeyendoMenor();
 		void inicializarEstadoLeyendoMayor();
+		void inicializarEstadoLeyendoComentario();
 
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes

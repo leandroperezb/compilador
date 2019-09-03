@@ -30,6 +30,9 @@ class AccionesSemanticas{
 		//Menor(o Igual)
 		static void terminarMenor(AnalizadorLexico* lexico, char& c);
 
+		//Comentario
+		static void terminarComentario(AnalizadorLexico* lexico, char& c);
+
 		//Igualdad
 		static void entregarIgual(AnalizadorLexico* lexico, char& c);
 
