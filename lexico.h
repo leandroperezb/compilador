@@ -91,6 +91,8 @@ class AnalizadorLexico{
 		void analizarCodigo();
 		void retrocederLectura();
 
+		void guardarTablasDeSimbolos();
+
 	private:
 		char* rutaCodigoFuente;
 		unsigned int contadorLineas;

@@ -92,6 +92,28 @@ void AnalizadorLexico::analizarCodigo(){
 	infile.close();
 }
 
+void AnalizadorLexico::guardarTablasDeSimbolos(){
+	ofstream ofs;
+	ofs.open ("tablas.txt", std::ofstream::out);
+	if(ofs.fail()){
+		return;
+	}
+
+	ofs << "Tabla de símbolos de identificadores:\n(Clave)\t\t(Palabra_Reservada)\t\t(ID)\n";
+	unordered_map<string , registroIdentificador>::iterator it;
+	for (it = tablaSimbolosIdentificadores.begin(); it != tablaSimbolosIdentificadores.end(); ++it){
+		ofs << it->first << "\t\t" << it->second.esPalabraReservada << "\t\t\t" << it->second.id << '\n';
+	}
+
+	ofs << "\n\nTabla de símbolos de constantes:\n(Clave)\t\t(Es_Ulong)\t\t(Valor)\n";
+	unordered_map<string , registroConstante>::iterator itConstantes;
+	for (itConstantes = tablaSimbolosConstantes.begin(); itConstantes != tablaSimbolosConstantes.end(); ++itConstantes){
+		ofs << itConstantes->first << "\t\t" << itConstantes->second.esUlong << "\t\t\t" << itConstantes->second.valor << '\n';
+	}
+
+	ofs.close();
+}
+
 void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
 
 void AnalizadorLexico::agregarSiNoExiste(string key, registroIdentificador r){
