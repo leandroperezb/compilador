@@ -15,9 +15,8 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	inicializarEstadoLeyendoCadena();
 	inicializarEstadoLeyendoAsignacion();
 
-	string arr[31] = {"if","else","end_if","print","int","begin","end","<=",">=","<",">","==","<>","+","-","/","*","(",")",";",",",":=","cons","id","#","%","for"
-					,"class","public","private","ulong"};
-	for (int i= 0 ; i< 31; i++){
+	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
+	for (int i= 0 ; i< 12; i++){
 		registroIdentificador registro;
 		registro.esPalabraReservada = true;
 		registro.id = i;
