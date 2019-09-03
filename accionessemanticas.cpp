@@ -28,6 +28,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 		cout << warning;
 		lexico->identificador.resize(25);
 	}
+	
 
 	//Agregar a la tabla de símbolos:
 	AnalizadorLexico::registroIdentificador registro;

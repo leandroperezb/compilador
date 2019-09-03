@@ -9,6 +9,7 @@
 #include <mutex>
 #include <semaphore.h>
 
+
 using namespace std;
 
 // ESTADOS
@@ -79,6 +80,7 @@ class AnalizadorLexico{
 
 		struct registroIdentificador{ //**FALTA DEFINIR LA ESTRUCTURA DE LA TABLA DE SÍMBOLOS**
 			bool esPalabraReservada;
+			int id;
 		};
 
 		struct registroConstante{
@@ -117,6 +119,7 @@ class AnalizadorLexico{
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
 		unordered_map<string, registroIdentificador> tablaSimbolosIdentificadores;
+		
 		void agregarSiNoExiste(string key, registroIdentificador r);
 
 		unordered_map<string, registroConstante> tablaSimbolosConstantes;

@@ -1,4 +1,6 @@
 #include "lexico.h"
+#include <unordered_map>
+#include <iterator> 
 
 
 void AnalizadorLexico::inicializarMatrizDeTransiciones(){
@@ -12,6 +14,22 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	inicializarEstadoLeyendoIgual();
 	inicializarEstadoLeyendoCadena();
 	inicializarEstadoLeyendoAsignacion();
+
+	string arr[31] = {"if","else","end_if","print","int","begin","end","<=",">=","<",">","==","<>","+","-","/","*","(",")",";",",",":=","cons","id","#","%","for"
+					,"class","public","private","ulong"};
+	for (int i= 0 ; i< 31; i++){
+		registroIdentificador registro;
+		registro.esPalabraReservada = true;
+		registro.id = i;
+		tablaSimbolosIdentificadores.insert({arr[i], registro});
+	}
+
+	//solo para verificar carga
+	unordered_map< string , registroIdentificador>::iterator it;
+	for (it = tablaSimbolosIdentificadores.begin(); it != tablaSimbolosIdentificadores.end(); ++it)
+		cout << '\t' << it->first 
+            << '\t' << it->second.esPalabraReservada
+			<< '\t' << it->second.id <<	'\n'; 
 }
 
 AnalizadorLexico::AnalizadorLexico(char* ruta){
