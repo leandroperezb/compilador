@@ -60,6 +60,7 @@ using namespace std;
 #define TOKEN_MULTIPLICACION 14
 #define TOKEN_COMA 15
 #define TOKEN_PUNTOCOMA 16
+#define TOKEN_STRING 17
 
 #define TOKEN_FINAL -1
 
@@ -107,7 +108,10 @@ class AnalizadorLexico{
 		void inicializarEstadoLeyendoConstante();
 		void inicializarEstadoLeyendoMenor();
 		void inicializarEstadoLeyendoMayor();
+		void inicializarEstadoLeyendoIgual();
+		void inicializarEstadoLeyendoAsignacion();
 		void inicializarEstadoLeyendoComentario();
+		void inicializarEstadoLeyendoCadena();
 
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes

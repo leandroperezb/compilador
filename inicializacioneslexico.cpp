@@ -87,6 +87,39 @@ void AnalizadorLexico::inicializarEstadoLeyendoMenor(){
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_GUIONBAJO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
 }
 
+void AnalizadorLexico::inicializarEstadoLeyendoIgual(){
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_FINAL,nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_FINAL,nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_FINAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarIgual};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ENDLINE] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ESPACIO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_CADENA] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+}
+
+void AnalizadorLexico::inicializarEstadoLeyendoAsignacion(){
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DIGITO] = {ESTADO_FINAL,nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_LETRA] = {ESTADO_FINAL,nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DOSPUNTOS] = {ESTADO_FINAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarAsignacion};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MENOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MAYOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_OPERADOR] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INVALIDO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ENDLINE] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ESPACIO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_CADENA] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+}
 
 void AnalizadorLexico::inicializarEstadoLeyendoComentario(){
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_DIGITO] = {ESTADO_LEYENDO_COMENTARIO, &AccionesSemanticas::agregarCaracter};
@@ -103,4 +136,21 @@ void AnalizadorLexico::inicializarEstadoLeyendoComentario(){
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_COMENTARIO, &AccionesSemanticas::agregarCaracter};
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_CADENA] = {ESTADO_LEYENDO_COMENTARIO, &AccionesSemanticas::agregarCaracter};
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_GUIONBAJO] = {ESTADO_LEYENDO_COMENTARIO, &AccionesSemanticas::agregarCaracter};
+}
+
+void AnalizadorLexico::inicializarEstadoLeyendoCadena(){
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_DIGITO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_LETRA] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_DOSPUNTOS] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_IGUAL] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_MENOR] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_MAYOR] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_OPERADOR] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_INVALIDO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_ENDLINE] = {ESTADO_FINAL, &AccionesSemanticas::entregarCadena};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_ESPACIO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_CADENA] = {ESTADO_FINAL, &AccionesSemanticas::entregarCadena};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_GUIONBAJO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
 }

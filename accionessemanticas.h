@@ -39,6 +39,9 @@ class AccionesSemanticas{
 		//Asignacion
 		static void entregarAsignacion(AnalizadorLexico* lexico, char& c);
 
+		//Cadena
+		static void entregarCadena(AnalizadorLexico* lexico, char& c);
+
 		//Operadores('+', '-', '/', '*', '(', ')', ',', ';')
 		static void entregarOperador(AnalizadorLexico* lexico, char& c);
 		

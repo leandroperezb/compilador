@@ -17,7 +17,6 @@ void AccionesSemanticas::iniciarIdentificador(AnalizadorLexico* lexico, char& c)
 }
 void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 	lexico->identificador = lexico->identificador + c;
-	//cout << ""+lexico->identificador + "\n";
 }
 
 //Identificadores
@@ -113,8 +112,10 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 }
 //comentario
 void AccionesSemanticas::terminarComentario(AnalizadorLexico* lexico, char& c){
-	AnalizadorLexico::token token;
+	lexico->identificador = "";
+	lexico->retrocederLectura();
 }
+
 //Igualdad
 void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
@@ -128,6 +129,21 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		TOKEN_ASIGNACION, ""
 	};
+	lexico->guardarToken(token);
+}
+
+//Cadena
+void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
+	AnalizadorLexico::token token;
+	if(c == '%'){
+		token.id = TOKEN_STRING;
+	} else{
+		token.id = TOKEN_STRING;
+		string warning = "Warning: falta cierre de string en linea "+to_string(lexico->contadorLineas)+"\n";
+			cout << warning;
+		lexico->retrocederLectura();
+	}
+	token.puntero = "";
 	lexico->guardarToken(token);
 }
 

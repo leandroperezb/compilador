@@ -6,6 +6,12 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	inicializarEstadoInicial();
 	inicializarEstadoLeyendoIdentificador();
 	inicializarEstadoLeyendoConstante();
+	inicializarEstadoLeyendoMenor();
+	inicializarEstadoLeyendoMayor();
+	inicializarEstadoLeyendoComentario();
+	inicializarEstadoLeyendoIgual();
+	inicializarEstadoLeyendoCadena();
+	inicializarEstadoLeyendoAsignacion();
 }
 
 AnalizadorLexico::AnalizadorLexico(char* ruta){
@@ -74,14 +80,16 @@ void AnalizadorLexico::analizarCodigo(){
 	char c; transicion accion;
 	while((infile.get(c), infile.eof()) == false){
 		//Por cada carácter, ejecutar la acción semántica (si existe) e ir al nuevo estado
-		accion = matrizTransiciones[estadoActual][categorizarCaracter(c)];
+		accion.nuevoEstado = matrizTransiciones[estadoActual][categorizarCaracter(c)].nuevoEstado;
+		accion.accionSemantica = matrizTransiciones[estadoActual][categorizarCaracter(c)].accionSemantica;
 		if (accion.accionSemantica != nullptr)
 			accion.accionSemantica(this, c);
 		estadoActual = accion.nuevoEstado;
 	}
 
 	//Cuando termina, ejecutar la última acción semántica con el fin de archivo
-	accion = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO];
+	accion.nuevoEstado = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO].nuevoEstado;
+	accion.accionSemantica = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO].accionSemantica;
 	if (accion.accionSemantica != nullptr)
 		accion.accionSemantica(this, c);
 	estadoActual = accion.nuevoEstado;
