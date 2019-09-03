@@ -65,7 +65,7 @@ using namespace std;
 
 
 const int cantEstados = 9;
-const int cantCategorias = 17;
+const int cantCategorias = 14;
 
 class AnalizadorLexico{
 	public:

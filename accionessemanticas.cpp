@@ -17,6 +17,7 @@ void AccionesSemanticas::iniciarIdentificador(AnalizadorLexico* lexico, char& c)
 }
 void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 	lexico->identificador = lexico->identificador + c;
+	//cout << ""+lexico->identificador + "\n";
 }
 
 //Identificadores
