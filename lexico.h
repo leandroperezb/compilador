@@ -40,8 +40,9 @@ using namespace std;
 #define CATEGORIA_FIN_ARCHIVO 9
 #define CATEGORIA_ESPACIO 10
 #define CATEGORIA_COMENTARIO 11
-#define CATEGORIA_CADENA 12
+#define CATEGORIA_INICIOCADENA 12
 #define CATEGORIA_GUIONBAJO 13
+#define CATEGORIA_FINCADENA 14
 
 // TOKENS
 #define TOKEN_IDENTIFICADOR 0
@@ -67,7 +68,7 @@ using namespace std;
 
 
 const int cantEstados = 9;
-const int cantCategorias = 14;
+const int cantCategorias = 15;
 
 class AnalizadorLexico{
 	public:

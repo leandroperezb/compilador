@@ -50,8 +50,10 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 			return CATEGORIA_ESPACIO;
 		case '#':
 			return CATEGORIA_COMENTARIO;
-		case '%':
-			return CATEGORIA_CADENA;
+		case '{':
+			return CATEGORIA_INICIOCADENA;
+		case '}':
+			return CATEGORIA_FINCADENA;
 		case '(':
 			return CATEGORIA_OPERADOR;
 		case ')':

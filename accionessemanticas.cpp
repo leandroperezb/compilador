@@ -143,11 +143,6 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = TOKEN_STRING;
-	if(c != '%'){
-		string warning = "Warning: falta cierre de string en linea "+to_string(lexico->contadorLineas)+"\n";
-			cout << warning;
-		lexico->retrocederLectura();
-	}
 	token.puntero = lexico->identificador;
 	lexico->identificador = "";
 	lexico->guardarToken(token);
