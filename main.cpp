@@ -1,5 +1,6 @@
 #include <iostream>
 #include "lexico.h"
+#include "tablasimbolos.h"
 #include <pthread.h>
 
 using namespace std;
@@ -17,7 +18,9 @@ int main(int argc, char** argv){
 		return 1;
 	}
 
-	AnalizadorLexico ana(rutaCodigoFuente);
+	TablaSimbolos tabla;
+
+	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
 	pthread_t my_thread;
 	pthread_create(&my_thread, NULL, &worker_thread, (void *) &ana);
 
@@ -31,7 +34,7 @@ int main(int argc, char** argv){
 	}
 
 	pthread_join(my_thread, NULL);
-	ana.guardarTablasDeSimbolos();
+	tabla.guardar();
 	pthread_exit(NULL);
 
 	return 0;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "accionessemanticas.h"
+#include "tablasimbolos.h"
 #include <queue>
 #include <unordered_map>
 #include <mutex>
@@ -64,7 +65,7 @@ using namespace std;
 #define TOKEN_PUNTOCOMA 16
 #define TOKEN_STRING 17
 
-#define TOKEN_FINAL -1
+#define TOKEN_FINAL 999999
 
 
 const int cantEstados = 9;
@@ -72,7 +73,7 @@ const int cantCategorias = 15;
 
 class AnalizadorLexico{
 	public:
-		AnalizadorLexico(char* ruta);
+		AnalizadorLexico(char* ruta, TablaSimbolos* tabla);
 		struct token{
 			unsigned int id;
 			string puntero;
@@ -92,8 +93,6 @@ class AnalizadorLexico{
 		void analizarCodigo();
 		void retrocederLectura();
 
-		void guardarTablasDeSimbolos();
-
 	private:
 		char* rutaCodigoFuente;
 		unsigned int contadorLineas;
@@ -112,12 +111,8 @@ class AnalizadorLexico{
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
-		unordered_map<string, registroIdentificador> tablaSimbolosIdentificadores;
-		
-		void agregarSiNoExiste(string key, registroIdentificador r);
-
-		unordered_map<string, registroConstante> tablaSimbolosConstantes;
-		void agregarSiNoExiste(string key, registroConstante r);
+		TablaSimbolos* tablaSimbolos;
+		void agregarSiNoExiste(string key, TablaSimbolos::registro r);
 
 		queue<token> colaDeTokens;
 		void guardarToken(token nuevoToken);

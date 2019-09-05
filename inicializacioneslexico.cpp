@@ -108,7 +108,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_FINAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 
 
 
@@ -127,7 +127,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_FINAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
 
 
 
@@ -146,7 +146,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_INICIOCADENA] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
 	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_GUIONBAJO] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
-	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_FINCADENA] = {ESTADO_FINAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_COMENTARIO][CATEGORIA_FINCADENA] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
 
 
 

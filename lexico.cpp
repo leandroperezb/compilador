@@ -1,16 +1,17 @@
 #include "lexico.h"
 
-AnalizadorLexico::AnalizadorLexico(char* ruta){
-	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
+AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
+	rutaCodigoFuente = ruta; tablaSimbolos = tabla;
+	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 	sem_init(&semaforo, 0, 0);
 
 	//Precarga de palabras reservadas
 	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
 	for (int i= 0 ; i< 12; i++){
-		registroIdentificador registro;
+		TablaSimbolos::registro registro;
 		registro.esPalabraReservada = true;
-		registro.id = i;
-		tablaSimbolosIdentificadores.insert({arr[i], registro});
+		registro.palabra = arr[i];
+		agregarSiNoExiste(arr[i], registro);
 	}
 
 	inicializarMatrizDeTransiciones();
@@ -94,44 +95,10 @@ void AnalizadorLexico::analizarCodigo(){
 	infile.close();
 }
 
-void AnalizadorLexico::guardarTablasDeSimbolos(){
-	ofstream ofs;
-	ofs.open ("tablas.txt", std::ofstream::out);
-	if(ofs.fail()){
-		return;
-	}
-
-	ofs << "Tabla de símbolos de identificadores:\n(Clave)\t\t(Palabra_Reservada)\t\t(ID)\n";
-	unordered_map<string , registroIdentificador>::iterator it;
-	for (it = tablaSimbolosIdentificadores.begin(); it != tablaSimbolosIdentificadores.end(); ++it){
-		ofs << it->first << "\t\t" << it->second.esPalabraReservada << "\t\t\t" << it->second.id << '\n';
-	}
-
-	ofs << "\n\nTabla de símbolos de constantes:\n(Clave)\t\t(Es_Ulong)\t\t(Valor)\n";
-	unordered_map<string , registroConstante>::iterator itConstantes;
-	for (itConstantes = tablaSimbolosConstantes.begin(); itConstantes != tablaSimbolosConstantes.end(); ++itConstantes){
-		ofs << itConstantes->first << "\t\t" << itConstantes->second.esUlong << "\t\t\t" << itConstantes->second.valor << '\n';
-	}
-
-	ofs.close();
-}
-
 void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
 
-void AnalizadorLexico::agregarSiNoExiste(string key, registroIdentificador r){
-	auto search = tablaSimbolosIdentificadores.find(key);
-	if (search == tablaSimbolosIdentificadores.end()) {
-		//Si no existe 'key' en la tabla de símbolos:
-		tablaSimbolosIdentificadores.insert({key, r});
-	}
-}
-
-void AnalizadorLexico::agregarSiNoExiste(string key, registroConstante r){
-	auto search = tablaSimbolosConstantes.find(key);
-	if (search == tablaSimbolosConstantes.end()) {
-		//Si no existe 'key' en la tabla de símbolos:
-		tablaSimbolosConstantes.insert({key, r});
-	}
+void AnalizadorLexico::agregarSiNoExiste(string key, TablaSimbolos::registro r){
+	tablaSimbolos->agregarSiNoExiste(key, r);
 }
 
 void AnalizadorLexico::guardarToken(token nuevoToken){
