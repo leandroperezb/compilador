@@ -111,11 +111,11 @@ void AnalizadorLexico::guardarToken(registroToken nuevoToken){
 AnalizadorLexico::token AnalizadorLexico::getToken(){
 	sem_wait(&semaforo);
 	mtx.lock();
-	registroToken resultado = colaDeTokens.front();
+	registroToken resultado = colaDeTokens.front();	
+	colaDeTokens.pop();
+	mtx.unlock();
 	if(resultado.warning != ""){
 		cout<<resultado.warning;
 	}
-	colaDeTokens.pop();
-	mtx.unlock();
 	return resultado.token;
 }

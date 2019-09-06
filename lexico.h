@@ -91,7 +91,7 @@ class AnalizadorLexico{
 		};
 
 		struct registroToken{
-			token token;
+			AnalizadorLexico::token token;
 			string warning;
 		};
 

@@ -24,9 +24,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 	//Control de longitud máxima
 	string warning = "";
 	if (lexico->identificador.length() > 25){
-		//Warning **HAY QUE MODIFICAR ESTO. NO ESTÁ BUENO IMPRIMIR ACÁ**
 		warning = "Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
-		cout << warning;
 		lexico->identificador.resize(25);
 	}
 	
