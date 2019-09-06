@@ -80,16 +80,6 @@ class AnalizadorLexico{
 		};
 		token getToken();
 
-		struct registroIdentificador{ //**FALTA DEFINIR LA ESTRUCTURA DE LA TABLA DE SÍMBOLOS**
-			bool esPalabraReservada;
-			int id;
-		};
-
-		struct registroConstante{
-			bool esUlong;
-			unsigned long long valor;
-		};
-
 		struct registroToken{
 			AnalizadorLexico::token token;
 			string warning;

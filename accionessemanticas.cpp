@@ -16,6 +16,7 @@ void AccionesSemanticas::iniciarIdentificador(AnalizadorLexico* lexico, char& c)
 	lexico->identificador = c;
 }
 void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
+	if (c == '\r') return; //En casos de Strings se puede llegar a llamar con Carriage Return, pero lo ignoramos
 	lexico->identificador = lexico->identificador + c;
 }
 
