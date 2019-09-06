@@ -101,7 +101,7 @@ void AnalizadorLexico::agregarSiNoExiste(string key, TablaSimbolos::registro r){
 	tablaSimbolos->agregarSiNoExiste(key, r);
 }
 
-void AnalizadorLexico::guardarToken(token nuevoToken){
+void AnalizadorLexico::guardarToken(registroToken nuevoToken){
 	mtx.lock();
 	colaDeTokens.push(nuevoToken);
 	mtx.unlock();
@@ -111,8 +111,11 @@ void AnalizadorLexico::guardarToken(token nuevoToken){
 AnalizadorLexico::token AnalizadorLexico::getToken(){
 	sem_wait(&semaforo);
 	mtx.lock();
-	token resultado = colaDeTokens.front();
+	registroToken resultado = colaDeTokens.front();
+	if(resultado.warning != ""){
+		cout<<resultado.warning;
+	}
 	colaDeTokens.pop();
 	mtx.unlock();
-	return resultado;
+	return resultado.token;
 }

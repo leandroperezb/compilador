@@ -4,7 +4,7 @@
 void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = TOKEN_FINAL;
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 void AccionesSemanticas::nuevaLinea(AnalizadorLexico* lexico, char& c){
@@ -22,9 +22,10 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 //Identificadores
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
 	//Control de longitud máxima
+	string warning = "";
 	if (lexico->identificador.length() > 25){
 		//Warning **HAY QUE MODIFICAR ESTO. NO ESTÁ BUENO IMPRIMIR ACÁ**
-		string warning = "Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
+		warning = "Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
 		cout << warning;
 		lexico->identificador.resize(25);
 	}
@@ -40,7 +41,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 	AnalizadorLexico::token token;
 	token.id = TOKEN_IDENTIFICADOR;
 	token.puntero = lexico->identificador;
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, warning});
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();
@@ -54,11 +55,11 @@ void AccionesSemanticas::tokenFinalIdentificador(AnalizadorLexico* lexico, char&
 //Constantes
 void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	unsigned long long numero = 0;
+	string warning = "";
 	for (int i = 0; i < lexico->identificador.length(); i++){
 		numero = numero * 10 + int(lexico->identificador[i]) - 48;
 		if (numero > 4294967295LL){
-			string warning = "Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
-			cout << warning;
+			warning = "Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
 			lexico->identificador = "";
 			lexico->retrocederLectura();
 			return;
@@ -74,7 +75,7 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = TOKEN_CONSTANTE;
 	token.puntero = lexico->identificador;
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, warning});
 	
 
 	lexico->identificador = "";
@@ -96,7 +97,7 @@ void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 void AccionesSemanticas::terminarFinalMayor(AnalizadorLexico* lexico, char& c){
@@ -116,7 +117,7 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 void AccionesSemanticas::terminarFinalMenor(AnalizadorLexico* lexico, char& c){
@@ -129,7 +130,7 @@ void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		TOKEN_IGUAL, ""
 	};
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 //Asignacion
@@ -137,7 +138,7 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		TOKEN_ASIGNACION, ""
 	};
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 //Cadena
@@ -146,7 +147,7 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	token.id = TOKEN_STRING;
 	token.puntero = lexico->identificador;
 	lexico->identificador = "";
-	lexico->guardarToken(token);
+	lexico->guardarToken({token, ""});
 }
 
 void AccionesSemanticas::entregarFinalCadena(AnalizadorLexico* lexico, char& c){
@@ -186,5 +187,5 @@ void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
 	default:
 		break;
 	}
-	lexico->guardarToken(token);
+	lexico->guardarToken({token,""});
 }

@@ -90,6 +90,11 @@ class AnalizadorLexico{
 			unsigned long long valor;
 		};
 
+		struct registroToken{
+			token token;
+			string warning;
+		};
+
 		void analizarCodigo();
 		void retrocederLectura();
 
@@ -108,14 +113,13 @@ class AnalizadorLexico{
 		transicion matrizTransiciones[cantEstados][cantCategorias];
 		void inicializarMatrizDeTransiciones();
 
-
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
 		TablaSimbolos* tablaSimbolos;
 		void agregarSiNoExiste(string key, TablaSimbolos::registro r);
 
-		queue<token> colaDeTokens;
-		void guardarToken(token nuevoToken);
+		queue<registroToken> colaDeTokens;
+		void guardarToken(registroToken nuevoToken);
 		friend class AccionesSemanticas;
 
 		sem_t semaforo;
