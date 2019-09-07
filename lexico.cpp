@@ -3,7 +3,6 @@
 AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	rutaCodigoFuente = ruta; tablaSimbolos = tabla;
 	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
-	sem_init(&semaforo, 0, 0);
 
 	//Precarga de palabras reservadas
 	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
@@ -15,6 +14,8 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	}
 
 	inicializarMatrizDeTransiciones();
+
+	infile.open(this->rutaCodigoFuente, std::ifstream::in);
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
@@ -71,7 +72,6 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 }
 
 void AnalizadorLexico::analizarCodigo(){
-	infile.open(this->rutaCodigoFuente, std::ifstream::in);
 	if(infile.fail()){
 		return;
 	}
@@ -83,6 +83,8 @@ void AnalizadorLexico::analizarCodigo(){
 		if (accion.accionSemantica != nullptr)
 			accion.accionSemantica(this, c);
 		estadoActual = accion.nuevoEstado;
+		if (!colaDeTokens.empty())
+			return;
 	}
 
 	//Cuando termina, ejecutar la última acción semántica con el fin de archivo
@@ -102,18 +104,13 @@ void AnalizadorLexico::agregarSiNoExiste(string key, TablaSimbolos::registro r){
 }
 
 void AnalizadorLexico::guardarToken(registroToken nuevoToken){
-	mtx.lock();
 	colaDeTokens.push(nuevoToken);
-	mtx.unlock();
-	sem_post(&semaforo);
 }
 
 AnalizadorLexico::token AnalizadorLexico::getToken(){
-	sem_wait(&semaforo);
-	mtx.lock();
+	analizarCodigo();
 	registroToken resultado = colaDeTokens.front();	
 	colaDeTokens.pop();
-	mtx.unlock();
 	if(resultado.warning != ""){
 		cout<<resultado.warning;
 	}

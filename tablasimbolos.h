@@ -5,7 +5,6 @@
 #include <fstream>
 #include <queue>
 #include <unordered_map>
-#include <mutex>
 
 using namespace std;
 
@@ -27,7 +26,6 @@ class TablaSimbolos{
 
 	private:
 		unordered_map<string, registro> tablaSimbolos;
-		mutex mtx;
 };
 
 #endif

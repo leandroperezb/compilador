@@ -3,22 +3,18 @@
 TablaSimbolos::TablaSimbolos(){}
 
 void TablaSimbolos::agregarSiNoExiste(string key, registro r){
-	mtx.lock();
 	auto search = tablaSimbolos.find(key);
 	if (search == tablaSimbolos.end()) {
 		//Si no existe 'key' en la tabla de símbolos:
 		tablaSimbolos.insert({key, r});
 	}
-	mtx.unlock();
 }
 
 TablaSimbolos::registro TablaSimbolos::get(string key){
-	mtx.lock();
 	auto search = tablaSimbolos.find(key);
 	if (search != tablaSimbolos.end()) {
 		return search->second;
 	}
-	mtx.unlock();
 }
 
 void TablaSimbolos::guardar(){

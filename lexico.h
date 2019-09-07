@@ -7,8 +7,6 @@
 #include "tablasimbolos.h"
 #include <queue>
 #include <unordered_map>
-#include <mutex>
-#include <semaphore.h>
 
 
 using namespace std;
@@ -112,8 +110,6 @@ class AnalizadorLexico{
 		void guardarToken(registroToken nuevoToken);
 		friend class AccionesSemanticas;
 
-		sem_t semaforo;
-		mutex mtx;
 };
 
 #endif
