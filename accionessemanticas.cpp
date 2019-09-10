@@ -1,5 +1,6 @@
 #include "accionessemanticas.h"
 #include "lexico.h"
+#include <string>
 
 void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
@@ -187,4 +188,12 @@ void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
 		break;
 	}
 	lexico->guardarToken({token,""});
+}
+
+void AccionesSemanticas::warning(AnalizadorLexico* lexico, char& c){
+	string s(1, c);
+	string warning = "Warning: supreción caracter '"+s+"' no esperado en la línea "+to_string(lexico->contadorLineas)+"\n";
+	AnalizadorLexico::token token;
+	token.id = TOKEN_WARNING;
+	lexico->guardarToken({token, warning});
 }

@@ -64,6 +64,7 @@ using namespace std;
 #define TOKEN_COMA 15
 #define TOKEN_PUNTOCOMA 16
 #define TOKEN_STRING 17
+#define TOKEN_WARNING 18
 
 #define TOKEN_FINAL 999999
 

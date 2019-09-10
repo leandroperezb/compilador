@@ -9,14 +9,14 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_MENOR] = {ESTADO_LEYENDO_MENOR, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_MAYOR] = {ESTADO_LEYENDO_MAYOR, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::entregarOperador};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr}; ///MANDAR WARNING o ERROR
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::nuevaLinea};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INICIOCADENA] = {ESTADO_LEYENDO_STRING, nullptr};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 
 
 
@@ -30,7 +30,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_INVALIDO] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_ENDLINE] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
-	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::tokenFinalIdentificador};
+	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::tokenFinalIdentificador}; //si llega al final del archivo con una asignacion va a representar un error
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_ESPACIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
 	matrizTransiciones[ESTADO_LEYENDO_IDENTIFICADOR][CATEGORIA_INICIOCADENA] = {ESTADO_FINAL, &AccionesSemanticas::terminarIdentificador};
@@ -48,7 +48,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_INVALIDO] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_ENDLINE] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
-	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::tokenFinalConstante};
+	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::tokenFinalConstante}; // si llega al final del archivo con una asignacion va a representar un error o warning
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_ESPACIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
 	matrizTransiciones[ESTADO_LEYENDO_CONSTANTE][CATEGORIA_INICIOCADENA] = {ESTADO_FINAL, &AccionesSemanticas::terminarConstante};
@@ -66,7 +66,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_INVALIDO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_ENDLINE] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
-	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::terminarFinalMayor};
+	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::terminarFinalMayor}; //si llega al final del archivo con una asignacion va a representar un error
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_ESPACIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
 	matrizTransiciones[ESTADO_LEYENDO_MAYOR][CATEGORIA_INICIOCADENA] = {ESTADO_FINAL, &AccionesSemanticas::terminarMayor};
@@ -84,7 +84,7 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_INVALIDO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_ENDLINE] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
-	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::terminarFinalMenor};
+	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_FIN_ARCHIVO] = {ESTADO_FINAL, &AccionesSemanticas::terminarFinalMenor}; ///si llega al final del archivo con una asignacion va a representar un error
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_ESPACIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_COMENTARIO] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
 	matrizTransiciones[ESTADO_LEYENDO_MENOR][CATEGORIA_INICIOCADENA] = {ESTADO_FINAL, &AccionesSemanticas::terminarMenor};
@@ -94,40 +94,40 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 
 
 
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL,&AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,&AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL,&AccionesSemanticas::warning};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarIgual};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, nullptr}; /// si llega al final del archivo con un == va a representar un error
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 
 
 
 
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DIGITO] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DIGITO] = {ESTADO_INICIAL,&AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_LETRA] = {ESTADO_INICIAL,&AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarAsignacion};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MENOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MAYOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal}; ///PORQUE ?, si llega al final del archivo con una asignacion va a representar un error
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 
 
 
@@ -165,5 +165,5 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
 	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_INICIOCADENA] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
 	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_GUIONBAJO] = {ESTADO_LEYENDO_STRING, &AccionesSemanticas::agregarCaracter};
-	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_FINCADENA] = {ESTADO_FINAL, &AccionesSemanticas::entregarCadena};
+	matrizTransiciones[ESTADO_LEYENDO_STRING][CATEGORIA_FINCADENA] = {ESTADO_FINAL, &AccionesSemanticas::entregarCadena};///MANDAR WARNING de aviso por no cerrar string ?
 }
