@@ -5,7 +5,8 @@
 void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = TOKEN_FINAL;
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::nuevaLinea(AnalizadorLexico* lexico, char& c){
@@ -24,9 +25,8 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 //Identificadores
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
 	//Control de longitud máxima
-	string warning = "";
 	if (lexico->identificador.length() > 25){
-		warning = "Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
+		lexico->wrnng = lexico->wrnng+"Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
 		lexico->identificador.resize(25);
 	}
 	
@@ -41,10 +41,11 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 	AnalizadorLexico::token token;
 	token.id = TOKEN_IDENTIFICADOR;
 	token.puntero = lexico->identificador;
-	lexico->guardarToken({token, warning});
+	lexico->guardarToken({token, lexico->wrnng});
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::tokenFinalIdentificador(AnalizadorLexico* lexico, char& c){
@@ -55,11 +56,10 @@ void AccionesSemanticas::tokenFinalIdentificador(AnalizadorLexico* lexico, char&
 //Constantes
 void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	unsigned long long numero = 0;
-	string warning = "";
 	for (int i = 0; i < lexico->identificador.length(); i++){
 		numero = numero * 10 + int(lexico->identificador[i]) - 48;
 		if (numero > 4294967295LL){
-			warning = "Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
+			lexico->wrnng = lexico->wrnng+"Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
 			lexico->identificador = "";
 			lexico->retrocederLectura();
 			return;
@@ -75,11 +75,12 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = TOKEN_CONSTANTE;
 	token.puntero = lexico->identificador;
-	lexico->guardarToken({token, warning});
+	lexico->guardarToken({token, lexico->wrnng});
 	
 
 	lexico->identificador = "";
 	lexico->retrocederLectura();
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::tokenFinalConstante(AnalizadorLexico* lexico, char& c){
@@ -97,7 +98,8 @@ void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::terminarFinalMayor(AnalizadorLexico* lexico, char& c){
@@ -117,7 +119,8 @@ void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::terminarFinalMenor(AnalizadorLexico* lexico, char& c){
@@ -130,7 +133,8 @@ void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		TOKEN_IGUAL, ""
 	};
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 //Asignacion
@@ -138,7 +142,8 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		TOKEN_ASIGNACION, ""
 	};
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 //Cadena
@@ -147,10 +152,12 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	token.id = TOKEN_STRING;
 	token.puntero = lexico->identificador;
 	lexico->identificador = "";
-	lexico->guardarToken({token, ""});
+	lexico->guardarToken({token, lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::entregarFinalCadena(AnalizadorLexico* lexico, char& c){
+	lexico->wrnng = lexico->wrnng + "Warning: se esperaba '}' al final de cadena en la línea "+to_string(lexico->contadorLineas)+"\n";
 	AccionesSemanticas::entregarCadena(lexico, c);
 	AccionesSemanticas::tokenFinal(lexico, c);
 }
@@ -187,13 +194,20 @@ void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
 	default:
 		break;
 	}
-	lexico->guardarToken({token,""});
+	lexico->guardarToken({token,lexico->wrnng});
+	lexico->wrnng = "";
 }
 
 void AccionesSemanticas::warning(AnalizadorLexico* lexico, char& c){
 	string s(1, c);
-	string warning = "Warning: supreción caracter '"+s+"' no esperado en la línea "+to_string(lexico->contadorLineas)+"\n";
-	AnalizadorLexico::token token;
-	token.id = TOKEN_WARNING;
-	lexico->guardarToken({token, warning});
+	lexico->wrnng = lexico->wrnng + "Warning: supresión caracter '"+s+"' no esperado en la línea "+to_string(lexico->contadorLineas)+"\n";
+}
+
+void AccionesSemanticas::error(AnalizadorLexico* lexico, char& c){
+	string s(1, c);
+	AnalizadorLexico::token token = {
+		TOKEN_ERROR, ""
+	};
+	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+"\n"});
+	lexico->wrnng = "";
 }

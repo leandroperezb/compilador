@@ -64,7 +64,7 @@ using namespace std;
 #define TOKEN_COMA 15
 #define TOKEN_PUNTOCOMA 16
 #define TOKEN_STRING 17
-#define TOKEN_WARNING 18
+#define TOKEN_ERROR 18
 
 #define TOKEN_FINAL 999999
 
@@ -99,6 +99,9 @@ class AnalizadorLexico{
 			void (*accionSemantica)(AnalizadorLexico*, char&);
 		};
 		int categorizarCaracter(char& c);
+
+		//Mensajes de accionessemanticas
+		string wrnng = "";
 
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
 		transicion matrizTransiciones[cantEstados][cantCategorias];
