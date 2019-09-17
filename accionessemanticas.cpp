@@ -164,36 +164,7 @@ void AccionesSemanticas::entregarFinalCadena(AnalizadorLexico* lexico, char& c){
 
 //Operadores('+', '-', '/', '*', '(', ')', ',', ';')
 void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
-	AnalizadorLexico::token token;
-	token.puntero = "";
-	switch (c){
-	case '+':
-		token.id = TOKEN_SUMA;
-		break;
-	case '-':
-		token.id = TOKEN_RESTA;
-		break;
-	case '/':
-		token.id = TOKEN_DIVISION;
-		break;
-	case '*':
-		token.id = TOKEN_MULTIPLICACION;
-		break;
-	case '(':
-		token.id = TOKEN_PARENTESISAPERTURA;
-		break;
-	case ')':
-		token.id = TOKEN_PARENTESISCIERRE;
-		break;
-	case ',':
-		token.id = TOKEN_COMA;
-		break;
-	case ';':
-		token.id = TOKEN_PUNTOCOMA;
-		break;
-	default:
-		break;
-	}
+	AnalizadorLexico::token token = {toascii(c), ""};
 	lexico->guardarToken({token,lexico->wrnng});
 	lexico->wrnng = "";
 }

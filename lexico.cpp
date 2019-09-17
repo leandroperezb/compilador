@@ -5,6 +5,7 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 	sem_init(&semaforo, 0, 0);
 
+	//TO-DO: CONSIDERAR CAMBIAR A OTRA TABLA
 	//Precarga de palabras reservadas
 	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
 	for (int i= 0 ; i< 12; i++){
@@ -107,8 +108,8 @@ void AnalizadorLexico::guardarToken(registroToken nuevoToken){
 	mtx.unlock();
 	sem_post(&semaforo);
 }
-
-AnalizadorLexico::token AnalizadorLexico::getToken(){
+//Método getToken
+int AnalizadorLexico::yylex(){
 	sem_wait(&semaforo);
 	mtx.lock();
 	registroToken resultado = colaDeTokens.front();	
@@ -117,5 +118,8 @@ AnalizadorLexico::token AnalizadorLexico::getToken(){
 	if(resultado.warning != ""){
 		cout<<resultado.warning;
 	}
-	return resultado.token;
+	if(resultado.token.puntero != ""){
+		//Setear el puntero a la TS.
+	}
+	return resultado.token.id;
 }

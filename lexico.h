@@ -79,7 +79,8 @@ class AnalizadorLexico{
 			unsigned int id;
 			string puntero;
 		};
-		token getToken();
+		//Método getToken
+		int yylex();
 
 		struct registroToken{
 			AnalizadorLexico::token token;
