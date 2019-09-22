@@ -5,15 +5,19 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 	sem_init(&semaforo, 0, 0);
 
-	//TO-DO: CONSIDERAR CAMBIAR A OTRA TABLA
 	//Precarga de palabras reservadas
-	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
-	for (int i= 0 ; i< 12; i++){
-		TablaSimbolos::registro registro;
-		registro.esPalabraReservada = true;
-		registro.palabra = arr[i];
-		agregarSiNoExiste(arr[i], registro);
-	}
+	palabrasReservadas.insert({"if", IF});
+	palabrasReservadas.insert({"else", ELSE});
+	palabrasReservadas.insert({"end_if", END_IF});
+	palabrasReservadas.insert({"print", PRINT});
+	palabrasReservadas.insert({"int", INT});
+	palabrasReservadas.insert({"begin", BEGIN});
+	palabrasReservadas.insert({"end", END});
+	palabrasReservadas.insert({"for", FOR});
+	palabrasReservadas.insert({"class", CLASS});
+	palabrasReservadas.insert({"public", PUBLIC});
+	palabrasReservadas.insert({"private", PRIVATE});
+	palabrasReservadas.insert({"ulong", ULONG});
 
 	inicializarMatrizDeTransiciones();
 }
@@ -108,18 +112,15 @@ void AnalizadorLexico::guardarToken(registroToken nuevoToken){
 	mtx.unlock();
 	sem_post(&semaforo);
 }
-//Método getToken
-int AnalizadorLexico::yylex(){
+
+AnalizadorLexico::token AnalizadorLexico::getToken(){
 	sem_wait(&semaforo);
 	mtx.lock();
-	registroToken resultado = colaDeTokens.front();	
+	registroToken resultado = colaDeTokens.front();
 	colaDeTokens.pop();
 	mtx.unlock();
 	if(resultado.warning != ""){
 		cout<<resultado.warning;
 	}
-	if(resultado.token.puntero != ""){
-		//Setear el puntero a la TS.
-	}
-	return resultado.token.id;
+	return resultado.token;
 }

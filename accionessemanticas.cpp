@@ -4,7 +4,7 @@
 
 void AccionesSemanticas::tokenFinal(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
-	token.id = TOKEN_FINAL;
+	token.id = FINAL;
 	lexico->guardarToken({token, lexico->wrnng});
 	lexico->wrnng = "";
 }
@@ -29,18 +29,22 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 		lexico->wrnng = lexico->wrnng+"Warning: te trunqué la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
 		lexico->identificador.resize(25);
 	}
-	
-
-	//Agregar a la tabla de símbolos:
-	TablaSimbolos::registro registro;
-	registro.esPalabraReservada = false;
-	registro.palabra = lexico->identificador;
-	lexico->agregarSiNoExiste(lexico->identificador, registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;
-	token.id = TOKEN_IDENTIFICADOR;
-	token.puntero = lexico->identificador;
+	auto search = lexico->palabrasReservadas.find(lexico->identificador);
+	if (search != lexico->palabrasReservadas.end()) {
+		//Si es una palabra reservada, guardar el token con el ID de la palabra reservada
+		token.id = search->second;
+	}else{
+		token.id = ID;
+		token.puntero = lexico->identificador;
+
+		//Agregar a la tabla de símbolos:
+		TablaSimbolos::registro registro;
+		registro.palabra = lexico->identificador;
+		lexico->agregarSiNoExiste(lexico->identificador, registro);
+	}
 	lexico->guardarToken({token, lexico->wrnng});
 
 	lexico->identificador = "";
@@ -73,7 +77,7 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;
-	token.id = TOKEN_CONSTANTE;
+	token.id = CTE;
 	token.puntero = lexico->identificador;
 	lexico->guardarToken({token, lexico->wrnng});
 	
@@ -92,9 +96,9 @@ void AccionesSemanticas::tokenFinalConstante(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::terminarMayor(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	if(c == '='){
-		token.id = TOKEN_MAYORIGUAL;
+		token.id = MAYORIGUAL;
 	}else{
-		token.id = TOKEN_MAYOR;
+		token.id = toascii('>');
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
@@ -111,11 +115,11 @@ void AccionesSemanticas::terminarFinalMayor(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::terminarMenor(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	if(c == '='){
-		token.id = TOKEN_MENORIGUAL;
+		token.id = MENORIGUAL;
 	} else if(c == '>'){
-		token.id = TOKEN_DISTINTO;
+		token.id = DISTINTO;
 	} else{
-		token.id = TOKEN_MENOR;
+		token.id = toascii('<');
 		lexico->retrocederLectura();
 	}
 	token.puntero = "";
@@ -131,7 +135,7 @@ void AccionesSemanticas::terminarFinalMenor(AnalizadorLexico* lexico, char& c){
 //Igualdad
 void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
-		TOKEN_IGUAL, ""
+		IGUAL, ""
 	};
 	lexico->guardarToken({token, lexico->wrnng});
 	lexico->wrnng = "";
@@ -140,7 +144,7 @@ void AccionesSemanticas::entregarIgual(AnalizadorLexico* lexico, char& c){
 //Asignacion
 void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
-		TOKEN_ASIGNACION, ""
+		ASIGNACION, ""
 	};
 	lexico->guardarToken({token, lexico->wrnng});
 	lexico->wrnng = "";
@@ -149,7 +153,7 @@ void AccionesSemanticas::entregarAsignacion(AnalizadorLexico* lexico, char& c){
 //Cadena
 void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
-	token.id = TOKEN_STRING;
+	token.id = STRING;
 	token.puntero = lexico->identificador;
 	lexico->identificador = "";
 	lexico->guardarToken({token, lexico->wrnng});
@@ -177,7 +181,7 @@ void AccionesSemanticas::warning(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::error(AnalizadorLexico* lexico, char& c){
 	string s(1, c);
 	AnalizadorLexico::token token = {
-		TOKEN_ERROR, ""
+		ERROR, ""
 	};
 	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+"\n"});
 	lexico->wrnng = "";

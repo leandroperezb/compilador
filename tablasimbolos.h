@@ -16,7 +16,6 @@ class TablaSimbolos{
 			bool esUlong;
 			unsigned long long valor;
 
-			bool esPalabraReservada;
 			string palabra;
 		};
 
