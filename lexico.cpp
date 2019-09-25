@@ -18,6 +18,8 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	palabrasReservadas.insert({"public", PUBLIC});
 	palabrasReservadas.insert({"private", PRIVATE});
 	palabrasReservadas.insert({"ulong", ULONG});
+	palabrasReservadas.insert({"extends", EXTENDS});
+	palabrasReservadas.insert({"void", VOID});
 
 	inicializarMatrizDeTransiciones();
 }
@@ -67,6 +69,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 		case ';':
 			return CATEGORIA_OPERADOR;
 		case ',':
+			return CATEGORIA_OPERADOR;
+		case '.':
 			return CATEGORIA_OPERADOR;
 		case '_':
 			return CATEGORIA_GUIONBAJO;
