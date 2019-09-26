@@ -9,14 +9,14 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_MENOR] = {ESTADO_LEYENDO_MENOR, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_MAYOR] = {ESTADO_LEYENDO_MAYOR, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_OPERADOR] = {ESTADO_FINAL, &AccionesSemanticas::entregarOperador};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr}; ///MANDAR WARNING o ERROR
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, &AccionesSemanticas::nuevaLinea};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_COMENTARIO] = {ESTADO_LEYENDO_COMENTARIO, nullptr};
 	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_INICIOCADENA] = {ESTADO_LEYENDO_STRING, nullptr};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr};
-	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
+	matrizTransiciones[ESTADO_INICIAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, &AccionesSemanticas::warning};
 
 
 
@@ -94,40 +94,40 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 
 
 
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL,nullptr};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarIgual};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr};
 
 
 
 
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DIGITO] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, nullptr /*No se esperaba el caracter : aqui*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DIGITO] = {ESTADO_INICIAL,nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarAsignacion};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_MAYOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ENDLINE] = {ESTADO_INICIAL, nullptr};
 	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FIN_ARCHIVO] = {ESTADO_INICIAL, &AccionesSemanticas::tokenFinal};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
-	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr /*No se esperaba...*/};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_ESPACIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_COMENTARIO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_INICIOCADENA] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_GUIONBAJO] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_ASIGNACION][CATEGORIA_FINCADENA] = {ESTADO_INICIAL, nullptr};
 
 
 

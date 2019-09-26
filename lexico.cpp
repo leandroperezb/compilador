@@ -5,13 +5,20 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 
 	//Precarga de palabras reservadas
-	string arr[12] = {"if","else","end_if","print","int","begin","end","for","class","public","private","ulong"};
-	for (int i= 0 ; i< 12; i++){
-		TablaSimbolos::registro registro;
-		registro.esPalabraReservada = true;
-		registro.palabra = arr[i];
-		agregarSiNoExiste(arr[i], registro);
-	}
+	palabrasReservadas.insert({"if", IF});
+	palabrasReservadas.insert({"else", ELSE});
+	palabrasReservadas.insert({"end_if", END_IF});
+	palabrasReservadas.insert({"print", PRINT});
+	palabrasReservadas.insert({"int", INT});
+	palabrasReservadas.insert({"begin", BEGIN});
+	palabrasReservadas.insert({"end", END});
+	palabrasReservadas.insert({"for", FOR});
+	palabrasReservadas.insert({"class", CLASS});
+	palabrasReservadas.insert({"public", PUBLIC});
+	palabrasReservadas.insert({"private", PRIVATE});
+	palabrasReservadas.insert({"ulong", ULONG});
+	palabrasReservadas.insert({"extends", EXTENDS});
+	palabrasReservadas.insert({"void", VOID});
 
 	inicializarMatrizDeTransiciones();
 
@@ -63,6 +70,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 		case ';':
 			return CATEGORIA_OPERADOR;
 		case ',':
+			return CATEGORIA_OPERADOR;
+		case '.':
 			return CATEGORIA_OPERADOR;
 		case '_':
 			return CATEGORIA_GUIONBAJO;

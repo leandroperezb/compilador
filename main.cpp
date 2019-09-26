@@ -5,6 +5,23 @@
 using namespace std;
 
 
+AnalizadorLexico *elLexico;
+
+int yylex();
+
+void yyerror(const char *s){
+	cout << s << endl;
+}
+
+#include "y.tab.c"
+
+int yylex(){
+	AnalizadorLexico::token token = elLexico->getToken();
+	yylval.cadena = token.puntero.c_str();
+	cout << "Token: " << token.id << endl;
+	return token.id;
+}
+
 int main(int argc, char** argv){
 	char* rutaCodigoFuente;
 	if (argc > 1){
@@ -16,15 +33,9 @@ int main(int argc, char** argv){
 	TablaSimbolos tabla;
 
 	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
+	elLexico = &ana;
 
-	//Leer todos los tokens que generó en léxico (no será así el procedimiento real, pero para probar)
-	AnalizadorLexico::token token;
-	while (true){
-		token = ana.getToken();
-		if (token.id == TOKEN_FINAL)
-			break;
-		cout << token.puntero << endl;
-	}
+	cout << yyparse() << endl;
 
 	tabla.guardar();
 

@@ -44,26 +44,8 @@ using namespace std;
 #define CATEGORIA_FINCADENA 14
 
 // TOKENS
-#define TOKEN_IDENTIFICADOR 0
-#define TOKEN_CONSTANTE 1
-#define TOKEN_MAYOR 2
-#define TOKEN_MAYORIGUAL 3
-#define TOKEN_MENOR 4
-#define TOKEN_MENORIGUAL 5
-#define TOKEN_IGUAL 6
-#define TOKEN_DISTINTO 7
-#define TOKEN_ASIGNACION 8
-#define TOKEN_PARENTESISAPERTURA 9
-#define TOKEN_PARENTESISCIERRE 10
-#define TOKEN_SUMA 11
-#define TOKEN_RESTA 12
-#define TOKEN_DIVISION 13
-#define TOKEN_MULTIPLICACION 14
-#define TOKEN_COMA 15
-#define TOKEN_PUNTOCOMA 16
-#define TOKEN_STRING 17
-
-#define TOKEN_FINAL 999999
+#include "y.tab.h"
+#define FINAL -1
 
 
 const int cantEstados = 9;
@@ -73,7 +55,7 @@ class AnalizadorLexico{
 	public:
 		AnalizadorLexico(char* ruta, TablaSimbolos* tabla);
 		struct token{
-			unsigned int id;
+			int id;
 			string puntero;
 		};
 		token getToken();
@@ -97,6 +79,9 @@ class AnalizadorLexico{
 		};
 		int categorizarCaracter(char& c);
 
+		//Mensajes de accionessemanticas
+		string wrnng = "";
+
 		//Matriz de transiciones (de dimensiones: 'Cantidad de estados' X 'Cantidad de categorias'):
 		transicion matrizTransiciones[cantEstados][cantCategorias];
 		void inicializarMatrizDeTransiciones();
@@ -110,6 +95,7 @@ class AnalizadorLexico{
 		void guardarToken(registroToken nuevoToken);
 		friend class AccionesSemanticas;
 
+		unordered_map<string, int> palabrasReservadas;
 };
 
 #endif

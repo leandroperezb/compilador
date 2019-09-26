@@ -44,6 +44,10 @@ class AccionesSemanticas{
 
 		//Operadores('+', '-', '/', '*', '(', ')', ',', ';')
 		static void entregarOperador(AnalizadorLexico* lexico, char& c);
+
+		static void warning(AnalizadorLexico* lexico, char& c);
+
+		static void error(AnalizadorLexico* lexico, char& c);
 		
 };
 

@@ -24,10 +24,10 @@ void TablaSimbolos::guardar(){
 		return;
 	}
 
-	ofs << "Tabla de símbolos de identificadores:\n(Clave)\t\t(Palabra)\t\t(Es_palabra_reservada)\t\t(Es_ulong)\t\t(Valor)\n";
+	ofs << "Tabla de símbolos de identificadores:\n(Clave)\t\t(Palabra)\t\t(Es_ulong)\t\t(Valor)\n";
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
 	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
-		ofs << it->first << "\t\t" << it->second.palabra << "\t\t\t" << it->second.esPalabraReservada << "\t\t\t" << it->second.esUlong << "\t\t\t" << it->second.valor << '\n';
+		ofs << it->first << "\t\t" << it->second.palabra << "\t\t\t" << it->second.esUlong << "\t\t\t" << it->second.valor << '\n';
 	}
 
 	ofs.close();
