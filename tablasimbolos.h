@@ -14,7 +14,7 @@ class TablaSimbolos{
 		TablaSimbolos();
 		struct registro{
 			bool esUlong;
-			unsigned long long valor;
+			long long valor;
 
 			string palabra;
 		};

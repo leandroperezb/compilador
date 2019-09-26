@@ -13,12 +13,14 @@ void TablaSimbolos::agregarSiNoExiste(string key, registro r){
 }
 
 TablaSimbolos::registro TablaSimbolos::get(string key){
+	TablaSimbolos::registro resultado;
 	mtx.lock();
 	auto search = tablaSimbolos.find(key);
 	if (search != tablaSimbolos.end()) {
-		return search->second;
+		resultado = search->second;
 	}
 	mtx.unlock();
+	return resultado;
 }
 
 void TablaSimbolos::guardar(){
