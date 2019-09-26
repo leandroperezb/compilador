@@ -2,13 +2,9 @@
 
 TablaSimbolos::TablaSimbolos(){}
 
-void TablaSimbolos::agregarSiNoExiste(string key, registro r){
+void TablaSimbolos::agregar(string key, registro r){
 	mtx.lock();
-	auto search = tablaSimbolos.find(key);
-	if (search == tablaSimbolos.end()) {
-		//Si no existe 'key' en la tabla de símbolos:
-		tablaSimbolos.insert({key, r});
-	}
+	tablaSimbolos.insert_or_assign(key, r);
 	mtx.unlock();
 }
 

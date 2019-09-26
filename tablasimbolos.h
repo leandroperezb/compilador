@@ -19,7 +19,7 @@ class TablaSimbolos{
 			string palabra;
 		};
 
-		void agregarSiNoExiste(string key, registro r);
+		void agregar(string key, registro r);
 		registro get(string key);
 
 		void guardar();

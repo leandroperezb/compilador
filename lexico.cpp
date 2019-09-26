@@ -106,8 +106,8 @@ void AnalizadorLexico::analizarCodigo(){
 
 void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
 
-void AnalizadorLexico::agregarSiNoExiste(string key, TablaSimbolos::registro r){
-	tablaSimbolos->agregarSiNoExiste(key, r);
+void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
+	tablaSimbolos->agregar(key, r);
 }
 
 void AnalizadorLexico::guardarToken(registroToken nuevoToken){

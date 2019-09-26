@@ -91,7 +91,7 @@ class AnalizadorLexico{
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
 
 		TablaSimbolos* tablaSimbolos;
-		void agregarSiNoExiste(string key, TablaSimbolos::registro r);
+		void agregarEnTabla(string key, TablaSimbolos::registro r);
 
 		queue<registroToken> colaDeTokens;
 		void guardarToken(registroToken nuevoToken);
