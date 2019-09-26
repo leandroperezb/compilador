@@ -10,7 +10,7 @@ void TablaSimbolos::agregarSiNoExiste(string key, registro r){
 	}
 }
 
-TablaSimbolos::registro TablaSimbolos::get(string key){
+TablaSimbolos::registro& TablaSimbolos::get(string key){
 	auto search = tablaSimbolos.find(key);
 	if (search != tablaSimbolos.end()) {
 		return search->second;

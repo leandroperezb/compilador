@@ -13,13 +13,13 @@ class TablaSimbolos{
 		TablaSimbolos();
 		struct registro{
 			bool esUlong;
-			unsigned long long valor;
+			long long valor;
 
 			string palabra;
 		};
 
 		void agregarSiNoExiste(string key, registro r);
-		registro get(string key);
+		registro& get(string key);
 
 		void guardar();
 
