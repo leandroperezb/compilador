@@ -43,7 +43,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 		//Agregar a la tabla de símbolos:
 		TablaSimbolos::registro registro;
 		registro.palabra = lexico->identificador;
-		lexico->agregarSiNoExiste(lexico->identificador, registro);
+		lexico->agregarEnTabla(lexico->identificador, registro);
 	}
 	lexico->guardarToken({token, lexico->wrnng});
 
@@ -72,8 +72,8 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 
 	//Agregar a la tabla de símbolos:
 	TablaSimbolos::registro registro;
-	registro.esUlong = (numero > 32767); registro.valor = numero;
-	lexico->agregarSiNoExiste(lexico->identificador, registro);
+	registro.esUlong = (numero > 32768); registro.valor = numero;
+	lexico->agregarEnTabla(lexico->identificador, registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;

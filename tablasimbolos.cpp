@@ -2,7 +2,7 @@
 
 TablaSimbolos::TablaSimbolos(){}
 
-void TablaSimbolos::agregarSiNoExiste(string key, registro r){
+void TablaSimbolos::agregar(string key, registro r){
 	auto search = tablaSimbolos.find(key);
 	if (search == tablaSimbolos.end()) {
 		//Si no existe 'key' en la tabla de símbolos:
