@@ -28,8 +28,9 @@ modificador : PUBLIC | PRIVATE
 ;
 
 /* PARTE DE SENTENCIAS EJECUTABLES */
-bloque_sentencias: BEGIN sentencias END
+sentencias_ejecutables: bloque_sentencias | sentencia
 ;
+bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
@@ -39,8 +40,8 @@ sentencia: seleccion
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' bloque_sentencias END_IF
-			| IF '(' condicion ')' bloque_sentencias ELSE bloque_sentencias END_IF
+seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF
+			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF
 ;
 comparador:
 		MAYORIGUAL
@@ -53,7 +54,7 @@ comparador:
 condicion: expr comparador expr
 ;
 
-/* EXPRESIÃ“N TÃ‰RMINO FACTOR */
+/* EXPRESIÓN TÉRMINO FACTOR */
 expr: termino
 	| expr '+' termino
 	| expr '-' termino
@@ -73,5 +74,5 @@ factor: CTE
 			|	ID'.'identificador
 ;
 /* BUCLE FOR */
-for : FOR '(' ID ASIGNACION expr ';' expr ';' expr ')' bloque_sentencias ';'
+for : FOR '(' ID ASIGNACION expr ';' expr ';' expr ')' sentencias_ejecutables ';'
 %%
