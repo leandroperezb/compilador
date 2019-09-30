@@ -44,11 +44,6 @@ int main(int argc, char** argv){
 
 	cout << yyparse() << endl;
 
-	//Asumo que existe, y lo puedo editar
-	TablaSimbolos::registro *asd = &tabla.get("hola");
-	(*asd).palabra = "pepe";
-	cout << tabla.get("hola").palabra << endl;
-
 	tabla.guardar();
 
 	return 0;
