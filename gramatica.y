@@ -6,8 +6,9 @@ programa: bloque_declarativo bloque_sentencias
 /* PARTE DE SENTENCIAS DECLARATIVAS */
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
-sentencia_declarativa: tipo lista_de_variables ';'
-						| declaracion_clase
+sentencia_declarativa: 
+		tipo lista_de_variables ';'
+	|	declaracion_clase
 ;
 tipo: INT | ULONG
 ;
@@ -32,23 +33,22 @@ bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
-		| ID ASIGNACION expr ';'
+		| identificador ASIGNACION expr ';'
 		| PRINT '(' STRING ')' ';'
 		| for
 ;
-
-
 
 /* RELACIONADO AL IF */
 seleccion: 	IF '(' condicion ')' bloque_sentencias END_IF
 			| IF '(' condicion ')' bloque_sentencias ELSE bloque_sentencias END_IF
 ;
-comparador: MAYORIGUAL
-			| '<'
-			| '>'
-			| IGUAL
-			| DISTINTO
-			| MENORIGUAL
+comparador:
+		MAYORIGUAL
+	|	'<'
+	|	'>'
+	|	IGUAL
+	|	DISTINTO
+	|	MENORIGUAL
 ;
 condicion: expr comparador expr
 ;
@@ -59,14 +59,19 @@ expr: termino
 	| expr '-' termino
 	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros[$2]);}
 ;
-termino: factor
-		| termino '*' factor
-		| termino '/' factor
+termino:
+	factor
+|	termino '*' factor
+|	termino '/' factor
 ;
 factor: CTE
-		| ID
+	|	identificador
 ;
 
+ /* soporte para variables de objetos */
+ identificador: ID
+			|	ID'.'identificador
+;
 /* BUCLE FOR */
 for : FOR '(' ID ASIGNACION expr ';' expr ';' expr ')' bloque_sentencias ';'
 %%
