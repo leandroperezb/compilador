@@ -1,7 +1,9 @@
 #include <iostream>
 #include "lexico.h"
 #include "tablasimbolos.h"
+#include "accionessintactico.h"
 #include <pthread.h>
+#include <vector>
 
 using namespace std;
 
@@ -10,7 +12,10 @@ void *worker_thread(void *arg)
 	((AnalizadorLexico *) arg)->analizarCodigo();
 }
 
+vector<string> punteros;
+
 AnalizadorLexico *elLexico;
+TablaSimbolos *laTabla;
 
 int yylex();
 
@@ -22,7 +27,8 @@ void yyerror(const char *s){
 
 int yylex(){
 	AnalizadorLexico::token token = elLexico->getToken();
-	yylval.cadena = token.puntero.c_str();
+	yylval = punteros.size();
+	punteros.push_back(token.puntero);
 	cout << "Token: " << token.id << endl;
 	return token.id;
 }
@@ -36,6 +42,7 @@ int main(int argc, char** argv){
 	}
 
 	TablaSimbolos tabla;
+	laTabla = &tabla;
 
 	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
 	elLexico = &ana;

@@ -1,6 +1,3 @@
-%union {
-	const char* cadena;
-}
 %token ID CTE MAYORIGUAL MENORIGUAL IGUAL DISTINTO ASIGNACION STRING IF ELSE END_IF PRINT INT BEGIN END FOR CLASS EXTENDS PUBLIC PRIVATE VOID ULONG ERROR
 %%
 programa: bloque_declarativo bloque_sentencias
@@ -60,7 +57,7 @@ condicion: expr comparador expr
 expr: termino
 	| expr '+' termino
 	| expr '-' termino
-	| '-' termino /* VERIFICAR RANGO */
+	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros[$2]);}
 ;
 termino: factor
 		| termino '*' factor
