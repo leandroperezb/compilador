@@ -7,30 +7,35 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';'
+		sentencia_declarativa_simple
 	|	declaracion_clase
 ;
-tipo: INT | ULONG
+sentencia_declarativa_simple:
+		tipo lista_de_variables ';'
+;
+tipo: INT | ULONG | ID
 ;
 lista_de_variables: ID | lista_de_variables ',' ID
 ;
-/* CLASES */
-declaracion_clase : encabezado BEGIN sentencias_clase END
-;
-encabezado : CLASS ID EXTENDS ID | CLASS ID
-;
-sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
-;
-sentencia_clase : modificador VOID ID '('')' bloque_sentencias
-				| modificador sentencia_declarativa
-;
-modificador : PUBLIC | PRIVATE
-;
+
+	/* CLASES */
+	declaracion_clase : encabezado BEGIN sentencias_clase END
+	;
+	encabezado : CLASS ID EXTENDS ID | CLASS ID
+	;
+	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
+	;
+	sentencia_clase : modificador VOID ID '('')' bloque_sentencias
+					| modificador sentencia_declarativa_simple
+	;
+	modificador : PUBLIC | PRIVATE
+	;
 
 /* PARTE DE SENTENCIAS EJECUTABLES */
 sentencias_ejecutables: bloque_sentencias | sentencia
 ;
 bloque_sentencias: BEGIN sentencias END
+;
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
@@ -74,5 +79,5 @@ factor: CTE
 			|	ID'.'identificador
 ;
 /* BUCLE FOR */
-for : FOR '(' ID ASIGNACION expr ';' expr ';' expr ')' sentencias_ejecutables ';'
+for : FOR '(' identificador ASIGNACION expr ';' expr ';' expr ')' sentencias_ejecutables ';'
 %%
