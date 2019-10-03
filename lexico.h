@@ -53,6 +53,7 @@ const int cantCategorias = 15;
 
 class AnalizadorLexico{
 	public:
+		unsigned int contadorLineas;
 		AnalizadorLexico(char* ruta, TablaSimbolos* tabla);
 		struct token{
 			int id;
@@ -70,7 +71,6 @@ class AnalizadorLexico{
 
 	private:
 		char* rutaCodigoFuente;
-		unsigned int contadorLineas;
 		int estadoActual;
 		ifstream infile;
 		struct transicion{

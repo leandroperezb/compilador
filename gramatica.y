@@ -42,14 +42,14 @@ sentencias: sentencia | sentencias sentencia
 sentencia: seleccion
 		| identificador ASIGNACION expr ';'
 		| PRINT '(' STRING ')' ';'
-		| PRINT '('factor')'';' {AccionesSintactico::informarPrint($3);}
+		| PRINT '('factor')'';' {AccionesSintactico::informarError($1, "{}" ,$3, elLexico);}
 		| for
 ;
 
 /* RELACIONADO AL IF */
 seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF
 			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF
-			| IF condicion {AccionesSintactico::informarErrorIF($2);}
+			| IF condicion {AccionesSintactico::informarError($1,"()",$2, elLexico);}
 ;
 comparador:
 		MAYORIGUAL
@@ -60,8 +60,8 @@ comparador:
 	|	MENORIGUAL
 ;
 condicion: expr comparador expr
-	|	expr ASIGNACION expr {AccionesSintactico::informarErrorCondicion()}
-	|	expr 
+	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", $2, elLexico);}
+	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico);}
 ;
 
 /* EXPRESIÓN TÉRMINO FACTOR */

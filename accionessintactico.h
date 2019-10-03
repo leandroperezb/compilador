@@ -2,6 +2,7 @@
 #define ACCIONESSINTACTICO_H
 
 #include "tablasimbolos.h"
+#include "lexico.h"
 #include <iostream>
 
 using namespace std;
@@ -9,10 +10,8 @@ using namespace std;
 class AccionesSintactico{
 	public:
 		static void negativizarConstante(TablaSimbolos* tabla, string key);
-		//Informar errores en la sentencia print
-		static void informarPrint(string msj);
-		//Informa error en la condicion del if
-		static void informarErrorIF(string msj);
+		//Informar errores de sintaxis
+		static void informarError(string sentencia, string esperado, string obtenido, AnalizadorLexico* lex);
 		static void asignarTipos(TablaSimbolos* tabla, int tipo, vector<string> variables);
 };
 
