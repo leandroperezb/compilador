@@ -72,7 +72,12 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 
 	//Agregar a la tabla de símbolos:
 	TablaSimbolos::registro registro;
-	registro.esUlong = (numero > 32767); registro.valor = numero;
+	if (numero > 32767){
+		registro.tipo = TablaSimbolos::TIPO_ULONG;
+	}else{
+		registro.tipo = TablaSimbolos::TIPO_INT;
+	}
+	registro.valor = numero;
 	registro.palabra = "";
 	lexico->agregarEnTabla(lexico->identificador, registro);
 

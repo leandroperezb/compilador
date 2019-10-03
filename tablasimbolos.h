@@ -10,12 +10,14 @@ using namespace std;
 
 class TablaSimbolos{
 	public:
+		static const int TIPO_INT = -1;
+		static const int TIPO_ULONG = -2;
 		TablaSimbolos();
 		struct registro{
-			bool esUlong;
 			long long valor;
 
 			string palabra;
+			int tipo;
 		};
 
 		void agregar(string key, registro r);

@@ -7,14 +7,16 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';'
+		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]);}
 	|	declaracion_clase
 ;
-tipo_basico: INT | ULONG
+tipo_basico: INT {$$ = -1;}
+			| ULONG {$$ = -2;}
 ;
 tipo: tipo_basico | ID
 ;
-lista_de_variables: ID | lista_de_variables ',' ID
+lista_de_variables: ID {$$ = listas_variables.size(); vector<string> vec; vec.push_back(punteros[$1]); listas_variables.push_back(vec);}
+					| lista_de_variables ',' ID {listas_variables[$1].push_back(punteros[$3]);}
 ;
 
 	/* CLASES */
@@ -25,7 +27,7 @@ lista_de_variables: ID | lista_de_variables ',' ID
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
 	sentencia_clase : modificador VOID ID '('')' bloque_sentencias
-					| modificador tipo_basico lista_de_variables ';'
+					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $2, listas_variables[$3]);}
 	;
 	modificador : PUBLIC | PRIVATE
 	;

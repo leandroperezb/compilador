@@ -9,6 +9,7 @@ using namespace std;
 class AccionesSintactico{
 	public:
 		static void negativizarConstante(TablaSimbolos* tabla, string key);
+		static void asignarTipos(TablaSimbolos* tabla, int tipo, vector<string> variables);
 };
 
 #endif

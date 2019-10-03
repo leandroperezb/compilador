@@ -8,6 +8,7 @@ using namespace std;
 
 
 vector<string> punteros;
+vector<vector<string>> listas_variables;
 
 AnalizadorLexico *elLexico;
 TablaSimbolos *laTabla;
