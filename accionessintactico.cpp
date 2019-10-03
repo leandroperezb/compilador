@@ -18,3 +18,11 @@ void AccionesSintactico::asignarTipos(TablaSimbolos* tabla, int tipo, vector<str
 		(*r).tipo = tipo;
 	}
 }
+void AccionesSintactico::informarPrint(string msj){
+	string mensaje = "Se esperaba una cadena de caracteres en la sentencia print("+msj+").\n";
+	cout << mensaje;
+}
+void AccionesSintactico::informarErrorIF(string msj){
+	string mensaje = "Falta el token \'(\' en la condicion de la sentencia if \""+msj;
+	cout << mensaje;
+}
