@@ -7,13 +7,12 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		sentencia_declarativa_simple
+		tipo lista_de_variables ';'
 	|	declaracion_clase
 ;
-sentencia_declarativa_simple:
-		tipo lista_de_variables ';'
+tipo_basico: INT | ULONG
 ;
-tipo: INT | ULONG | ID
+tipo: tipo_basico | ID
 ;
 lista_de_variables: ID | lista_de_variables ',' ID
 ;
@@ -26,7 +25,7 @@ lista_de_variables: ID | lista_de_variables ',' ID
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
 	sentencia_clase : modificador VOID ID '('')' bloque_sentencias
-					| modificador sentencia_declarativa_simple
+					| modificador tipo_basico lista_de_variables ';'
 	;
 	modificador : PUBLIC | PRIVATE
 	;
@@ -79,5 +78,5 @@ factor: CTE
 			|	ID'.'identificador
 ;
 /* BUCLE FOR */
-for : FOR '(' identificador ASIGNACION expr ';' expr ';' expr ')' sentencias_ejecutables ';'
+for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables ';'
 %%

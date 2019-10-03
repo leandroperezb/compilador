@@ -72,7 +72,7 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 
 	//Agregar a la tabla de símbolos:
 	TablaSimbolos::registro registro;
-	registro.esUlong = (numero > 32768); registro.valor = numero;
+	registro.esUlong = (numero > 32767); registro.valor = numero;
 	lexico->agregarEnTabla(lexico->identificador, registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
