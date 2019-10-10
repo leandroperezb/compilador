@@ -41,15 +41,16 @@ sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
 		| identificador ASIGNACION expr ';'
+		| ID '.' ID ';'
 		| PRINT '(' STRING ')' ';'
-		| PRINT '('factor')'';' {AccionesSintactico::informarError($1, "{}" ,$3, elLexico);}
+		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
 		| for
 ;
 
 /* RELACIONADO AL IF */
 seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF
 			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF
-			| IF condicion {AccionesSintactico::informarError($1,"()",$2, elLexico);}
+			| IF condicion {AccionesSintactico::informarError("if","()","condición sin paréntesis", elLexico);}
 ;
 comparador:
 		MAYORIGUAL
@@ -60,7 +61,7 @@ comparador:
 	|	MENORIGUAL
 ;
 condicion: expr comparador expr
-	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", $2, elLexico);}
+	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico);}
 	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico);}
 ;
 
@@ -81,7 +82,7 @@ factor: CTE
 
  /* soporte para variables de objetos */
  identificador: ID
-			|	ID'.'identificador
+			|	ID '.' ID
 ;
 /* BUCLE FOR */
 for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables ';'
