@@ -69,7 +69,7 @@ condicion: expr comparador expr
 expr: termino
 	| expr '+' termino
 	| expr '-' termino
-	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros[$2]);}
+	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); $$ = $2;}
 ;
 termino:
 	factor

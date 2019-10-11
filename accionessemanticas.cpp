@@ -63,10 +63,9 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	for (int i = 0; i < lexico->identificador.length(); i++){
 		numero = numero * 10 + int(lexico->identificador[i]) - 48;
 		if (numero > 4294967295LL){
-			lexico->wrnng = lexico->wrnng+"Warning: constante fuera de rango en la línea "+to_string(lexico->contadorLineas)+"\n";
-			lexico->identificador = "";
-			lexico->retrocederLectura();
-			return;
+			lexico->wrnng = lexico->wrnng+"Warning: constante fuera del límite de ulong en la línea "+to_string(lexico->contadorLineas)+". Se modificará por 4294967295\n";
+			numero = 4294967295LL;
+			break;
 		}
 	}
 
