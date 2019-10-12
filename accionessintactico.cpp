@@ -22,8 +22,8 @@ void AccionesSintactico::asignarTipos(TablaSimbolos* tabla, int tipo, vector<str
 	}
 }
 void AccionesSintactico::informarError(string sentencia, string esperado, string obtenido, AnalizadorLexico* lex){
-	string msj = "Error en la linea: "+to_string(lex->contadorLineas) + "Sentencia "+sentencia+", se esperaba '"+
-	esperado+"', pero se obtuvo "+obtenido+"\n";
+	string msj = "Error en la linea: "+to_string(lex->contadorLineas) + ". Sentencia "+sentencia+", se esperaba "+
+	esperado+", pero se obtuvo "+obtenido+"\n";
 	
 	cout<< msj;
 }

@@ -9,6 +9,7 @@ bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declara
 sentencia_declarativa: 
 		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]);}
 	|	declaracion_clase
+	|   error ';' {AccionesSintactico::informarError("", "sentencia válida" ,"sentencia inválida", elLexico);}
 ;
 tipo_basico: INT {$$ = -1;}
 			| ULONG {$$ = -2;}
@@ -45,6 +46,7 @@ sentencia: seleccion
 		| PRINT '(' STRING ')' ';'
 		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
 		| for
+		| error ';' {AccionesSintactico::informarError("", "sentencia válida" ,"sentencia inválida", elLexico);}
 ;
 
 /* RELACIONADO AL IF */
