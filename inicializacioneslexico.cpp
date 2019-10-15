@@ -94,11 +94,11 @@ void AnalizadorLexico::inicializarMatrizDeTransiciones(){
 
 
 
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL, nullptr};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,nullptr};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL,nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DIGITO] = {ESTADO_INICIAL, &AccionesSemanticas::error};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_LETRA] = {ESTADO_INICIAL,&AccionesSemanticas::error};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_DOSPUNTOS] = {ESTADO_INICIAL,&AccionesSemanticas::error};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_IGUAL] = {ESTADO_FINAL, &AccionesSemanticas::entregarIgual};
-	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, nullptr};
+	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MENOR] = {ESTADO_INICIAL, &AccionesSemanticas::error};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_MAYOR] = {ESTADO_INICIAL, &AccionesSemanticas::error};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_OPERADOR] = {ESTADO_INICIAL, &AccionesSemanticas::error};
 	matrizTransiciones[ESTADO_LEYENDO_IGUAL][CATEGORIA_INVALIDO] = {ESTADO_INICIAL, &AccionesSemanticas::error};
