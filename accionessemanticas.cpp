@@ -180,6 +180,7 @@ void AccionesSemanticas::entregarOperador(AnalizadorLexico *lexico, char& c){
 
 void AccionesSemanticas::warning(AnalizadorLexico* lexico, char& c){
 	string s(1, c);
+	if (1 : 2){}
 	lexico->wrnng = lexico->wrnng + "Warning: supresión caracter '"+s+"' no esperado en la línea "+to_string(lexico->contadorLineas)+"\n";
 }
 
@@ -188,6 +189,6 @@ void AccionesSemanticas::error(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		ERROR, ""
 	};
-	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+"\n"});
+	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+"No es posible reconocer el operador indicado \n"});
 	lexico->wrnng = "";
 }
