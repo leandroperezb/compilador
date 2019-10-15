@@ -41,18 +41,18 @@ bloque_sentencias: BEGIN sentencias END
 ;
 sentencias: sentencia | sentencias sentencia
 ;
-sentencia: seleccion {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+sentencia: seleccion
 		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl;}
 		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invoación a método de clase" << endl;}
 		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
 		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
-		| for {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}
+		| for
 		| error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF
-			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF
+seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
 			| IF condicion {AccionesSintactico::informarError("if","()","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
 comparador:
@@ -88,5 +88,6 @@ factor: CTE
 			|	ID '.' ID
 ;
 /* BUCLE FOR */
-for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables ';'
+for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}
+	  | FOR '(' error ')' sentencias_ejecutables {AccionesSintactico::informarError("for", "asignación; factor; factor", "una expresión inesperada", elLexico); abortarCompilacion = true;}
 %%
