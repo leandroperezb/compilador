@@ -7,7 +7,7 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]);}
+		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables" << endl;}
 	|	declaracion_clase
 	|   error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
 ;
@@ -23,12 +23,13 @@ lista_de_variables: ID {$$ = listas_variables.size(); vector<string> vec; vec.pu
 	/* CLASES */
 	declaracion_clase : encabezado BEGIN sentencias_clase END
 	;
-	encabezado : CLASS ID EXTENDS ID | CLASS ID
+	encabezado : CLASS ID EXTENDS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;}
+				| CLASS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
-	sentencia_clase : modificador VOID ID '('')' bloque_sentencias
-					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $2, listas_variables[$3]);}
+	sentencia_clase : modificador VOID ID '('')' bloque_sentencias {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de método de clase" << endl;}
+					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $2, listas_variables[$3]); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables adentro de una clase" << endl;}
 	;
 	modificador : PUBLIC | PRIVATE
 	;
@@ -40,12 +41,12 @@ bloque_sentencias: BEGIN sentencias END
 ;
 sentencias: sentencia | sentencias sentencia
 ;
-sentencia: seleccion
-		| identificador ASIGNACION expr ';'
-		| ID '.' ID ';'
-		| PRINT '(' STRING ')' ';'
+sentencia: seleccion {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl;}
+		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invoación a método de clase" << endl;}
+		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
 		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
-		| for
+		| for {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}
 		| error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
 ;
 
