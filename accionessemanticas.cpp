@@ -188,6 +188,6 @@ void AccionesSemanticas::error(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token = {
 		ERROR, ""
 	};
-	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+"No es posible reconocer el operador indicado \n"});
+	lexico->guardarToken({token, lexico->wrnng+ "Error: caracter '"+s+"' no esperado en la linea "+to_string(lexico->contadorLineas)+". No es posible reconocer el operador indicado \n"});
 	lexico->wrnng = "";
 }

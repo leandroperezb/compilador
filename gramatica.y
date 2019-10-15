@@ -9,7 +9,7 @@ bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declara
 sentencia_declarativa: 
 		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables" << endl;}
 	|	declaracion_clase
-	|   error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
+	|   error ';' {cout<<"Linea "<<elLexico->contadorLineas<<": En este punto se esperaba una declaración."<<endl; abortarCompilacion = true;}
 ;
 tipo_basico: INT {$$ = -1;}
 			| ULONG {$$ = -2;}
@@ -43,17 +43,17 @@ sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
 		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl;}
-		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invoación a método de clase" << endl;}
+		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invocación a método de clase" << endl;}
 		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
-		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
+		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
 		| for
-		| error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
+		| error ';' {cout<<"No se pudo reconocer la sentencia en la línea "<<elLexico->contadorLineas<<endl; abortarCompilacion = true;}
 ;
 
 /* RELACIONADO AL IF */
 seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
 			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
-			| IF condicion {AccionesSintactico::informarError("if","()","condición sin paréntesis", elLexico); abortarCompilacion = true;}
+			| IF condicion {AccionesSintactico::informarError("if","(","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
 comparador:
 		MAYORIGUAL
