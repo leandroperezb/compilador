@@ -3,7 +3,7 @@
 void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<string>& punteros, int indice){
 	string key = punteros[indice];
 	TablaSimbolos::registro r = tabla->get(key);
-	if (r.palabra == ""){
+	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE){
 		r.valor = r.valor * (-1);
 		r.tipo = TablaSimbolos::TIPO_INT;
 		if (r.valor < -32768){

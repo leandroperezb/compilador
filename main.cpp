@@ -19,6 +19,8 @@ void yyerror(const char *s){
 	cout << s << endl;
 }
 
+bool abortarCompilacion = false;
+
 #include "y.tab.c"
 
 int yylex(){
@@ -43,7 +45,10 @@ int main(int argc, char** argv){
 	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
 	elLexico = &ana;
 
-	cout << yyparse() << endl;
+	int resultado = yyparse();
+	if (abortarCompilacion)
+		resultado = 1;
+	cout << "Resultado del parser: " << resultado << endl;
 
 	tabla.guardar();
 

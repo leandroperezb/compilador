@@ -9,7 +9,7 @@ bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declara
 sentencia_declarativa: 
 		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]);}
 	|	declaracion_clase
-	|   error ';' {AccionesSintactico::informarError("", "sentencia válida" ,"sentencia inválida", elLexico);}
+	|   error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
 ;
 tipo_basico: INT {$$ = -1;}
 			| ULONG {$$ = -2;}
@@ -46,13 +46,13 @@ sentencia: seleccion
 		| PRINT '(' STRING ')' ';'
 		| PRINT '('factor')'';' {AccionesSintactico::informarError("print", "{}" ,"un factor", elLexico);}
 		| for
-		| error ';' {AccionesSintactico::informarError("", "sentencia válida" ,"sentencia inválida", elLexico);}
+		| error ';' {AccionesSintactico::informarError("genérica", "sentencia válida" ,"sentencia inválida", elLexico); abortarCompilacion = true;}
 ;
 
 /* RELACIONADO AL IF */
 seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF
 			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF
-			| IF condicion {AccionesSintactico::informarError("if","()","condición sin paréntesis", elLexico);}
+			| IF condicion {AccionesSintactico::informarError("if","()","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
 comparador:
 		MAYORIGUAL
@@ -63,8 +63,8 @@ comparador:
 	|	MENORIGUAL
 ;
 condicion: expr comparador expr
-	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico);}
-	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico);}
+	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}
+	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico); abortarCompilacion = true;}
 ;
 
 /* EXPRESIÓN TÉRMINO FACTOR */

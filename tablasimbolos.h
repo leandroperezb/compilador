@@ -12,11 +12,16 @@ class TablaSimbolos{
 	public:
 		static const int TIPO_INT = -1;
 		static const int TIPO_ULONG = -2;
+
+		static const int CONSTANTE = -1;
+		static const int VARIABLE = -2;
+		static const int CLASE = -3;
+		static const int METODO = -4;
 		TablaSimbolos();
 		struct registro{
 			long long valor;
 
-			string palabra;
+			int tipoSimbolo;
 			int tipo;
 		};
 
