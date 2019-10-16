@@ -26,13 +26,13 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
+	if( c >= '0' && c <= '9')
+		return CATEGORIA_DIGITO;
+	if( c >= 'A' && c <= 'Z')
+		return CATEGORIA_LETRA;
+	if( c >= 'a' && c <= 'z')
+		return CATEGORIA_LETRA;
 	switch(c) {
-		case '0' ... '9':
-			return CATEGORIA_DIGITO;
-		case 'A' ... 'Z':
-			return CATEGORIA_LETRA;
-		case 'a' ... 'z':
-			return CATEGORIA_LETRA;
 		case ':':
 			return CATEGORIA_DOSPUNTOS;
 		case '=':
@@ -106,7 +106,10 @@ void AnalizadorLexico::analizarCodigo(){
 	infile.close();
 }
 
-void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
+void AnalizadorLexico::retrocederLectura(){ 
+	int pos = infile.tellg();
+	infile.seekg(pos - 1);
+}
 
 void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
 	tablaSimbolos->agregar(key, r);

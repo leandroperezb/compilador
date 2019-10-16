@@ -1,4 +1,5 @@
 #include "accionessintactico.h"
+#include <string>
 
 void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<string>& punteros, int indice){
 	string key = punteros[indice];
