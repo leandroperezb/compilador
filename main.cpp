@@ -1,7 +1,35 @@
 #include <iostream>
 #include "lexico.h"
+#include "tablasimbolos.h"
+#include "accionessintactico.h"
+#include <vector>
 
 using namespace std;
+
+
+vector<string> punteros;
+vector<vector<string>> listas_variables;
+
+AnalizadorLexico *elLexico;
+TablaSimbolos *laTabla;
+
+int yylex();
+
+void yyerror(const char *s){
+	cout << s << endl;
+}
+
+bool abortarCompilacion = false;
+
+#include "y.tab.c"
+
+int yylex(){
+	AnalizadorLexico::token token = elLexico->getToken();
+	yylval = punteros.size();
+	punteros.push_back(token.puntero);
+	cout << "Token: " << token.id << endl;
+	return token.id;
+}
 
 int main(int argc, char** argv){
 	char* rutaCodigoFuente;
@@ -11,17 +39,18 @@ int main(int argc, char** argv){
 		return 1;
 	}
 
-	AnalizadorLexico ana(rutaCodigoFuente);
-	ana.analizarCodigo();
+	TablaSimbolos tabla;
+	laTabla = &tabla;
 
-	//Leer todos los tokens que generó en léxico (no será así el procedimiento real, pero para probar)
-	AnalizadorLexico::token token;
-	while (true){
-		token = ana.getToken();
-		if (token.id == TOKEN_FINAL)
-			break;
-		cout << token.puntero << endl;
-	}
+	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
+	elLexico = &ana;
+
+	int resultado = yyparse();
+	if (abortarCompilacion)
+		resultado = 1;
+	cout << "Resultado del parser: " << resultado << endl;
+
+	tabla.guardar();
 
 	return 0;
 }

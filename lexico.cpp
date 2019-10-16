@@ -1,38 +1,86 @@
 #include "lexico.h"
 
+AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
+	rutaCodigoFuente = ruta; tablaSimbolos = tabla;
+	contadorLineas = 1; estadoActual = ESTADO_INICIAL;
 
-void AnalizadorLexico::inicializarMatrizDeTransiciones(){
-	//**COMPLETAR CON TODAS LAS INICIALIZACIONES**
-	inicializarEstadoInicial();
-	inicializarEstadoLeyendoIdentificador();
-}
+	//Precarga de palabras reservadas
+	palabrasReservadas.insert({"if", IF});
+	palabrasReservadas.insert({"else", ELSE});
+	palabrasReservadas.insert({"end_if", END_IF});
+	palabrasReservadas.insert({"print", PRINT});
+	palabrasReservadas.insert({"int", INT});
+	palabrasReservadas.insert({"begin", BEGIN});
+	palabrasReservadas.insert({"end", END});
+	palabrasReservadas.insert({"for", FOR});
+	palabrasReservadas.insert({"class", CLASS});
+	palabrasReservadas.insert({"public", PUBLIC});
+	palabrasReservadas.insert({"private", PRIVATE});
+	palabrasReservadas.insert({"ulong", ULONG});
+	palabrasReservadas.insert({"extends", EXTENDS});
+	palabrasReservadas.insert({"void", VOID});
 
-AnalizadorLexico::AnalizadorLexico(char* ruta){
-	rutaCodigoFuente = ruta; contadorLineas = 1; estadoActual = ESTADO_INICIAL;
-	//**PRECARGAR TABLA DE SÍMBOLOS DE IDENTIFICADORES**
 	inicializarMatrizDeTransiciones();
+
+	infile.open(this->rutaCodigoFuente, std::ifstream::in);
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
-	//**FALTA COMPLETAR CON TODAS LAS CATEGORÍAS NECESARIAS**
+	if( c >= '0' && c <= '9')
+		return CATEGORIA_DIGITO;
+	if( c >= 'A' && c <= 'Z')
+		return CATEGORIA_LETRA;
+	if( c >= 'a' && c <= 'z')
+		return CATEGORIA_LETRA;
 	switch(c) {
-		case '0' ... '9':
-			return CATEGORIA_DIGITO;
-		case 'A' ... 'Z':
-			return CATEGORIA_LETRA;
-		case 'a' ... 'z':
-			return CATEGORIA_LETRA;
 		case ':':
 			return CATEGORIA_DOSPUNTOS;
 		case '=':
 			return CATEGORIA_IGUAL;
+		case '\n':
+			return CATEGORIA_ENDLINE;
+		case '<':
+			return CATEGORIA_MENOR;
+		case '>':
+			return CATEGORIA_MAYOR;
+		case '/':
+			return CATEGORIA_OPERADOR;
+		case '*':
+			return CATEGORIA_OPERADOR;
+		case '+':
+			return CATEGORIA_OPERADOR;
+		case '-':
+			return CATEGORIA_OPERADOR;
+		case ' ':
+			return CATEGORIA_ESPACIO;
+		case '\t':
+			return CATEGORIA_ESPACIO;
+		case '\r':
+			return CATEGORIA_ESPACIO;
+		case '#':
+			return CATEGORIA_COMENTARIO;
+		case '{':
+			return CATEGORIA_INICIOCADENA;
+		case '}':
+			return CATEGORIA_FINCADENA;
+		case '(':
+			return CATEGORIA_OPERADOR;
+		case ')':
+			return CATEGORIA_OPERADOR;
+		case ';':
+			return CATEGORIA_OPERADOR;
+		case ',':
+			return CATEGORIA_OPERADOR;
+		case '.':
+			return CATEGORIA_OPERADOR;
+		case '_':
+			return CATEGORIA_GUIONBAJO;
 		default:
 			return CATEGORIA_INVALIDO;
 	}
 }
 
 void AnalizadorLexico::analizarCodigo(){
-	infile.open(this->rutaCodigoFuente, std::ifstream::in);
 	if(infile.fail()){
 		return;
 	}
@@ -44,30 +92,39 @@ void AnalizadorLexico::analizarCodigo(){
 		if (accion.accionSemantica != nullptr)
 			accion.accionSemantica(this, c);
 		estadoActual = accion.nuevoEstado;
+		if (!colaDeTokens.empty())
+			return;
 	}
 
-	//Cuando termina, si no está en el estado inicial, finalizar el token actual (accion a realizar con EOF)
-	if (estadoActual != ESTADO_INICIAL){
-		c = '\n';
-		accion = matrizTransiciones[estadoActual][categorizarCaracter(c)];
-		if (accion.accionSemantica != nullptr)
-			accion.accionSemantica(this, c);
-		estadoActual = accion.nuevoEstado;
-	}
+	//Cuando termina, ejecutar la última acción semántica con el fin de archivo
+	accion = matrizTransiciones[estadoActual][CATEGORIA_FIN_ARCHIVO];
+	if (accion.accionSemantica != nullptr)
+		accion.accionSemantica(this, c);
+	estadoActual = accion.nuevoEstado;
 
-	AnalizadorLexico::token tokenFinal;
-	tokenFinal.id = TOKEN_FINAL;
-	colaDeTokens.push(tokenFinal);
 
 	infile.close();
 }
 
-void AnalizadorLexico::aumentarLinea(){ contadorLineas++; }
+void AnalizadorLexico::retrocederLectura(){ 
+	int pos = infile.tellg();
+	infile.seekg(pos - 1);
+}
 
-void AnalizadorLexico::retrocederLectura(){ infile.seekg(infile.tellg() - 1); }
+void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
+	tablaSimbolos->agregar(key, r);
+}
+
+void AnalizadorLexico::guardarToken(registroToken nuevoToken){
+	colaDeTokens.push(nuevoToken);
+}
 
 AnalizadorLexico::token AnalizadorLexico::getToken(){
-	token resultado = colaDeTokens.front();
+	analizarCodigo();
+	registroToken resultado = colaDeTokens.front();	
 	colaDeTokens.pop();
-	return resultado;
+	if(resultado.warning != ""){
+		cout<<resultado.warning;
+	}
+	return resultado.token;
 }
