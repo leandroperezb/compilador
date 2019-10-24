@@ -23,8 +23,10 @@ lista_de_variables: ID {$$ = listas_variables.size(); vector<string> vec; vec.pu
 	/* CLASES */
 	declaracion_clase : encabezado BEGIN sentencias_clase END
 	;
-	encabezado : CLASS ID EXTENDS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;}
-				| CLASS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;}
+	encabezado : CLASS ID EXTENDS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;
+	AccionesSintactico::cargarClase(laTabla, punteros[$2], punteros[$4]);}
+				| CLASS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;
+				AccionesSintactico::cargarClase(laTabla, punteros[$2]);}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
@@ -51,10 +53,13 @@ sentencia: seleccion
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
-			| IF '(' condicion ')' sentencias_ejecutables ELSE sentencias_ejecutables END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
 			| IF condicion {AccionesSintactico::informarError("if","(","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
+
+cuerpo_if: sentencias_ejecutables {}
+
 comparador:
 		MAYORIGUAL
 	|	'<'
@@ -79,13 +84,13 @@ termino:
 |	termino '*' factor
 |	termino '/' factor
 ;
-factor: CTE
+factor: CTE {}
 	|	identificador
 ;
 
  /* soporte para variables de objetos */
- identificador: ID
-			|	ID '.' ID
+ identificador: ID {polaca.cargarFactor(punteros[$1]);}
+			|	ID '.' ID {polaca.cargarFactor(punteros[$1] + "." + punteros[$3]);}
 ;
 /* BUCLE FOR */
 for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}

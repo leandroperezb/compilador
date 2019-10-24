@@ -17,6 +17,11 @@ TablaSimbolos::registro& TablaSimbolos::get(string key){
 	}
 }
 
+bool TablaSimbolos::existe(string key){
+	auto search = tablaSimbolos.find(key);
+	return (search != tablaSimbolos.end());
+}
+
 void TablaSimbolos::guardar(){
 	ofstream ofs;
 	ofs.open ("tablaDeSimbolos.txt", std::ofstream::out);

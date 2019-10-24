@@ -3,6 +3,7 @@
 #include "tablasimbolos.h"
 #include "accionessintactico.h"
 #include <vector>
+#include "polaca.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ vector<vector<string>> listas_variables;
 
 AnalizadorLexico *elLexico;
 TablaSimbolos *laTabla;
+Polaca polaca;
 
 int yylex();
 

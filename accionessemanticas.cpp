@@ -42,7 +42,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 
 		//Agregar a la tabla de símbolos:
 		TablaSimbolos::registro registro;
-		registro.tipoSimbolo = TablaSimbolos::VARIABLE;
+		registro.tipoSimbolo = TablaSimbolos::INDEFINIDO;
 		lexico->agregarEnTabla(lexico->identificador, registro);
 	}
 	lexico->guardarToken({token, lexico->wrnng});

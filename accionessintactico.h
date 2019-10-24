@@ -13,6 +13,9 @@ class AccionesSintactico{
 		//Informar errores de sintaxis
 		static void informarError(string sentencia, string esperado, string obtenido, AnalizadorLexico* lex);
 		static void asignarTipos(TablaSimbolos* tabla, int tipo, vector<string> variables);
+
+		static void cargarClase(TablaSimbolos* tabla, string clase, string clasePadre);
+		static void cargarClase(TablaSimbolos* tabla, string clase);
 };
 
 #endif

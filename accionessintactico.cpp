@@ -19,12 +19,37 @@ void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<strin
 void AccionesSintactico::asignarTipos(TablaSimbolos* tabla, int tipo, vector<string> variables){
 	for (int i = 0; i < variables.size(); i++){
 		TablaSimbolos::registro* r = &tabla->get(variables[i]);
+		if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO)
+			return;
+		r->tipoSimbolo = TablaSimbolos::VARIABLE;
 		(*r).tipo = tipo;
 	}
 }
+
 void AccionesSintactico::informarError(string sentencia, string esperado, string obtenido, AnalizadorLexico* lex){
 	string msj = "Error en la linea: "+to_string(lex->contadorLineas) + ". Sentencia "+sentencia+", se esperaba "+
 	esperado+", pero se obtuvo "+obtenido+"\n";
 	
 	cout<< msj;
+}
+
+void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase, string clasePadre){
+	if (!tabla->existe(clasePadre) && !tabla->existe(clase))
+		return;
+	TablaSimbolos::registro* padre = &tabla->get(clasePadre);
+	if (padre->tipoSimbolo != TablaSimbolos::CLASE)
+		return;
+	TablaSimbolos::registro* nuevaClase = &tabla->get(clase);
+	if(nuevaClase->tipoSimbolo != TablaSimbolos::INDEFINIDO)
+		return;
+	nuevaClase->tipoSimbolo = TablaSimbolos::CLASE;
+}
+
+void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase){
+	if (!tabla->existe(clase))
+		return;
+	TablaSimbolos::registro* nuevaClase = &tabla->get(clase);
+	if(nuevaClase->tipoSimbolo != TablaSimbolos::INDEFINIDO)
+		return;
+	nuevaClase->tipoSimbolo = TablaSimbolos::CLASE;
 }
