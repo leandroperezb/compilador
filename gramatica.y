@@ -44,7 +44,7 @@ bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
-		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl;}
+		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl; polaca.cargarFactor(punteros[$1]); polaca.cargarOperador(ASIGNACION);}
 		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invocación a método de clase" << endl;}
 		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
 		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
@@ -68,23 +68,23 @@ comparador:
 	|	DISTINTO
 	|	MENORIGUAL
 ;
-condicion: expr comparador expr
+condicion: expr comparador expr {polaca.cargarOperador($2);}
 	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}
 	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico); abortarCompilacion = true;}
 ;
 
 /* EXPRESIÓN TÉRMINO FACTOR */
 expr: termino
-	| expr '+' termino
-	| expr '-' termino
+	| expr '+' termino {polaca.cargarOperador('+');}
+	| expr '-' termino {polaca.cargarOperador('-');}
 	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); $$ = $2;}
 ;
 termino:
 	factor
-|	termino '*' factor
-|	termino '/' factor
+|	termino '*' factor {polaca.cargarOperador('*');}
+|	termino '/' factor {polaca.cargarOperador('/');}
 ;
-factor: CTE {}
+factor: CTE {polaca.cargarFactor(punteros[$1]);}
 	|	identificador
 ;
 

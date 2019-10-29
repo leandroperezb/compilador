@@ -18,7 +18,9 @@ public:
 	void terminoCondicion(){}
 	void terminoIf(){}
 
-	void cargarFactor(string factor){}
+	// Soporte Expresiones
+	void cargarFactor(string factor);
+	void cargarOperador(int op);
 
 };
 

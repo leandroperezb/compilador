@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <stack>
-#include "paso.h"
 
 using namespace std;
 
