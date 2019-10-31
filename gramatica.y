@@ -7,7 +7,7 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $1, listas_variables[$2]); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables" << endl;}
+		tipo lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $1, lista_variables); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables" << endl;}
 	|	declaracion_clase
 	|   error ';' {cout<<"Linea "<<elLexico->contadorLineas<<": En este punto se esperaba una declaración."<<endl; abortarCompilacion = true;}
 ;
@@ -16,8 +16,8 @@ tipo_basico: INT {$$ = -1;}
 ;
 tipo: tipo_basico | ID
 ;
-lista_de_variables: ID {$$ = listas_variables.size(); vector<string> vec; vec.push_back(punteros[$1]); listas_variables.push_back(vec);}
-					| lista_de_variables ',' ID {listas_variables[$1].push_back(punteros[$3]);}
+lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
+					| lista_de_variables ',' ID {lista_variables.push_back(punteros[$3]);}
 ;
 
 	/* CLASES */
@@ -31,9 +31,10 @@ lista_de_variables: ID {$$ = listas_variables.size(); vector<string> vec; vec.pu
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
 	sentencia_clase : modificador VOID ID '('')' bloque_sentencias {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de método de clase" << endl;}
-					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::asignarTipos(laTabla, $2, listas_variables[$3]); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables adentro de una clase" << endl;}
+					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables adentro de una clase" << endl;}
 	;
-	modificador : PUBLIC | PRIVATE
+	modificador : PUBLIC {$$ = TablaSimbolos::PUBLI;}
+	 | PRIVATE {$$ = TablaSimbolos::PRIVAT;}
 	;
 
 /* PARTE DE SENTENCIAS EJECUTABLES */

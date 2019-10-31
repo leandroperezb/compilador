@@ -14,8 +14,8 @@ class TablaSimbolos{
 		static const int TIPO_INT = -1;
 		static const int TIPO_ULONG = -2;
 
-		static const int PRIVATE = -1;
-		static const int PUBLIC = -2;
+		static const int PRIVAT = -1;
+		static const int PUBLI = -2;
 
 		static const int CONSTANTE = -1;
 		static const int VARIABLE = -2;

@@ -9,7 +9,7 @@ using namespace std;
 
 
 vector<string> punteros;
-vector<vector<string>> listas_variables;
+vector<string> lista_variables;
 
 AnalizadorLexico *elLexico;
 TablaSimbolos *laTabla;
@@ -34,6 +34,7 @@ int yylex(){
 }
 
 int main(int argc, char** argv){
+	AccionesSintactico::inicializar(&punteros);
 	char* rutaCodigoFuente;
 	if (argc > 1){
 		rutaCodigoFuente = argv[1];
