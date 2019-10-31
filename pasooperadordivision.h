@@ -9,7 +9,7 @@ public:
 	PasoOperadorDivision(){
 	}
 
-    void generarCodigo(stack<Paso>& pila){
+    void generarCodigo(stack<int>& pila){
         
     }
 };

@@ -21,7 +21,7 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 ;
 
 	/* CLASES */
-	declaracion_clase : encabezado BEGIN sentencias_clase END
+	declaracion_clase : encabezado BEGIN sentencias_clase END {AccionesSintactico::finalizarClase();}
 	;
 	encabezado : CLASS ID EXTENDS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;
 	AccionesSintactico::cargarClase(laTabla, punteros[$2], punteros[$4]);}
@@ -30,8 +30,10 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
-	sentencia_clase : modificador VOID ID '('')' bloque_sentencias {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de método de clase" << endl;}
+	sentencia_clase : signatura bloque_sentencias {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de método de clase" << endl;AccionesSintactico::finalizarMetodo();}
 					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables adentro de una clase" << endl;}
+	;
+	signatura : modificador VOID ID '('')' {AccionesSintactico::nuevoMetodo(laTabla, punteros[$3], $1);}
 	;
 	modificador : PUBLIC {$$ = TablaSimbolos::PUBLI;}
 	 | PRIVATE {$$ = TablaSimbolos::PRIVAT;}
@@ -45,7 +47,7 @@ bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
-		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl; polaca.cargarFactor(punteros[$1]); polaca.cargarOperador(ASIGNACION);}
+		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl; Polaca::polacaEnEdicion->cargarFactor(punteros[$1]); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
 		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invocación a método de clase" << endl;}
 		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
 		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
@@ -69,29 +71,29 @@ comparador:
 	|	DISTINTO
 	|	MENORIGUAL
 ;
-condicion: expr comparador expr {polaca.cargarOperador($2);}
+condicion: expr comparador expr {Polaca::polacaEnEdicion->cargarOperador($2);}
 	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}
 	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico); abortarCompilacion = true;}
 ;
 
 /* EXPRESIÓN TÉRMINO FACTOR */
 expr: termino
-	| expr '+' termino {polaca.cargarOperador('+');}
-	| expr '-' termino {polaca.cargarOperador('-');}
+	| expr '+' termino {Polaca::polacaEnEdicion->cargarOperador('+');}
+	| expr '-' termino {Polaca::polacaEnEdicion->cargarOperador('-');}
 	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); $$ = $2;}
 ;
 termino:
 	factor
-|	termino '*' factor {polaca.cargarOperador('*');}
-|	termino '/' factor {polaca.cargarOperador('/');}
+|	termino '*' factor {Polaca::polacaEnEdicion->cargarOperador('*');}
+|	termino '/' factor {Polaca::polacaEnEdicion->cargarOperador('/');}
 ;
-factor: CTE {$$=polaca.cargarFactor(punteros[$1]);}
+factor: CTE {$$=Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 	|	identificador
 ;
 
  /* soporte para variables de objetos */
- identificador: ID {AccionesSintactico::nuevoFactor(punteros[$1]);}
-			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(punteros[$1], punteros[$3]);}
+ identificador: ID {AccionesSintactico::nuevoFactor(laTabla,punteros[$1]);}
+			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);}
 ;
 /* BUCLE FOR */
 for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}

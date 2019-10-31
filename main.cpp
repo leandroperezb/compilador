@@ -13,7 +13,6 @@ vector<string> lista_variables;
 
 AnalizadorLexico *elLexico;
 TablaSimbolos *laTabla;
-Polaca polaca;
 
 int yylex();
 
@@ -34,6 +33,7 @@ int yylex(){
 }
 
 int main(int argc, char** argv){
+	Polaca::modificarPunteroPolaca(Polaca::polacaMadre);
 	AccionesSintactico::inicializar(&punteros);
 	char* rutaCodigoFuente;
 	if (argc > 1){

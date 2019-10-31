@@ -3,11 +3,14 @@
 
 #include "tablasimbolos.h"
 #include "lexico.h"
+#include "polaca.h"
 #include <iostream>
 
 using namespace std;
 
 class AccionesSintactico{
+	private:
+		static bool hereda(TablaSimbolos* tabla, string claseHijo, string clasePadre);
 	public:
 		static vector<string> *punteros;
 		static void inicializar(vector<string>* p);
@@ -19,6 +22,14 @@ class AccionesSintactico{
 
 		static void cargarClase(TablaSimbolos* tabla, string clase, string clasePadre);
 		static void cargarClase(TablaSimbolos* tabla, string clase);
+
+		static void nuevoFactor(TablaSimbolos* tabla, string factor);
+		static void nuevoFactorDeClase(TablaSimbolos* tabla, string obj, string variable);
+
+		//Para implementar:
+		static void nuevoMetodo(TablaSimbolos* tabla, string nombre, int visibilidad);
+		static void finalizarMetodo();
+		static void finalizarClase();
 };
 
 #endif

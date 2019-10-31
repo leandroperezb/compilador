@@ -14,6 +14,12 @@ private:
 	vector<Paso> tira;
 
 public:
+	static Polaca polacaMadre;
+	static Polaca* polacaEnEdicion;
+
+	static void modificarPunteroPolaca(Polaca &polaca){
+		polacaEnEdicion = &polaca;
+	}
 	void terminoIfRamaTrue(){}
 	void terminoCondicion(){}
 	void terminoIf(){}
