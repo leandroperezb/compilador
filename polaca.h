@@ -19,7 +19,7 @@ public:
 	void terminoIf(){}
 
 	// Soporte Expresiones
-	void cargarFactor(string factor);
+	int cargarFactor(string factor);
 	void cargarOperador(int op);
 
 };

@@ -1,8 +1,6 @@
 #include "paso.h"
 #include <string>
 
-#include "y.tab.h"
-
 using namespace std;
 class PasoOperadorDivision : public Paso{
     

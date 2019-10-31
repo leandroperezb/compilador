@@ -85,13 +85,13 @@ termino:
 |	termino '*' factor {polaca.cargarOperador('*');}
 |	termino '/' factor {polaca.cargarOperador('/');}
 ;
-factor: CTE {polaca.cargarFactor(punteros[$1]);}
+factor: CTE {$$=polaca.cargarFactor(punteros[$1]);}
 	|	identificador
 ;
 
  /* soporte para variables de objetos */
- identificador: ID {polaca.cargarFactor(punteros[$1]);}
-			|	ID '.' ID {polaca.cargarFactor(punteros[$1] + "." + punteros[$3]);}
+ identificador: ID {AccionesSintactico::nuevoFactor(punteros[$1]);}
+			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(punteros[$1], punteros[$3]);}
 ;
 /* BUCLE FOR */
 for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}

@@ -1,10 +1,11 @@
 #include "polaca.h"
-#include "pasooperador.h"
+#include "factoryoperador.h"
 #include "pasofactor.h"
 
 void Polaca::cargarOperador(int op){
-	tira.push_back(PasoOperador(op));
+	tira.push_back(FactoryOperador::crearPaso(op));
 }
-void Polaca::cargarFactor(string factor){
+int Polaca::cargarFactor(string factor){
 	tira.push_back(PasoFactor(factor));
+	return tira.size() -1;
 }

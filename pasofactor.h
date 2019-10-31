@@ -9,4 +9,10 @@ class PasoFactor : public Paso{
 		PasoFactor(string factor){
 			this->factor = factor;
 		}
+		void setFactor(string factor){
+			this->factor = factor;
+		}
+		string getFactor(){
+			return factor;
+		}
 };
