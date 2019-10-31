@@ -10,7 +10,7 @@ using namespace std;
 
 class Polaca{
 private:
-	stack<Paso> pila;
+	stack<int> pila;
 	vector<Paso> tira;
 
 public:
