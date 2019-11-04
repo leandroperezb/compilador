@@ -4,6 +4,7 @@
 #include "accionessintactico.h"
 #include <vector>
 #include "polaca.h"
+#include "log.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ int yylex(){
 	AnalizadorLexico::token token = elLexico->getToken();
 	yylval = punteros.size();
 	punteros.push_back(token.puntero);
-	cout << "Token: " << token.id << endl;
+	Log::tokenDetectado(token.id);
 	return token.id;
 }
 

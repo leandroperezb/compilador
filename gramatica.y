@@ -7,9 +7,9 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $1, lista_variables); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables" << endl;}
+		tipo lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $1, lista_variables); Log::estructuraDetectada(elLexico->contadorLineas, "declaración de variables");}
 	|	declaracion_clase
-	|   error ';' {cout<<"Linea "<<elLexico->contadorLineas<<": En este punto se esperaba una declaración."<<endl; abortarCompilacion = true;}
+	|   error ';' {Log::errorSintactico(elLexico->contadorLineas,"En este punto se esperaba una declaración");  abortarCompilacion = true;}
 ;
 tipo_basico: INT {$$ = -1;}
 			| ULONG {$$ = -2;}
@@ -23,15 +23,15 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 	/* CLASES */
 	declaracion_clase : encabezado BEGIN sentencias_clase END {AccionesSintactico::finalizarClase();}
 	;
-	encabezado : CLASS ID EXTENDS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;
+	encabezado : CLASS ID EXTENDS ID {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de clase");
 	AccionesSintactico::cargarClase(laTabla, punteros[$2], punteros[$4]);}
-				| CLASS ID {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de clase" << endl;
+				| CLASS ID {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de clase");
 				AccionesSintactico::cargarClase(laTabla, punteros[$2]);}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
-	sentencia_clase : signatura bloque_sentencias {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de método de clase" << endl;AccionesSintactico::finalizarMetodo();}
-					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": declaración de variables adentro de una clase" << endl;}
+	sentencia_clase : signatura bloque_sentencias {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de método de clase"); AccionesSintactico::finalizarMetodo();}
+					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); Log::estructuraDetectada(elLexico->contadorLineas, "declaración de variables adentro de una clase");}
 	;
 	signatura : modificador VOID ID '('')' {AccionesSintactico::nuevoMetodo(laTabla, punteros[$3], $1);}
 	;
@@ -47,17 +47,17 @@ bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
-		| identificador ASIGNACION expr ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": asignación" << endl; Polaca::polacaEnEdicion->cargarFactor(punteros[$1]); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
-		| ID '.' ID '(' ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": invocación a método de clase" << endl;}
-		| PRINT '(' STRING ')' ';' {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": print" << endl;}
+		| identificador ASIGNACION expr ';' {Log::estructuraDetectada(elLexico->contadorLineas, "asignación"); Polaca::polacaEnEdicion->cargarFactor(punteros[$1]); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
+		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de clase");}
+		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "print");}
 		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
 		| for
-		| error ';' {cout<<"No se pudo reconocer la sentencia en la línea "<<elLexico->contadorLineas<<endl; abortarCompilacion = true;}
+		| error ';' {Log::errorSintactico(elLexico->contadorLineas, "No se pudo reconocer la sentencia"); abortarCompilacion = true;}
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
-			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bloque if" << endl;}
+seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if");}
+			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if");}
 			| IF condicion {AccionesSintactico::informarError("if","(","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
 
@@ -96,6 +96,6 @@ factor: CTE {$$=Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);}
 ;
 /* BUCLE FOR */
-for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {cout << "Estructura sintáctica detectada en línea " << elLexico->contadorLineas << ": bucle for" << endl;}
+for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {Log::estructuraDetectada(elLexico->contadorLineas, "bucle for");}
 	  | FOR '(' error ')' sentencias_ejecutables {AccionesSintactico::informarError("for", "asignación; factor; factor", "una expresión inesperada", elLexico); abortarCompilacion = true;}
 %%
