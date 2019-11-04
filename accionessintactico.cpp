@@ -57,6 +57,7 @@ void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase, string 
 	if(nuevaClase->tipoSimbolo != TablaSimbolos::INDEFINIDO)
 		return;
 	nuevaClase->tipoSimbolo = TablaSimbolos::CLASE;
+	AccionesSintactico::claseActual = clase;
 }
 
 void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase){
@@ -66,7 +67,13 @@ void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase){
 	if(nuevaClase->tipoSimbolo != TablaSimbolos::INDEFINIDO)
 		return;
 	nuevaClase->tipoSimbolo = TablaSimbolos::CLASE;
+	AccionesSintactico::claseActual = clase;
 }
+
+void AccionesSintactico::finalizarClase(){
+	AccionesSintactico::claseActual = "";
+}
+
 void AccionesSintactico::nuevoFactor(TablaSimbolos* tabla, string factor){
 	if(!tabla->existe(factor))
 		return;
@@ -111,11 +118,16 @@ bool AccionesSintactico::hereda(TablaSimbolos* tabla, string claseHijo, string c
 	return false;
 }
 void AccionesSintactico::nuevoMetodo(TablaSimbolos* tabla, string nombre, int visibilidad){
-
+	TablaSimbolos::registro* r = &tabla->get(nombre);
+	if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO)
+		return;
+	r->tipoSimbolo = TablaSimbolos::METODO;
+	(*r).visibilidad = visibilidad;
+	(*r).clasePadre = AccionesSintactico::claseActual;
+	Polaca *nuevaPolaca = new Polaca();
+	(*r).polaca = nuevaPolaca;
+	Polaca::modificarPunteroPolaca(*nuevaPolaca);
 }
 void AccionesSintactico::finalizarMetodo(){
-
-}
-void AccionesSintactico::finalizarClase(){
-
+	Polaca::modificarPunteroPolaca(Polaca::polacaMadre);
 }
