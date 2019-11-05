@@ -11,7 +11,7 @@ using namespace std;
 class Polaca{
 private:
 	stack<int> pila;
-	vector<Paso> tira;
+	vector<Paso*> tira;
 
 public:
 	static Polaca polacaMadre;

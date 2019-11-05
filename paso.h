@@ -8,7 +8,7 @@ using namespace std;
 
 class Paso{
 public:
-	void generarCodigo(stack<int>& pila);
+	virtual void generarCodigo(stack<int>& pila) = 0;
 };
 
 #endif

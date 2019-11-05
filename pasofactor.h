@@ -15,5 +15,5 @@ class PasoFactor : public Paso{
 		string getFactor(){
 			return factor;
 		}
-		void generarCodigo(stack<int> &pila){}
+		virtual void generarCodigo(stack<int> &pila){}
 };

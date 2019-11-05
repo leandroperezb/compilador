@@ -9,7 +9,7 @@ public:
 	PasoOperadorSuma(){
 	}
 
-    void generarCodigo(stack<int>& pila){
+    virtual void generarCodigo(stack<int>& pila){
 
     }
 };

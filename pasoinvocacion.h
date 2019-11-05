@@ -14,7 +14,7 @@ public:
 	Polaca* getPunteroPolaca(){
 		return punteroPolaca;
 	}
-	void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(stack<int>& pila){
         
     }
 };

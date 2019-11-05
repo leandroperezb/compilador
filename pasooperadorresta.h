@@ -9,7 +9,7 @@ public:
 	PasoOperadorResta(){
 	}
 
-	void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(stack<int>& pila){
         
     }
 };

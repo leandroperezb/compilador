@@ -13,7 +13,7 @@ public:
 		op = operador;
 	}
 
-	void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(stack<int>& pila){
         
     }
 };

@@ -13,26 +13,26 @@ using namespace std;
 class FactoryOperador{
 public:
 	//Usamos para cada operador el int que le asignó yacc
-	static Paso crearPaso(int operador){
-		 Paso p;
+	static Paso* crearPaso(int operador){
+		 Paso* p;
 		 switch (operador){
 		 case '+':
-			 p = PasoOperadorSuma();
+			 p = new PasoOperadorSuma();
 			 break;
 		case '-':
-			p = PasoOperadorResta();
+			p = new PasoOperadorResta();
 			break;
 		case '*':
-			p = PasoOperadorMultiplicacion();
+			p = new PasoOperadorMultiplicacion();
 			break;
 		case '/':
-			p = PasoOperadorDivision();
+			p = new PasoOperadorDivision();
 			break;
 		case ASIGNACION:
-			p = PasoOperadorAsignacion();
+			p = new PasoOperadorAsignacion();
 		 	break;
 		 default:
-			p = PasoOperadorComparador(operador);
+			p = new PasoOperadorComparador(operador);
 		 }
 		 return p;
 	}
