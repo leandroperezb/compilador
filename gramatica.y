@@ -57,7 +57,7 @@ sentencias: sentencia | sentencias sentencia
 sentencia: seleccion
 		| identificador ASIGNACION expr ';' {Log::estructuraDetectada(elLexico->contadorLineas, "asignación"); Polaca::polacaEnEdicion->cargarFactor(punteros[$1]); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
 		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de clase");}
-		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "print");}
+		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
 		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
 		| for
 		| error ';' {Log::errorSintactico(elLexico->contadorLineas, "No se pudo reconocer la sentencia"); abortarCompilacion = true;}

@@ -17,6 +17,10 @@ public:
 	static Polaca polacaMadre;
 	static Polaca* polacaEnEdicion;
 
+	Polaca(){
+		
+	}
+
 	static void modificarPunteroPolaca(Polaca &polaca){
 		polacaEnEdicion = &polaca;
 	}
@@ -27,6 +31,9 @@ public:
 	// Soporte Expresiones
 	int cargarFactor(string factor);
 	void cargarOperador(int op);
+	//Soporte PRINT
+	void cargarString(string str);
+	void cargarPrint();
 
 };
 
