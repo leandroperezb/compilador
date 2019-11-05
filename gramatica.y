@@ -64,12 +64,12 @@ sentencia: seleccion
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if");}
-			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if");}
+seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if"); Polaca::polacaEnEdicion->terminoIf();}
+			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if"); Polaca::polacaEnEdicion->terminoIf();}
 			| IF condicion {AccionesSintactico::informarError("if","(","condición sin paréntesis", elLexico); abortarCompilacion = true;}
 ;
 
-cuerpo_if: sentencias_ejecutables {}
+cuerpo_if: sentencias_ejecutables {Polaca::polacaEnEdicion->terminoRamaIf();}
 
 comparador:
 		MAYORIGUAL {$$ = MAYORIGUAL;}
@@ -79,7 +79,7 @@ comparador:
 	|	DISTINTO {$$ = DISTINTO;}
 	|	MENORIGUAL {$$ = MENORIGUAL;}
 ;
-condicion: expr comparador expr {Polaca::polacaEnEdicion->cargarOperador($2);}
+condicion: expr comparador expr {Polaca::polacaEnEdicion->terminoCondicion($2);}
 	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}
 	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico); abortarCompilacion = true;}
 ;

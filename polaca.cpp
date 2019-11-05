@@ -4,6 +4,7 @@
 #include "pasoprint.h"
 #include "pasostring.h"
 #include "pasoinvocacion.h"
+#include "pasosalto.h"
 
 Polaca Polaca::polacaMadre;
 Polaca* Polaca::polacaEnEdicion = nullptr;
@@ -23,4 +24,24 @@ void Polaca::cargarPrint(){
 
 void Polaca::invocacionMetodo(string objeto, Polaca* polaca){
 	tira.push_back(new PasoInvocacion(polaca, objeto));
+}
+
+void Polaca::terminoCondicion(int comparador){
+	this->cargarOperador(comparador);
+	tira.push_back(new PasoSalto(true, false));
+	pila.push(tira.size() - 1);
+}
+
+void Polaca::terminoRamaIf(){
+	int indice = pila.top(); pila.pop();
+	((PasoSalto*) tira[indice])->setDestino(tira.size()+1);
+
+	tira.push_back(new PasoSalto(false));
+	pila.push(tira.size() - 1);
+}
+
+
+void Polaca::terminoIf(){
+	int indice = pila.top(); pila.pop();
+	((PasoSalto*) tira[indice])->setDestino(tira.size());
 }

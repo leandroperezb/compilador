@@ -24,9 +24,9 @@ public:
 	static void modificarPunteroPolaca(Polaca &polaca){
 		polacaEnEdicion = &polaca;
 	}
-	void terminoIfRamaTrue(){}
-	void terminoCondicion(){}
-	void terminoIf(){}
+	void terminoRamaIf();
+	void terminoCondicion(int comparador);
+	void terminoIf();
 
 	void invocacionMetodo(Polaca* polaca){}
 	void invocacionMetodo(string objeto, Polaca* polaca);
