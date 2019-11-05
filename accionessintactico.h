@@ -26,10 +26,12 @@ class AccionesSintactico{
 		static void nuevoFactor(TablaSimbolos* tabla, string factor);
 		static void nuevoFactorDeClase(TablaSimbolos* tabla, string obj, string variable);
 
-		//Para implementar:
 		static void nuevoMetodo(TablaSimbolos* tabla, string nombre, int visibilidad);
 		static void finalizarMetodo();
 		static void finalizarClase();
+
+		static void llamadoAMetodo(TablaSimbolos* tabla, string objeto, string metodo);
+		static void llamadoAMetodo(TablaSimbolos* tabla, string metodo);
 };
 
 #endif

@@ -131,3 +131,44 @@ void AccionesSintactico::nuevoMetodo(TablaSimbolos* tabla, string nombre, int vi
 void AccionesSintactico::finalizarMetodo(){
 	Polaca::modificarPunteroPolaca(Polaca::polacaMadre);
 }
+
+void AccionesSintactico::llamadoAMetodo(TablaSimbolos* tabla, string objeto, string metodo){
+	if(!tabla->existe(objeto) || !tabla->existe(metodo))
+		return;
+	TablaSimbolos::registro* obj = &tabla->get(objeto);
+	TablaSimbolos::registro* met = &tabla->get(metodo);
+	if(obj->tipoSimbolo != TablaSimbolos::VARIABLE || met->tipoSimbolo != TablaSimbolos::METODO)
+		return;
+	if(obj->tipo < 0)
+		return;
+
+	//Si el método no es de la línea de herencia de la clase en edición, o es de la línea de herencia del objeto
+	if (!hereda(tabla, claseActual, met->clasePadre) || !hereda(tabla, (*punteros)[obj->tipo], met->clasePadre))
+		return;
+
+	if(claseActual == "" && met->visibilidad == TablaSimbolos::PRIVAT) //Si estamos en el "main" y es método privado
+		return;
+
+	if(claseActual != met->clasePadre && met->visibilidad == TablaSimbolos::PRIVAT) // Si estamos dentro de un metodo y es privado de una clase padre
+		return;
+
+	Polaca::polacaEnEdicion->invocacionMetodo(objeto, (&tabla->get(metodo))->polaca);
+}
+void AccionesSintactico::llamadoAMetodo(TablaSimbolos* tabla, string metodo){
+	if(!tabla->existe(metodo))
+		return;
+	TablaSimbolos::registro* met = &tabla->get(metodo);
+	if(met->tipoSimbolo != TablaSimbolos::METODO)
+		return;
+
+	//Si el método no es de la línea de herencia de la clase en edición
+	if (!hereda(tabla, claseActual, met->clasePadre))
+		return;
+
+
+	if(claseActual != met->clasePadre && met->visibilidad == TablaSimbolos::PRIVAT) // Si es privado de una clase padre
+		return;
+
+
+	Polaca::polacaEnEdicion->invocacionMetodo((&tabla->get(metodo))->polaca);
+}

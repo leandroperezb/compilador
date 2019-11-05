@@ -44,7 +44,7 @@ bloque_sentencias_metodo : BEGIN sentencias_metodo END
 ;
 sentencias_metodo: sentencia_metodo | sentencias_metodo sentencia_metodo
 ;
-sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de la misma clase");}
+sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de la misma clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1]);}
 		| sentencia
 ;
 
@@ -56,7 +56,7 @@ sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
 		| identificador ASIGNACION expr ';' {Log::estructuraDetectada(elLexico->contadorLineas, "asignación"); Polaca::polacaEnEdicion->cargarFactor(punteros[$1]); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
-		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de clase");}
+		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1], punteros[$3]);}
 		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
 		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
 		| for
@@ -72,12 +72,12 @@ seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada(elLe
 cuerpo_if: sentencias_ejecutables {}
 
 comparador:
-		MAYORIGUAL
-	|	'<'
-	|	'>'
-	|	IGUAL
-	|	DISTINTO
-	|	MENORIGUAL
+		MAYORIGUAL {$$ = MAYORIGUAL;}
+	|	'<' {$$ = (int) '<';}
+	|	'>' {$$ = (int) '>';}
+	|	IGUAL {$$ = IGUAL;}
+	|	DISTINTO {$$ = DISTINTO;}
+	|	MENORIGUAL {$$ = MENORIGUAL;}
 ;
 condicion: expr comparador expr {Polaca::polacaEnEdicion->cargarOperador($2);}
 	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}

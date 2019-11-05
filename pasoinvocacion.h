@@ -6,10 +6,12 @@ using namespace std;
 class PasoInvocacion : public Paso{
 private:
 	Polaca* punteroPolaca;
+	string objeto;
 public:
 	//Usamos para cada operador el int que le asignó yacc
-	PasoInvocacion(Polaca &polaca){
-		punteroPolaca = &polaca;
+	PasoInvocacion(Polaca* polaca, string objeto){
+		punteroPolaca = polaca;
+		this->objeto = objeto;
 	}
 	Polaca* getPunteroPolaca(){
 		return punteroPolaca;

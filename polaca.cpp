@@ -3,6 +3,7 @@
 #include "pasofactor.h"
 #include "pasoprint.h"
 #include "pasostring.h"
+#include "pasoinvocacion.h"
 
 Polaca Polaca::polacaMadre;
 Polaca* Polaca::polacaEnEdicion = nullptr;
@@ -18,4 +19,8 @@ void Polaca::cargarString(string str){
 }
 void Polaca::cargarPrint(){
 	tira.push_back(new PasoPrint());
+}
+
+void Polaca::invocacionMetodo(string objeto, Polaca* polaca){
+	tira.push_back(new PasoInvocacion(polaca, objeto));
 }

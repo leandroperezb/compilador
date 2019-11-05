@@ -28,6 +28,9 @@ public:
 	void terminoCondicion(){}
 	void terminoIf(){}
 
+	void invocacionMetodo(Polaca* polaca){}
+	void invocacionMetodo(string objeto, Polaca* polaca);
+
 	// Soporte Expresiones
 	int cargarFactor(string factor);
 	void cargarOperador(int op);
