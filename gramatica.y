@@ -30,7 +30,7 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
-	sentencia_clase : signatura bloque_sentencias {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de método de clase"); AccionesSintactico::finalizarMetodo();}
+	sentencia_clase : signatura bloque_sentencias_metodo {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de método de clase"); AccionesSintactico::finalizarMetodo();}
 					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); Log::estructuraDetectada(elLexico->contadorLineas, "declaración de variables adentro de una clase");}
 	;
 	signatura : modificador VOID ID '('')' {AccionesSintactico::nuevoMetodo(laTabla, punteros[$3], $1);}
@@ -40,6 +40,14 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 	;
 
 /* PARTE DE SENTENCIAS EJECUTABLES */
+bloque_sentencias_metodo : BEGIN sentencias_metodo END
+;
+sentencias_metodo: sentencia_metodo | sentencias_metodo sentencia_metodo
+;
+sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de la misma clase");}
+		| sentencia
+;
+
 sentencias_ejecutables: bloque_sentencias | sentencia
 ;
 bloque_sentencias: BEGIN sentencias END
