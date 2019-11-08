@@ -22,6 +22,8 @@ public:
 		
 	}
 
+	Paso* getLastPaso();
+
 	static void modificarPunteroPolaca(Polaca &polaca){
 		polacaEnEdicion = &polaca;
 	}

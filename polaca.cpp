@@ -63,3 +63,7 @@ void Polaca::guardar(string nombreArchivo){
 		ofs << tira[i]->toString() << "\n";
 	}
 }
+
+Paso* Polaca::getLastPaso(){
+	return tira[tira.size()-1];
+}

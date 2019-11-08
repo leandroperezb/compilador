@@ -95,7 +95,7 @@ termino:
 |	termino '*' factor {Polaca::polacaEnEdicion->cargarOperador('*');$$=-1;}
 |	termino '/' factor {Polaca::polacaEnEdicion->cargarOperador('/');$$=-1;}
 ;
-factor: CTE {$$=Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
+factor: CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 	|	identificador {$$=-1;}
 ;
 

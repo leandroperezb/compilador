@@ -11,7 +11,7 @@ public:
 	static AnalizadorLexico* lexico;
 	static bool abortarCompilacion;
 	static void estructuraDetectada(string estructura){
-		//cout << "Estructura sintáctica detectada en línea " << linea << ": " << estructura << endl;
+		//cout << "Estructura sintáctica detectada en línea " << lexico->contadorLineas << ": " << estructura << endl;
 	}
 
 	static void errorSintactico(string mensaje){
