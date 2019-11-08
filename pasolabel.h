@@ -14,4 +14,8 @@ public:
 	virtual void generarCodigo(stack<int>& pila){
         
     }
+
+    virtual string toString(){
+			return "label";
+		}
 };

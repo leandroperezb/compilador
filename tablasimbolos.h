@@ -40,6 +40,8 @@ class TablaSimbolos{
 
 		void guardar();
 
+		void guardarPolacas();
+
 	private:
 		unordered_map<string, registro> tablaSimbolos;
 };

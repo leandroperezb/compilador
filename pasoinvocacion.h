@@ -17,4 +17,7 @@ public:
 		return punteroPolaca;
 	}
 	virtual void generarCodigo(stack<int>& pila){}
+	virtual string toString(){
+		return "Invocación en " + objeto;
+	}
 };

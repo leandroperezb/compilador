@@ -6,4 +6,7 @@ public:
 	PasoPrint(){
 
 	}
+	virtual string toString(){
+			return "print";
+		}
 };

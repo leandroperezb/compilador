@@ -50,3 +50,16 @@ void Polaca::terminoIf(){
 	((PasoSalto*) tira[indice])->setDestino(tira.size());
 	tira.push_back(new PasoLabel());
 }
+
+
+void Polaca::guardar(string nombreArchivo){
+	ofstream ofs;
+	ofs.open (nombreArchivo + ".txt", std::ofstream::out);
+	if(ofs.fail()){
+		return;
+	}
+
+	for (int i = 0; i < tira.size(); i++){
+		ofs << tira[i]->toString() << "\n";
+	}
+}

@@ -16,4 +16,7 @@ class PasoFactor : public Paso{
 			return factor;
 		}
 		virtual void generarCodigo(stack<int> &pila){}
+		virtual string toString(){
+			return factor;
+		}
 };

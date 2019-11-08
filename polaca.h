@@ -5,6 +5,7 @@
 #include <vector>
 #include <stack>
 #include "paso.h"
+#include <fstream>
 
 using namespace std;
 
@@ -37,6 +38,8 @@ public:
 	//Soporte PRINT
 	void cargarString(string str);
 	void cargarPrint();
+
+	void guardar(string nombreArchivo);
 
 };
 

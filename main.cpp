@@ -55,6 +55,8 @@ int main(int argc, char** argv){
 	cout << "Resultado del parser: " << resultado << endl;
 
 	tabla.guardar();
+	Polaca::polacaMadre.guardar("polaca madre");
+	tabla.guardarPolacas();
 
 	return 0;
 }
