@@ -41,6 +41,12 @@ public:
 	void cargarString(string str);
 	void cargarPrint();
 
+	//For:
+	void removeLastPaso();
+	void empiezaFor(string variable);
+	void comparacionFor();
+	void terminoFor(string variable, string step);
+
 	void guardar(string nombreArchivo);
 
 };

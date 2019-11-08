@@ -51,6 +51,41 @@ void Polaca::terminoIf(){
 	tira.push_back(new PasoLabel());
 }
 
+void Polaca::removeLastPaso(){
+	tira.pop_back();
+}
+
+void Polaca::empiezaFor(string variable){
+	cargarOperador(ASIGNACION);
+
+	tira.push_back(new PasoLabel()); //Pongo label para inicio del for y lo apilo
+	pila.push(tira.size() - 1);
+
+	cargarFactor(variable);
+}
+
+void Polaca::comparacionFor(){
+	cargarOperador(MENORIGUAL);
+	tira.push_back(new PasoSalto(true, false));
+	pila.push(tira.size() - 1);
+}
+
+void Polaca::terminoFor(string variable, string step){
+	cargarFactor(variable); cargarFactor(variable);
+	cargarFactor(step);
+	cargarOperador('+');
+	cargarOperador(ASIGNACION);
+
+	int indice = pila.top(); pila.pop(); //Desapilo salto condicional
+	((PasoSalto*) tira[indice])->setDestino(tira.size()+1); //Destino al label siguiente
+
+	PasoSalto* nuevoSalto = new PasoSalto(false); //Nuevo salto incondicional al principio del for
+	nuevoSalto->setDestino(pila.top()); pila.pop(); //Desapilo label inicial y seteo destino a él
+	tira.push_back(nuevoSalto);
+
+	tira.push_back(new PasoLabel());
+}
+
 
 void Polaca::guardar(string nombreArchivo){
 	ofstream ofs;
