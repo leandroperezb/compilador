@@ -36,7 +36,7 @@ public:
 		abortarCompilacion = true;
 	}
 	static void identificadorNoCorresponde(string identificador, string tipo){
-		cout << "Linea "<<lexico->contadorLineas<<": El identificador \"" << identificador << "\" no corresponde a un/una " << tipo << endl;
+		cout << "Linea "<<lexico->contadorLineas<<": El identificador \"" << identificador << "\" no corresponde a " << tipo << endl;
 		abortarCompilacion = true;
 	}
 	static void redeclaracionClase(string clase){

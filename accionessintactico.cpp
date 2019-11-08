@@ -22,7 +22,9 @@ void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<strin
 	}
 	string key = punteros[indice];
 	TablaSimbolos::registro r = tabla->get(key);
+	cout << "afuera  " << key << endl;
 	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE){
+		cout << "adentro" << endl;
 		r.valor = r.valor * (-1);
 		r.tipo = TablaSimbolos::TIPO_INT;
 		if (r.valor < -32768){
@@ -92,7 +94,7 @@ void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase, string 
 	}
 	TablaSimbolos::registro* padre = &tabla->get(clasePadre);
 	if (padre->tipoSimbolo != TablaSimbolos::CLASE){
-		Log::identificadorNoCorresponde(clasePadre, "clase");
+		Log::identificadorNoCorresponde(clasePadre, "una clase");
 		return;
 	}
 	TablaSimbolos::registro* nuevaClase = &tabla->get(clase);
@@ -130,7 +132,7 @@ void AccionesSintactico::nuevoFactor(TablaSimbolos* tabla, string factor){
 	}
 	TablaSimbolos::registro* variable = &tabla->get(factor);
 	if(variable->tipoSimbolo != TablaSimbolos::VARIABLE){
-		Log::identificadorNoCorresponde(factor, "variable");
+		Log::identificadorNoCorresponde(factor, "una variable");
 		return;
 	}
 	if(variable->tipo >= 0){
@@ -162,15 +164,15 @@ void AccionesSintactico::nuevoFactorDeClase(TablaSimbolos* tabla, string obj,str
 		}
 		TablaSimbolos::registro r = tabla->get(obj);
 		if(r.tipoSimbolo != TablaSimbolos::VARIABLE || r.tipo < 0){
-			Log::identificadorNoCorresponde(obj, "objeto");
+			Log::identificadorNoCorresponde(obj, "un objeto");
 			return;
 		}
-		Log::identificadorNoCorresponde(variable, "atributo del objeto "+obj);
+		Log::identificadorNoCorresponde(variable, "un atributo del objeto \""+obj+"\"");
 		return;
 	}
 	TablaSimbolos::registro* var = &tabla->get(obj + "." + variable);
 	if(var->tipoSimbolo != TablaSimbolos::VARIABLE){
-		Log::identificadorNoCorresponde(variable, "atributo del objeto "+obj);
+		Log::identificadorNoCorresponde(variable, "un atributo del objeto \""+obj+"\"");
 		return;
 	}
 	if(var->visibilidad == TablaSimbolos::PRIVAT){
@@ -219,15 +221,15 @@ void AccionesSintactico::llamadoAMetodo(TablaSimbolos* tabla, string objeto, str
 	TablaSimbolos::registro* obj = &tabla->get(objeto);
 	TablaSimbolos::registro* met = &tabla->get(metodo);
 	if(obj->tipoSimbolo != TablaSimbolos::VARIABLE){
-		Log::identificadorNoCorresponde(objeto, "objeto");
+		Log::identificadorNoCorresponde(objeto, "un objeto");
 		return;
 	}
 	if(met->tipoSimbolo != TablaSimbolos::METODO){
-		Log::identificadorNoCorresponde(metodo, "metodo");
+		Log::identificadorNoCorresponde(metodo, "un metodo");
 		return;
 	}
 	if(obj->tipo < 0){
-		Log::identificadorNoCorresponde(objeto, "objeto");
+		Log::identificadorNoCorresponde(objeto, "un objeto");
 		return;
 	}
 
