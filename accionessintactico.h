@@ -19,7 +19,6 @@ class AccionesSintactico{
 		static string claseActual;
 		static void negativizarConstante(TablaSimbolos* tabla, vector<string>& punteros, int indice);
 		//Informar errores de sintaxis
-		static void informarError(string sentencia, string esperado, string obtenido, AnalizadorLexico* lex);
 		static void declararVariable(TablaSimbolos* tabla, int tipo, vector<string>& variables, int modificador = 0);
 
 		static void cargarClase(TablaSimbolos* tabla, string clase, string clasePadre);

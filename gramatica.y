@@ -7,9 +7,9 @@ programa: bloque_declarativo bloque_sentencias
 bloque_declarativo: sentencia_declarativa | bloque_declarativo sentencia_declarativa
 ;
 sentencia_declarativa: 
-		tipo lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $1, lista_variables); Log::estructuraDetectada(elLexico->contadorLineas, "declaración de variables");}
+		tipo lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $1, lista_variables); Log::estructuraDetectada("declaración de variables");}
 	|	declaracion_clase
-	|   error ';' {Log::errorSintactico(elLexico->contadorLineas,"En este punto se esperaba una declaración");  abortarCompilacion = true;}
+	|   error ';' {Log::errorSintactico("En este punto se esperaba una declaración");}
 ;
 tipo_basico: INT {$$ = -1;}
 			| ULONG {$$ = -2;}
@@ -23,15 +23,15 @@ lista_de_variables: ID {lista_variables.push_back(punteros[$1]);}
 	/* CLASES */
 	declaracion_clase : encabezado BEGIN sentencias_clase END {AccionesSintactico::finalizarClase();}
 	;
-	encabezado : CLASS ID EXTENDS ID {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de clase");
+	encabezado : CLASS ID EXTENDS ID {Log::estructuraDetectada("declaración de clase");
 	AccionesSintactico::cargarClase(laTabla, punteros[$2], punteros[$4]);}
-				| CLASS ID {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de clase");
+				| CLASS ID {Log::estructuraDetectada("declaración de clase");
 				AccionesSintactico::cargarClase(laTabla, punteros[$2]);}
 	;
 	sentencias_clase : sentencias_clase sentencia_clase | sentencia_clase
 	;
-	sentencia_clase : signatura bloque_sentencias_metodo {Log::estructuraDetectada(elLexico->contadorLineas, "declaración de método de clase"); AccionesSintactico::finalizarMetodo();}
-					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); Log::estructuraDetectada(elLexico->contadorLineas, "declaración de variables adentro de una clase");}
+	sentencia_clase : signatura bloque_sentencias_metodo {Log::estructuraDetectada("declaración de método de clase"); AccionesSintactico::finalizarMetodo();}
+					| modificador tipo_basico lista_de_variables ';' {AccionesSintactico::declararVariable(laTabla, $2, lista_variables, $1); Log::estructuraDetectada("declaración de variables adentro de una clase");}
 	;
 	signatura : modificador VOID ID '('')' {AccionesSintactico::nuevoMetodo(laTabla, punteros[$3], $1);}
 	;
@@ -44,7 +44,7 @@ bloque_sentencias_metodo : BEGIN sentencias_metodo END
 ;
 sentencias_metodo: sentencia_metodo | sentencias_metodo sentencia_metodo
 ;
-sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de la misma clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1]);}
+sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada("invocación a método de la misma clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1]);}
 		| sentencia
 ;
 
@@ -55,18 +55,18 @@ bloque_sentencias: BEGIN sentencias END
 sentencias: sentencia | sentencias sentencia
 ;
 sentencia: seleccion
-		| identificador ASIGNACION expr ';' {Log::estructuraDetectada(elLexico->contadorLineas, "asignación"); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
-		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "invocación a método de clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1], punteros[$3]);}
-		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada(elLexico->contadorLineas, "print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
-		| PRINT '('expr')'';' {AccionesSintactico::informarError("print", "un string" ,"una expresion", elLexico);}
+		| identificador ASIGNACION expr ';' {Log::estructuraDetectada("asignación"); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
+		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada("invocación a método de clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1], punteros[$3]);}
+		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada("print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
+		| PRINT '('expr')'';' {Log::informarError("print", "un string" ,"una expresion");}
 		| for
-		| error ';' {Log::errorSintactico(elLexico->contadorLineas, "No se pudo reconocer la sentencia"); abortarCompilacion = true;}
+		| error ';' {Log::errorSintactico("No se pudo reconocer la sentencia"); }
 ;
 
 /* RELACIONADO AL IF */
-seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if"); Polaca::polacaEnEdicion->terminoIf();}
-			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {Log::estructuraDetectada(elLexico->contadorLineas, "bloque if"); Polaca::polacaEnEdicion->terminoIf();}
-			| IF condicion {AccionesSintactico::informarError("if","(","condición sin paréntesis", elLexico); abortarCompilacion = true;}
+seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada("bloque if"); Polaca::polacaEnEdicion->terminoIf();}
+			| IF '(' condicion ')' cuerpo_if ELSE cuerpo_if END_IF {Log::estructuraDetectada("bloque if"); Polaca::polacaEnEdicion->terminoIf();}
+			| IF condicion {Log::informarError("if","(","condición sin paréntesis");}
 ;
 
 cuerpo_if: sentencias_ejecutables {Polaca::polacaEnEdicion->terminoRamaIf();}
@@ -80,8 +80,8 @@ comparador:
 	|	MENORIGUAL {$$ = MENORIGUAL;}
 ;
 condicion: expr comparador expr {Polaca::polacaEnEdicion->terminoCondicion($2);}
-	|	expr ASIGNACION expr {AccionesSintactico::informarError("condicion", "un comparador", "una asginación", elLexico); abortarCompilacion = true;}
-	|	expr {AccionesSintactico::informarError("condicion", "un comparador", "una expresion", elLexico); abortarCompilacion = true;}
+	|	expr ASIGNACION expr {Log::informarError("condicion", "un comparador", "una asginación");}
+	|	expr {Log::informarError("condicion", "un comparador", "una expresion");}
 ;
 
 /* EXPRESIÓN TÉRMINO FACTOR */
@@ -92,11 +92,11 @@ expr: termino
 ;
 termino:
 	factor
-|	termino '*' factor {Polaca::polacaEnEdicion->cargarOperador('*');}
-|	termino '/' factor {Polaca::polacaEnEdicion->cargarOperador('/');}
+|	termino '*' factor {Polaca::polacaEnEdicion->cargarOperador('*');$$=-1;}
+|	termino '/' factor {Polaca::polacaEnEdicion->cargarOperador('/');$$=-1;}
 ;
 factor: CTE {$$=Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
-	|	identificador
+	|	identificador {$$=-1;}
 ;
 
  /* soporte para variables de objetos */
@@ -104,6 +104,6 @@ factor: CTE {$$=Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);}
 ;
 /* BUCLE FOR */
-for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {Log::estructuraDetectada(elLexico->contadorLineas, "bucle for");}
-	  | FOR '(' error ')' sentencias_ejecutables {AccionesSintactico::informarError("for", "asignación; factor; factor", "una expresión inesperada", elLexico); abortarCompilacion = true;}
+for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {Log::estructuraDetectada("bucle for");}
+	  | FOR '(' error ')' sentencias_ejecutables {Log::informarError("for", "asignación; factor; factor", "una expresión inesperada");}
 %%

@@ -4,10 +4,11 @@
 using namespace std;
 class PasoLabel : public Paso{
 private:
+	static int numLabel;
 	int pos;
 public:
-	PasoLabel(int posicion){
-		pos = posicion;
+	PasoLabel(){
+		pos = numLabel++;
 	}
 
 	virtual void generarCodigo(stack<int>& pila){

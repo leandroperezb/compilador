@@ -5,9 +5,11 @@
 #include "pasostring.h"
 #include "pasoinvocacion.h"
 #include "pasosalto.h"
+#include "pasolabel.h"
 
 Polaca Polaca::polacaMadre;
 Polaca* Polaca::polacaEnEdicion = nullptr;
+int PasoLabel::numLabel = 0;
 void Polaca::cargarOperador(int op){
 	tira.push_back(FactoryOperador::crearPaso(op));
 }
@@ -38,10 +40,13 @@ void Polaca::terminoRamaIf(){
 
 	tira.push_back(new PasoSalto(false));
 	pila.push(tira.size() - 1);
+
+	tira.push_back(new PasoLabel());
 }
 
 
 void Polaca::terminoIf(){
 	int indice = pila.top(); pila.pop();
 	((PasoSalto*) tira[indice])->setDestino(tira.size());
+	tira.push_back(new PasoLabel());
 }

@@ -1,4 +1,6 @@
 #include "lexico.h"
+#include "log.h"
+
 
 AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	rutaCodigoFuente = ruta; tablaSimbolos = tabla;
@@ -124,7 +126,7 @@ AnalizadorLexico::token AnalizadorLexico::getToken(){
 	registroToken resultado = colaDeTokens.front();	
 	colaDeTokens.pop();
 	if(resultado.warning != ""){
-		cout<<resultado.warning;
+		Log::warning(resultado.warning);
 	}
 	return resultado.token;
 }
