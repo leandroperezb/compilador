@@ -113,27 +113,22 @@ void AccionesSintactico::nuevoFactor(TablaSimbolos* tabla, string factor){
 		if(variable->clasePadre != "")
 			return;
 	}else{ // Si estamos dentro de un metodo
-		if(claseActual != variable->clasePadre && variable->visibilidad == TablaSimbolos::PRIVAT)
+		if(claseActual != variable->clasePadre && variable->visibilidad == TablaSimbolos::PRIVAT) //Si es privado, que sea sólo de clase actual
 			return;
-		if(!hereda(tabla, claseActual, variable->clasePadre))
+		if(!hereda(tabla, claseActual, variable->clasePadre)) //Por el contrario, para los públicos, que sea de la línea de herencia
 			return;
 	}
 	Polaca::polacaEnEdicion->cargarFactor(factor);
 }
 void AccionesSintactico::nuevoFactorDeClase(TablaSimbolos* tabla, string obj,string variable){
-	if(!tabla->existe(obj) || !tabla->existe(variable))
+	if(!tabla->existe(obj + "." + variable)) //Si no existe, algo está mal (o el objeto, o la variable)
 		return;
-	TablaSimbolos::registro* objeto = &tabla->get(obj);
-	TablaSimbolos::registro* var = &tabla->get(variable);
-	if(objeto->tipoSimbolo != TablaSimbolos::VARIABLE || var->tipoSimbolo != TablaSimbolos::VARIABLE)
-		return;
-	if(objeto->tipo < 0)
+	TablaSimbolos::registro* var = &tabla->get(obj + "." + variable);
+	if(var->tipoSimbolo != TablaSimbolos::VARIABLE)
 		return;
 	if(var->visibilidad == TablaSimbolos::PRIVAT)
 		return;
-	string clase = (*punteros)[objeto->tipo];
-	if(!hereda(tabla, clase, var->clasePadre))
-		return;
+
 	Polaca::polacaEnEdicion->cargarFactor(obj+"."+variable);
 }
 bool AccionesSintactico::hereda(TablaSimbolos* tabla, string claseHijo, string clasePadre){
