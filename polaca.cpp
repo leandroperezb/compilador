@@ -95,7 +95,7 @@ void Polaca::guardar(string nombreArchivo){
 	}
 
 	for (int i = 0; i < tira.size(); i++){
-		ofs << tira[i]->toString() << "\n";
+		ofs << tira[i]->toString(&tira) << "\n";
 	}
 }
 

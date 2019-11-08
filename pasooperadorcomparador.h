@@ -16,7 +16,11 @@ public:
 	virtual void generarCodigo(stack<int>& pila){
         
     }
-    virtual string toString(){
-			return to_string((char) op);
+    virtual string toString(vector<Paso*>* tira){
+    	if (op < 256){
+    		char a[] = {(char) op};
+			return string(a);
 		}
+		return "Operador nro: " + to_string(op);
+	}
 };

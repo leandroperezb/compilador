@@ -15,7 +15,7 @@ public:
         
     }
 
-    virtual string toString(){
-			return "label";
+    virtual string toString(vector<Paso*>* tira){
+			return "label " + to_string(pos);
 		}
 };

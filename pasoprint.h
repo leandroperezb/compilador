@@ -6,7 +6,7 @@ public:
 	PasoPrint(){
 
 	}
-	virtual string toString(){
+	virtual string toString(vector<Paso*>* tira){
 			return "print";
 		}
 };

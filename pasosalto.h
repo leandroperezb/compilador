@@ -16,8 +16,19 @@ public:
 	virtual void generarCodigo(stack<int>& pila){
         
     }
-    virtual string toString(){
-			return "salto";
-		}
+    virtual string toString(vector<Paso*>* tira){
+    	string salida = "Salto";
+    	if (condicional){
+    		salida = salida + " condicional por ";
+    		if (porVerdadero)
+    			salida = salida + "verdadero ";
+    		else
+    			salida = salida + "falso ";
+    	}else{
+    		salida = salida + " incondicional ";
+    	}
+    	salida = salida + "a " + (*tira)[destino]->toString();
+		return salida;
+	}
 };
 
