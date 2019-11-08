@@ -44,8 +44,12 @@ bloque_sentencias_metodo : BEGIN sentencias_metodo END
 ;
 sentencias_metodo: sentencia_metodo | sentencias_metodo sentencia_metodo
 ;
-sentencia_metodo: ID '(' ')' ';' {Log::estructuraDetectada("invocación a método de la misma clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1]);}
-		| sentencia
+sentencia_metodo: seleccion
+		| identificador ASIGNACION expr ';' {Log::estructuraDetectada("asignación"); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
+		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada("print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
+		| PRINT '('expr')'';' {Log::informarError("print", "un string" ,"una expresion");}
+		| for
+		| error ';' {Log::errorSintactico("No se pudo reconocer la sentencia"); }
 ;
 
 sentencias_ejecutables: bloque_sentencias | sentencia
@@ -54,13 +58,8 @@ bloque_sentencias: BEGIN sentencias END
 ;
 sentencias: sentencia | sentencias sentencia
 ;
-sentencia: seleccion
-		| identificador ASIGNACION expr ';' {Log::estructuraDetectada("asignación"); Polaca::polacaEnEdicion->cargarOperador(ASIGNACION);}
+sentencia: sentencia_metodo
 		| ID '.' ID '(' ')' ';' {Log::estructuraDetectada("invocación a método de clase"); AccionesSintactico::llamadoAMetodo(laTabla, punteros[$1], punteros[$3]);}
-		| PRINT '(' STRING ')' ';' {Log::estructuraDetectada("print"); Polaca::polacaEnEdicion->cargarString(punteros[$3]); Polaca::polacaEnEdicion->cargarPrint(); }
-		| PRINT '('expr')'';' {Log::informarError("print", "un string" ,"una expresion");}
-		| for
-		| error ';' {Log::errorSintactico("No se pudo reconocer la sentencia"); }
 ;
 
 /* RELACIONADO AL IF */

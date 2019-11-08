@@ -67,8 +67,11 @@ public:
 		abortarCompilacion = true;
 	}
 	static void accesoAtributoPrivado(string atributo, string clase){
-		cout << "Linea "<<lexico->contadorLineas<<": el atributo \"" << atributo << "\" de la clase " << clase << " es privado"<<endl;
+		cout << "Linea "<<lexico->contadorLineas<<": el miembro \"" << atributo << "\" de la clase " << clase << " es privado"<<endl;
 		abortarCompilacion = true;
+	}
+	static void metodoNoHeredado(string metodo, string claseObjeto){
+		cout << "Linea "<<lexico->contadorLineas<<": el metodo \""<<metodo<<"\" no corresponde a la linea de herencia de "<<claseObjeto<<endl;
 	}
 	static void operacionConObjeto(string objeto){
 		cout << "Linea "<<lexico->contadorLineas << ": No se permite la operacion directa con el objeto " <<objeto<<endl;
