@@ -3,6 +3,7 @@
 
 vector<string>* AccionesSintactico::punteros = nullptr;
 string AccionesSintactico::claseActual = "";
+unordered_map<string, vector<string>> AccionesSintactico::variablesDeClase;
 
 void AccionesSintactico::inicializar(vector<string>* p){
 	AccionesSintactico::punteros = p;
@@ -23,18 +24,45 @@ void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<strin
 	}
 }
 
+void AccionesSintactico::inicializarVariablesDeObjeto(TablaSimbolos* tabla, string objeto, string clase){
+	while (clase != ""){//Mientras esté recorriendo la línea de herencia
+		//Por cada variable de esta clase
+		for (int i = 0; i < variablesDeClase[clase].size(); i++){
+			string nombreVariable = variablesDeClase[clase][i];
+			TablaSimbolos::registro* r = &tabla->get(nombreVariable);
+			TablaSimbolos::registro nuevaVariable;
+			nuevaVariable.tipo = (*r).tipo; nuevaVariable.visibilidad = (*r).visibilidad;
+			nuevaVariable.clasePadre = (*r).clasePadre; nuevaVariable.tipoSimbolo = (*r).tipoSimbolo;
+			tabla->agregar(objeto + "." + nombreVariable, nuevaVariable);
+		}
+		clase = (&tabla->get(clase))->clasePadre;
+	}
+}
+
 void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector<string>& variables, int modificador){
+	auto search = AccionesSintactico::variablesDeClase.find(AccionesSintactico::claseActual);
+	if (search == AccionesSintactico::variablesDeClase.end()) {
+		AccionesSintactico::variablesDeClase.insert({AccionesSintactico::claseActual, vector<string>()});
+		search = AccionesSintactico::variablesDeClase.find(AccionesSintactico::claseActual);
+	}
+	vector<string>* vectorVariables = &(search->second);
+
 	for (int i = 0; i < variables.size(); i++){
 		TablaSimbolos::registro* r = &tabla->get(variables[i]);
 		if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO)
 			return;
 		r->tipoSimbolo = TablaSimbolos::VARIABLE;
 		(*r).tipo = tipo;
+
 		if (modificador != 0){ //Si es una declaración de una variable dentro de una clase
 			(*r).visibilidad = modificador;
-			(*r).clasePadre = (*punteros)[tipo];
+			(*r).clasePadre = claseActual;
+			vectorVariables->push_back(variables[i]);
 		}else{
 			(*r).clasePadre = "";
+			if (tipo >= 0){ //Si el tipo no es un primitivo, guardar en la tabla de símbolos las variables para el objeto
+				inicializarVariablesDeObjeto(tabla, variables[i], (*punteros)[tipo]);
+			}
 		}
 	}
 	variables.clear();
@@ -57,6 +85,7 @@ void AccionesSintactico::cargarClase(TablaSimbolos* tabla, string clase, string 
 	if(nuevaClase->tipoSimbolo != TablaSimbolos::INDEFINIDO)
 		return;
 	nuevaClase->tipoSimbolo = TablaSimbolos::CLASE;
+	nuevaClase->clasePadre = clasePadre;
 	AccionesSintactico::claseActual = clase;
 }
 
@@ -143,7 +172,7 @@ void AccionesSintactico::llamadoAMetodo(TablaSimbolos* tabla, string objeto, str
 		return;
 
 	//Si el método no es de la línea de herencia de la clase en edición, o es de la línea de herencia del objeto
-	if (!hereda(tabla, claseActual, met->clasePadre) || !hereda(tabla, (*punteros)[obj->tipo], met->clasePadre))
+	if ((claseActual != "" && !hereda(tabla, claseActual, met->clasePadre)) || !hereda(tabla, (*punteros)[obj->tipo], met->clasePadre))
 		return;
 
 	if(claseActual == "" && met->visibilidad == TablaSimbolos::PRIVAT) //Si estamos en el "main" y es método privado
