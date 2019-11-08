@@ -9,7 +9,7 @@ using namespace std;
 class Paso{
 public:
 	virtual void generarCodigo(stack<int>& pila) = 0;
-	virtual string toString() = 0;
+	virtual string toString(vector<Paso*>* tira = nullptr) = 0;
 };
 
 #endif

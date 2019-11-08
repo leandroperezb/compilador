@@ -12,7 +12,7 @@ public:
 	virtual void generarCodigo(stack<int>& pila){
 
 	}
-	virtual string toString(){
+	virtual string toString(vector<Paso*>* tira){
 			return str;
 		}
 };

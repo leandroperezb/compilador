@@ -100,9 +100,21 @@ factor: CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 
  /* soporte para variables de objetos */
  identificador: ID {AccionesSintactico::nuevoFactor(laTabla,punteros[$1]);}
-			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);}
+			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);
+			punteros.push_back(punteros[$1] + "." + punteros[$3]); $$ = punteros.size() - 1;}
 ;
 /* BUCLE FOR */
-for : FOR '(' identificador ASIGNACION factor ';' factor ';' factor ')' sentencias_ejecutables {Log::estructuraDetectada("bucle for");}
+for : FOR '(' inicio_y_limite ';' step ')' sentencias_ejecutables {Polaca::polacaEnEdicion->terminoFor(punteros[$3], punteros[$5]);}
 	  | FOR '(' error ')' sentencias_ejecutables {Log::informarError("for", "asignación; factor; factor", "una expresión inesperada");}
+;
+
+step: CTE
+	|	identificador {Polaca::polacaEnEdicion->removeLastPaso();}
+;
+
+inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(); $$ = $1;}
+;
+
+inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
+;
 %%

@@ -13,7 +13,7 @@ public:
         
     }
 
-    virtual string toString(){
+    virtual string toString(vector<Paso*>* tira){
 			return ":=";
 		}
 };
