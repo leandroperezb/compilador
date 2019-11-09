@@ -26,7 +26,7 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
 	//Control de longitud máxima
 	if (lexico->identificador.length() > 25){
-		lexico->wrnng = lexico->wrnng+"Warning: se truncó la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
+		lexico->wrnng = lexico->wrnng+"Warning: se truncó el identificador en la línea "+to_string(lexico->contadorLineas)+"\n";
 		lexico->identificador.resize(25);
 	}
 

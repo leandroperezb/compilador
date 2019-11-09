@@ -7,6 +7,8 @@
 using namespace std;
 
 class Log{
+private:
+	inline static const string tokens[] = {"ID", "CTE", "MAYORIGUAL", "MENORIGUAL", "IGUAL", "DISTINTO", "ASIGNACION", "STRING", "IF", "ELSE", "END_IF", "PRINT", "INT", "BEGIN", "END", "FOR", "CLASS", "EXTENDS", "PUBLIC", "PRIVATE", "VOID", "ULONG", "ERROR"};
 public:
 	static AnalizadorLexico* lexico;
 	static bool abortarCompilacion;
@@ -23,7 +25,16 @@ public:
 	}
 
 	static void tokenDetectado(int token){
-		//cout << "Token: " << token << endl;
+		/*string nombreToken;
+		if (token > 256){
+			nombreToken = tokens[token - 257];
+		}else if (token < 0){
+			nombreToken = "FIN";
+		}else{
+			char a[] = {(char) token};
+			nombreToken = string(a);
+		}
+		cout << "Token: " << nombreToken << endl;*/
 	}
 	
 	
