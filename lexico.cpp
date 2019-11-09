@@ -25,6 +25,10 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	inicializarMatrizDeTransiciones();
 
 	infile.open(this->rutaCodigoFuente, std::ifstream::in);
+	if(infile.fail()){
+		cout << "Error al abrir el archivo de código fuente" << endl;
+		exit(1);
+	}
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
@@ -83,10 +87,6 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 }
 
 void AnalizadorLexico::analizarCodigo(){
-	if(infile.fail()){
-		return;
-	}
-
 	char c; transicion accion;
 	while((infile.get(c), infile.eof()) == false){
 		//Por cada carácter, ejecutar la acción semántica (si existe) e ir al nuevo estado

@@ -38,6 +38,7 @@ int main(int argc, char** argv){
 	if (argc > 1){
 		rutaCodigoFuente = argv[1];
 	}else{
+		cout << "Debe introducir la ruta al código fuente por parámetro" << endl;
 		return 1;
 	}
 
