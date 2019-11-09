@@ -160,6 +160,11 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = STRING;
 	token.puntero = lexico->identificador;
+
+	TablaSimbolos::registro registro;
+	registro.tipoSimbolo = TablaSimbolos::CADENA;
+	lexico->agregarEnTabla("\""+lexico->identificador+"\"", registro);
+
 	lexico->identificador = "";
 	lexico->guardarToken({token, lexico->wrnng});
 	lexico->wrnng = "";

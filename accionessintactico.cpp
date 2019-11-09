@@ -22,9 +22,7 @@ void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<strin
 	}
 	string key = punteros[indice];
 	TablaSimbolos::registro r = tabla->get(key);
-	cout << "afuera  " << key << endl;
 	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE){
-		cout << "adentro" << endl;
 		r.valor = r.valor * (-1);
 		r.tipo = TablaSimbolos::TIPO_INT;
 		if (r.valor < -32768){

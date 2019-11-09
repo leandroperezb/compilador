@@ -21,7 +21,8 @@ class TablaSimbolos{
 		static const int VARIABLE = -2;
 		static const int CLASE = -3;
 		static const int METODO = -4;
-		static const int INDEFINIDO = -5;
+		static const int CADENA = -5;
+		static const int INDEFINIDO = -6;
 		TablaSimbolos();
 		struct registro{
 			long long valor;
