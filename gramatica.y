@@ -87,7 +87,7 @@ condicion: expr comparador expr {Polaca::polacaEnEdicion->terminoCondicion($2);}
 expr: termino
 	| expr '+' termino {Polaca::polacaEnEdicion->cargarOperador('+');}
 	| expr '-' termino {Polaca::polacaEnEdicion->cargarOperador('-');}
-	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); $$ = $2;}
+	| '-' termino {AccionesSintactico::negativizarConstante(laTabla, punteros, $2);}
 ;
 termino:
 	factor
@@ -109,10 +109,12 @@ for : FOR '(' inicio_y_limite ';' step ')' sentencias_ejecutables {Polaca::polac
 ;
 
 step: CTE
+	|	'-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); punteros.push_back("-" + punteros[$2]); $$ = punteros.size() - 1;}
 	|	identificador {Polaca::polacaEnEdicion->removeLastPaso();}
 ;
 
 inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(); $$ = $1;}
+			|	inicio_for ';' '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(); $$ = $1;}
 ;
 
 inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
