@@ -32,6 +32,8 @@ void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<strin
 		tabla->agregar(to_string(r.valor), r); //Agregar una nueva constante a la tabla de símbolos, la negativa
 		punteros[indice] = to_string(r.valor); //Para que la lista de punteros ahora apunte a la constante modificada en negativo
 		((PasoFactor*) Polaca::polacaEnEdicion->getLastPaso())->setFactor(to_string(r.valor));
+
+		tabla->constanteNegativizada(key);
 	}
 }
 

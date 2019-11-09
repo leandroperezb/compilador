@@ -22,6 +22,15 @@ bool TablaSimbolos::existe(string key){
 	return (search != tablaSimbolos.end());
 }
 
+void TablaSimbolos::constanteNegativizada(string key){
+	auto search = tablaSimbolos.find(key);
+	if (search != tablaSimbolos.end()) {
+		if (--search->second.visibilidad == 0){
+			tablaSimbolos.erase(key);
+		}
+	}
+}
+
 void TablaSimbolos::guardar(){
 	ofstream ofs;
 	ofs.open ("tablaDeSimbolos.txt", std::ofstream::out);

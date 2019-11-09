@@ -36,6 +36,7 @@ class TablaSimbolos{
 		};
 
 		void agregar(string key, registro r);
+		void constanteNegativizada(string key);
 		registro& get(string key);
 		bool existe(string key);
 

@@ -114,7 +114,12 @@ void AnalizadorLexico::retrocederLectura(){
 }
 
 void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
-	tablaSimbolos->agregar(key, r);
+	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE && tablaSimbolos->existe(key)){
+		TablaSimbolos::registro *r = &tablaSimbolos->get(key);
+		(*r).visibilidad++;
+	}else{
+		tablaSimbolos->agregar(key, r);
+	}
 }
 
 void AnalizadorLexico::guardarToken(registroToken nuevoToken){
