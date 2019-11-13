@@ -25,7 +25,7 @@ bool TablaSimbolos::existe(string key){
 void TablaSimbolos::constanteNegativizada(string key){
 	auto search = tablaSimbolos.find(key);
 	if (search != tablaSimbolos.end()) {
-		if (--search->second.visibilidad == 0){
+		if (--search->second.visibilidad == 0 && --search->second.valor != 0){
 			tablaSimbolos.erase(key);
 		}
 	}
