@@ -77,7 +77,6 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 		registro.tipo = TablaSimbolos::TIPO_INT;
 	}
 	registro.valor = numero;
-	registro.visibilidad = 1;
 	registro.tipoSimbolo = TablaSimbolos::CONSTANTE;
 	lexico->agregarEnTabla(lexico->identificador, registro);
 

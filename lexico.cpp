@@ -116,7 +116,7 @@ void AnalizadorLexico::retrocederLectura(){
 void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
 	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE && tablaSimbolos->existe(key)){
 		TablaSimbolos::registro *r = &tablaSimbolos->get(key);
-		(*r).visibilidad++;
+		(*r).visibilidad=0;
 	}else{
 		tablaSimbolos->agregar(key, r);
 	}

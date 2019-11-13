@@ -33,15 +33,18 @@ void TablaSimbolos::constanteNegativizada(string key){
 
 void TablaSimbolos::guardar(){
 	ofstream ofs;
-	ofs.open ("tablaDeSimbolos.txt", std::ofstream::out);
+	ofs.open ("tablaDeSimbolos.csv", std::ofstream::out);
 	if(ofs.fail()){
 		return;
 	}
-
-	ofs << "Tabla de símbolos detectados (-1 = CONSTANTE) (-2 = VARIABLES) (-3 = CLASE) (-4 = METODO) (-5 = CADENA):\n(Clave)\t\t(Uso)\t\t(Tipo de dato)\t\t(Clase Padre)\t\t(Visibilidad)\n";
+	string visibilidad[] = {"GLOBAL", "PRIVADO", "PUBLICO"};
+	string usos[] = {"", "CONSTANTE", "VARIABLE", "CLASE", "METODO", "CADENA"};
+	string tipos[] = {"OTRO", "INT", "ULONG"};
+	ofs << "Tabla de símbolos detectados\n(Clave), (Uso), (Tipo de dato), (Clase Padre), (Visibilidad)\n";
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
 	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
-		ofs << it->first << "\t\t" << it->second.tipoSimbolo << "\t\t\t" << it->second.tipo << "\t\t\t" << it->second.clasePadre << "\t\t\t" << it->second.visibilidad << '\n';
+		int tipoDato = (it->second.tipo < 0 ) ? -(it->second.tipo) : 0;
+		ofs << it->first << ", " << usos[-(it->second.tipoSimbolo)] << ", " << tipos[tipoDato] << ", " << it->second.clasePadre << ", " << visibilidad[-(it->second.visibilidad)] << '\n';
 	}
 
 	ofs.close();

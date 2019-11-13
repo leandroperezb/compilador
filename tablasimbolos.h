@@ -32,7 +32,7 @@ class TablaSimbolos{
 
 			string clasePadre;
 			Polaca *polaca;
-			int visibilidad;
+			int visibilidad = 0;
 		};
 
 		void agregar(string key, registro r);
