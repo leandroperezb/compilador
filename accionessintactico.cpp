@@ -66,8 +66,6 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 			Log::redeclaracionVariable(variables[i]);
 			return;
 		}
-		r->tipoSimbolo = TablaSimbolos::VARIABLE;
-		(*r).tipo = tipo;
 
 		if (modificador != 0){ //Si es una declaración de una variable dentro de una clase
 			(*r).visibilidad = modificador;
@@ -76,9 +74,16 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 		}else{
 			(*r).clasePadre = "";
 			if (tipo >= 0){ //Si el tipo no es un primitivo, guardar en la tabla de símbolos las variables para el objeto
+				if (tabla->get((*punteros)[tipo]).tipoSimbolo != TablaSimbolos::CLASE){
+					Log::noExisteClase((*punteros)[tipo]);
+					return;
+				}
 				inicializarVariablesDeObjeto(tabla, variables[i], (*punteros)[tipo]);
 			}
 		}
+
+		r->tipoSimbolo = TablaSimbolos::VARIABLE;
+		(*r).tipo = tipo;
 	}
 	variables.clear();
 }
