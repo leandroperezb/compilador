@@ -37,14 +37,18 @@ void TablaSimbolos::guardar(){
 	if(ofs.fail()){
 		return;
 	}
-	string visibilidad[] = {"GLOBAL", "PRIVADO", "PUBLICO"};
+	string visibilidades[] = {"GLOBAL", "PRIVADO", "PUBLICO"};
 	string usos[] = {"", "CONSTANTE", "VARIABLE", "CLASE", "METODO", "CADENA"};
 	string tipos[] = {"OTRO", "INT", "ULONG"};
 	ofs << "Tabla de símbolos detectados\n(Clave), (Uso), (Tipo de dato), (Clase Padre), (Visibilidad)\n";
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
 	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
 		int tipoDato = (it->second.tipo < 0 ) ? -(it->second.tipo) : 0;
-		ofs << it->first << ", " << usos[-(it->second.tipoSimbolo)] << ", " << tipos[tipoDato] << ", " << it->second.clasePadre << ", " << visibilidad[-(it->second.visibilidad)] << '\n';
+		string visibilidad = "GLOBAL";
+		if (it->second.tipoSimbolo != TablaSimbolos::CONSTANTE)
+			visibilidad = visibilidades[-(it->second.visibilidad)];
+
+		ofs << it->first << ", " << usos[-(it->second.tipoSimbolo)] << ", " << tipos[tipoDato] << ", " << it->second.clasePadre << ", " << visibilidad << '\n';
 	}
 
 	ofs.close();
