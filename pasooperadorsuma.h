@@ -1,18 +1,49 @@
 #include "paso.h"
 #include <string>
+#include "tablasimbolos.h"
+#include "generacionCodigo.h"
+#include "log.h"
 
 using namespace std;
 class PasoOperadorSuma : public Paso{
-    
+private: 
+	TablaSimbolos* tds;
 public:
 	//Usamos para cada operador el int que le asignó yacc
-	PasoOperadorSuma(){
+	PasoOperadorSuma(TablaSimbolos* tabla){
+		tds = tabla;
 	}
 
-    virtual void generarCodigo(stack<int>& pila){
+    virtual void generarCodigo(){
+		GeneracionCodigo::operacion op2= GeneracionCodigo::desapilar();
+		GeneracionCodigo::operacion op1= GeneracionCodigo::desapilar();
 
+		string regOp1; string regOp2;
+
+		string codigo = conversiones(op1, op2);
+		
+		if( op1.esRegistro){
+			regOp1 = op1.operador;
+			regOp2 = variableEnCodigo(op2);
+		}else{
+			if(op2.esRegistro){
+				regOp1 = op2.operador;
+				regOp2 = variableEnCodigo(op1);
+			}
+			else{
+				regOp1 = GeneracionCodigo::buscarRegistro(false);
+				codigo += "MOV "+ regOp1 + " "+ variableEnCodigo(op1) + "\n";
+				regOp2 = variableEnCodigo(op2);
+			}
+
+		}
+		
+		codigo += "ADD "+regOp1 +" "+regOp2+"\n";
+
+		if (op2.esRegistro)
+			GeneracionCodigo::desocuparRegistro(op2.operador);
     }
     virtual string toString(vector<Paso*>* tira){
 			return "+";
-		}
+	}
 };

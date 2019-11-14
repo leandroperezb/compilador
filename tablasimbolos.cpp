@@ -38,7 +38,7 @@ void TablaSimbolos::guardar(){
 		return;
 	}
 	string visibilidades[] = {"GLOBAL", "PRIVADO", "PUBLICO"};
-	string usos[] = {"", "CONSTANTE", "VARIABLE", "CLASE", "METODO", "CADENA"};
+	string usos[] = {"", "CONSTANTE", "VARIABLE", "CLASE", "METODO", "CADENA", "NO DEFINIDO"};
 	string tipos[] = {"OTRO", "INT", "ULONG"};
 	ofs << "Tabla de símbolos detectados\n(Clave), (Uso), (Tipo de dato), (Clase Padre), (Visibilidad)\n";
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
