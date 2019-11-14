@@ -1,4 +1,4 @@
-%token ID CTE MAYORIGUAL MENORIGUAL IGUAL DISTINTO ASIGNACION STRING IF ELSE END_IF PRINT INT BEGIN END FOR CLASS EXTENDS PUBLIC PRIVATE VOID ULONG ERROR
+%token ID CTE MAYORIGUAL MENORIGUAL IGUAL DISTINTO ASIGNACION STRING IF ELSE END_IF PRINT INT BEGIN END FOR CLASS EXTENDS PUBLIC PRIVATE VOID ULONG ERROR DOWNTO
 %%
 programa: bloque_declarativo bloque_sentencias
 ;
@@ -113,8 +113,10 @@ step: CTE
 	|	identificador {Polaca::polacaEnEdicion->removeLastPaso();}
 ;
 
-inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(); $$ = $1;}
-			|	inicio_for ';' '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(); $$ = $1;}
+inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
+			|  inicio_for ';' DOWNTO factor {Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
+			|	inicio_for ';' '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
+			|	inicio_for ';' DOWNTO '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
 ;
 
 inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}

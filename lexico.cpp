@@ -21,6 +21,7 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	palabrasReservadas.insert({"ulong", ULONG});
 	palabrasReservadas.insert({"extends", EXTENDS});
 	palabrasReservadas.insert({"void", VOID});
+	palabrasReservadas.insert({"downto", DOWNTO});
 
 	inicializarMatrizDeTransiciones();
 

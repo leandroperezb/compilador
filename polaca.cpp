@@ -64,8 +64,11 @@ void Polaca::empiezaFor(string variable){
 	cargarFactor(variable);
 }
 
-void Polaca::comparacionFor(){
-	cargarOperador(IGUAL);
+void Polaca::comparacionFor(bool descendente){
+	if (descendente)
+		cargarOperador('>');
+	else
+		cargarOperador('<');
 	tira.push_back(new PasoSalto(true, true));
 	pila.push(tira.size() - 1);
 }
