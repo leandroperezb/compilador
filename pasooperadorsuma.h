@@ -37,6 +37,7 @@ public:
 
 		if (op2.esRegistro)
 			GeneracionCodigo::desocuparRegistro(op2.operador);
+		GeneracionCodigo::apilar({true, regOp1}); // Apilo el registro donde quedó el resultado
     }
     virtual string toString(vector<Paso*>* tira){
 			return "+";

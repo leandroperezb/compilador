@@ -10,7 +10,7 @@ public:
 		this->str = str;
 	}
 	virtual void generarCodigo(){
-
+		GeneracionCodigo::apilar({false, str});
 	}
 	virtual string toString(vector<Paso*>* tira){
 			return str;

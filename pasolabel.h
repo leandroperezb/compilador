@@ -12,7 +12,7 @@ public:
 	}
 
 	virtual void generarCodigo(){
-        
+        string codigo = "label"+pos;
     }
 
     virtual string toString(vector<Paso*>* tira){
