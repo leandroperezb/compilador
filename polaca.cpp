@@ -69,7 +69,7 @@ void Polaca::comparacionFor(bool descendente){
 		cargarOperador('>');
 	else
 		cargarOperador('<');
-	tira.push_back(new PasoSalto(true, true));
+	tira.push_back(new PasoSalto(true, false));
 	pila.push(tira.size() - 1);
 }
 
@@ -104,4 +104,11 @@ void Polaca::guardar(string nombreArchivo){
 
 Paso* Polaca::getLastPaso(){
 	return tira[tira.size()-1];
+}
+
+int Polaca::size(){
+	return tira.size();
+}
+Paso* Polaca::get(int indice){
+	return tira[indice];
 }

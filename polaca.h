@@ -50,7 +50,8 @@ public:
 	void terminoFor(string variable, string step);
 
 	void guardar(string nombreArchivo);
-
+	int size();
+	Paso* get(int indice);
 };
 
 #endif

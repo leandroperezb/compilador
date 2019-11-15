@@ -5,7 +5,7 @@
 using namespace std;
 class PasoOperadorSuma : public Paso{
 public:
-	//Usamos para cada operador el int que le asignó yacc
+	
 	PasoOperadorSuma(){
 	}
 
