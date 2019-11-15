@@ -2,7 +2,7 @@
 
 class PasoPrint : public Paso{
 public:
-	virtual void generarCodigo(stack<int>& pila){}
+	virtual void generarCodigo(){}
 	PasoPrint(){
 
 	}

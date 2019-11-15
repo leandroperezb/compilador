@@ -9,7 +9,7 @@ public:
 	PasoOperadorAsignacion(){
 	}
 
-	virtual void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(){
         
     }
 

@@ -9,7 +9,7 @@ public:
 	PasoOperadorDivision(){
 	}
 
-    virtual void generarCodigo(stack<int>& pila){
+    virtual void generarCodigo(){
         
     }
     virtual string toString(vector<Paso*>* tira){

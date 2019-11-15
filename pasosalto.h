@@ -13,7 +13,7 @@ public:
 	PasoSalto(bool condicional, bool b = false){this->condicional = condicional; porVerdadero = b;}
 	void setDestino(int destino){this->destino = destino;}
 	int getDestino(){return destino;}
-	virtual void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(){
         
     }
     virtual string toString(vector<Paso*>* tira){

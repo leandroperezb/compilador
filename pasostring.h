@@ -9,7 +9,7 @@ public:
 	PasoString(string str){
 		this->str = str;
 	}
-	virtual void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(){
 
 	}
 	virtual string toString(vector<Paso*>* tira){

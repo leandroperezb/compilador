@@ -11,7 +11,7 @@ public:
 		pos = numLabel++;
 	}
 
-	virtual void generarCodigo(stack<int>& pila){
+	virtual void generarCodigo(){
         
     }
 
