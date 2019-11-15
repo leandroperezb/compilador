@@ -44,6 +44,7 @@ int main(int argc, char** argv){
 
 	TablaSimbolos tabla;
 	laTabla = &tabla;
+	Paso::tds = &tabla;
 
 	AnalizadorLexico ana(rutaCodigoFuente, &tabla);
 	Log::lexico = &ana;

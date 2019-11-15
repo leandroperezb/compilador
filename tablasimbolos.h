@@ -9,6 +9,8 @@
 
 using namespace std;
 
+class Polaca;
+
 class TablaSimbolos{
 	public:
 		static const int TIPO_INT = -1;

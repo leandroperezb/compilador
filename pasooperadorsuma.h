@@ -1,22 +1,17 @@
 #include "paso.h"
 #include <string>
-#include "tablasimbolos.h"
-#include "generacionCodigo.h"
 #include "log.h"
 
 using namespace std;
 class PasoOperadorSuma : public Paso{
-private: 
-	TablaSimbolos* tds;
 public:
 	//Usamos para cada operador el int que le asignó yacc
-	PasoOperadorSuma(TablaSimbolos* tabla){
-		tds = tabla;
+	PasoOperadorSuma(){
 	}
 
     virtual void generarCodigo(){
-		GeneracionCodigo::operacion op2= GeneracionCodigo::desapilar();
-		GeneracionCodigo::operacion op1= GeneracionCodigo::desapilar();
+		operacion op2= GeneracionCodigo::desapilar();
+		operacion op1= GeneracionCodigo::desapilar();
 
 		string regOp1; string regOp2;
 

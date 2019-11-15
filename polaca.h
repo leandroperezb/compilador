@@ -9,6 +9,8 @@
 
 using namespace std;
 
+class Paso;
+
 class Polaca{
 private:
 	stack<int> pila;
