@@ -5,6 +5,7 @@
 #include <vector>
 #include "polaca.h"
 #include "log.h"
+#include <fstream>
 
 using namespace std;
 
@@ -59,6 +60,16 @@ int main(int argc, char** argv){
 	tabla.guardar();
 	Polaca::polacaMadre.guardar("polaca madre");
 	tabla.guardarPolacas();
+
+	ofstream ofs;
+	ofs.open ("CODIGO.txt", std::ofstream::out);
+	if(ofs.fail()){
+		return 1;
+	}
+
+	ofs << GeneracionCodigo::generarCodigo(&Polaca::polacaMadre);
+
+	ofs.close();
 
 	return 0;
 }
