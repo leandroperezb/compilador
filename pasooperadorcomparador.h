@@ -17,7 +17,7 @@ public:
 		op = operador;
 	}
 
-	virtual void generarCodigo(){
+	virtual string generarCodigo(){
 		// Tomo los dos operandos
         operacion op2= GeneracionCodigo::desapilar();
 		operacion op1= GeneracionCodigo::desapilar();
@@ -44,6 +44,8 @@ public:
 		if (op2.esRegistro) // Si el segundo era un registro lo tengo que desocupar
 			GeneracionCodigo::desocuparRegistro(op2.operador);
 		GeneracionCodigo::apilar({true, regOp1}); // Apilo el registro donde quedó el resultado
+
+		return codigo;
     }
     virtual string toString(vector<Paso*>* tira){
     	if (op < 256){

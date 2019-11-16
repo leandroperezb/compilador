@@ -100,6 +100,8 @@ void Polaca::guardar(string nombreArchivo){
 	for (int i = 0; i < tira.size(); i++){
 		ofs << tira[i]->toString(&tira) << "\n";
 	}
+
+	ofs.close();
 }
 
 Paso* Polaca::getLastPaso(){

@@ -9,7 +9,7 @@ public:
 	PasoOperadorResta(){
 	}
 
-	virtual void generarCodigo(){
+	virtual string generarCodigo(){
         operacion op2= GeneracionCodigo::desapilar();
 		operacion op1= GeneracionCodigo::desapilar();
 
@@ -22,19 +22,16 @@ public:
 			regOp2 = variableEnCodigo(op2); // renombro la variable
 		}else{ // Si no es un registro
 			// Busco un registro para el primero, ya que no es una op conmutativa.
-			regOp1 = GeneracionCodigo::buscarRegistro(false);
-			if(op2.esRegistro){ // Caso V+R
-				regOp2 = op2.operador; // Opero entre los registros
-			}
-			else{ // Caso V+V
-				codigo += "MOV "+ regOp1 + " "+ variableEnCodigo(op1) + "\n";
-				regOp2 = variableEnCodigo(op2);
-			}
+			regOp1 = GeneracionCodigo::buscarRegistro(esUlong(op1));
+			codigo += "MOV "+ regOp1 + ", "+ variableEnCodigo(op1) + "\n";
+			regOp2 = variableEnCodigo(op2);
 		}
-		codigo+= "SUB "+regOp1+" "+regOp2+'\n';
+		codigo+= "SUB "+regOp1+", "+regOp2+'\n';
 		if (op2.esRegistro) // Si el segundo era un registro lo tengo que desocupar
 			GeneracionCodigo::desocuparRegistro(op2.operador);
 		GeneracionCodigo::apilar({true, regOp1}); // Apilo el registro donde quedó el resultado
+
+		return codigo;
     }
     virtual string toString(vector<Paso*>* tira){
 			return "-";

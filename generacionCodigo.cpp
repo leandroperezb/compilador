@@ -1,7 +1,9 @@
 #include "generacionCodigo.h"
-void GeneracionCodigo::generarCodigo(Polaca *polaca){
+string GeneracionCodigo::generarCodigo(Polaca *polaca){
+	string resultado = "";
 	for(int i = 0; i < polaca->size(); i++){
 		Paso* p = polaca->get(i);
-		p->generarCodigo();
+		resultado += p->generarCodigo();
 	}
+	return resultado;
 }

@@ -9,8 +9,9 @@ public:
 	PasoString(string str){
 		this->str = str;
 	}
-	virtual void generarCodigo(){
+	virtual string generarCodigo(){
 		GeneracionCodigo::apilar({false, str});
+		return "";
 	}
 	virtual string toString(vector<Paso*>* tira){
 			return str;

@@ -11,8 +11,9 @@ public:
 		pos = numLabel++;
 	}
 
-	virtual void generarCodigo(){
-        string codigo = "label"+pos;
+	virtual string generarCodigo(){
+        string codigo = "label"+to_string(pos)+":\n";
+        return codigo;
     }
 
     virtual string toString(vector<Paso*>* tira){

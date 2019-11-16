@@ -3,10 +3,12 @@
 class PasoPrint : public Paso{
 public:
 	PasoPrint(){}
-	virtual void generarCodigo(){
+	virtual string generarCodigo(){
 		string msj = GeneracionCodigo::desapilar().operador;
 
-		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK"
+		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK";
+
+		return codigo;
 	}
 	virtual string toString(vector<Paso*>* tira){
 			return "print";

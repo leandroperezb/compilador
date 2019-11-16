@@ -9,14 +9,16 @@ public:
 	PasoOperadorAsignacion(){
 	}
 
-	virtual void generarCodigo(){
+	virtual string generarCodigo(){
 		// Recordando que el lado derecho de la asignacion estará en el tope
         operacion op2 = GeneracionCodigo::desapilar(),
 			op1 = GeneracionCodigo::desapilar();
 		// Aunque op1 tenga un
-		string codigo = "MOV "+op1.operador+" "+op2.operador+'\n';
+		string codigo = "MOV "+op1.operador+", "+variableEnCodigo(op2)+'\n';
 		if(op2.esRegistro)
 			GeneracionCodigo::desocuparRegistro(op2.operador);
+
+		return codigo;
     }
 
     virtual string toString(vector<Paso*>* tira){

@@ -15,8 +15,9 @@ class PasoFactor : public Paso{
 		string getFactor(){
 			return factor;
 		}
-		virtual void generarCodigo(){
+		virtual string generarCodigo(){
 			GeneracionCodigo::apilar({false, factor});
+			return "";
 		}
 		virtual string toString(vector<Paso*>* tira){
 			return factor;

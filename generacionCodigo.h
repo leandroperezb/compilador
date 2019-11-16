@@ -17,24 +17,16 @@ private:
 	inline static stack<operacion> pilaGeneracion;
 	
 public:
-	static string buscarRegistroEspecial(bool extendido){
-		if(!ocupado[0]){
-			if (extendido)
-				return "AX";
-			return "EAX";
-		}
-		if (extendido)
-			return "DX";
-		return "EDX";
-	}
+	static bool ocupadoAX(){return ocupado[0];}
+	static void ocuparAX(){ocupado[0] = true;}
 	static string buscarRegistro(bool extendido){
-		for(int i = 0; i < 4; i++){
+		for(int i = 1; i < 3; i++){
 			if(!ocupado[i]){
+				ocupado[i] = true;
 				if(extendido)
 					return "E"+registros[i];
 				else
 					return registros[i];
-				ocupado[i] = true;
 			}
 		}
 	}
@@ -42,7 +34,7 @@ public:
 		int i = (str.length() > 2) ? 1 : 0;
 		ocupado[str[i] - 65] = false;
 	}
-	static void generarCodigo(Polaca *polaca);
+	static string generarCodigo(Polaca *polaca);
 	static void apilar(operacion op){
 		pilaGeneracion.push(op);
 	}
