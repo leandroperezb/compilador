@@ -69,7 +69,7 @@ seleccion: 	IF '(' condicion ')' cuerpo_if END_IF {Log::estructuraDetectada("blo
 ;
 
 cuerpo_if: sentencias_ejecutables {Polaca::polacaEnEdicion->terminoRamaIf();}
-
+;
 comparador:
 		MAYORIGUAL {$$ = MAYORIGUAL;}
 	|	'<' {$$ = (int) '<';}

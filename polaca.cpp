@@ -24,8 +24,8 @@ void Polaca::cargarPrint(){
 	tira.push_back(new PasoPrint());
 }
 
-void Polaca::invocacionMetodo(string objeto, Polaca* polaca){
-	tira.push_back(new PasoInvocacion(polaca, objeto));
+void Polaca::invocacionMetodo(string objeto, string metodo, Polaca* polaca){
+	tira.push_back(new PasoInvocacion(polaca, objeto, metodo));
 }
 
 void Polaca::terminoCondicion(int comparador){

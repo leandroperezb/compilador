@@ -248,5 +248,5 @@ void AccionesSintactico::llamadoAMetodo(TablaSimbolos* tabla, string objeto, str
 		Log::accesoAtributoPrivado(metodo, met->clasePadre);
 		return;
 	}
-	Polaca::polacaEnEdicion->invocacionMetodo(objeto, (&tabla->get(metodo))->polaca);
+	Polaca::polacaEnEdicion->invocacionMetodo(objeto, metodo, (&tabla->get(metodo))->polaca);
 }

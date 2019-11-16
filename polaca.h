@@ -33,8 +33,8 @@ public:
 	void terminoCondicion(int comparador);
 	void terminoIf();
 
-	void invocacionMetodo(Polaca* polaca){}
-	void invocacionMetodo(string objeto, Polaca* polaca);
+
+	void invocacionMetodo(string objeto, string metodo, Polaca* polaca);
 
 	// Soporte Expresiones
 	int cargarFactor(string factor);
