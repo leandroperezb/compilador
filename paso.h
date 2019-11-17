@@ -14,6 +14,21 @@ using namespace std;
 class Paso{
 
 public:
+	inline static const string L_ERROR_DIV_CERO = "lErrorDivCero";
+	inline static const string L_ERROR_CONVERSION = "lErrorConversion";
+
+	static string labelsError(){
+		string labels = "";
+		//label que contiene el codigo de error de division por cero
+		labels = "lerrorDivCero:\nMOV AX, 0x4c01\nINT 0x21\n";
+
+		//label que contiene el codigo de error de conversion
+		labels += "lErrorConversion:\nMOV AX, 0x4c01\nINT 0x21\n";
+
+		//label de comienzo de programa
+		labels += "_start:\n";
+		return labels;
+	}
 	static TablaSimbolos *tds;
 	static string variableEnCodigo(operacion op);
 	static string conversiones(operacion &op1, operacion &op2, bool registroEspecial = false);

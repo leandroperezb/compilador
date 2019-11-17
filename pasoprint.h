@@ -6,7 +6,7 @@ public:
 	virtual string generarCodigo(){
 		string msj = GeneracionCodigo::desapilar().operador;
 
-		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK";
+		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK\n";
 
 		return codigo;
 	}

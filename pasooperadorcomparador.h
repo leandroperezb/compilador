@@ -36,11 +36,11 @@ public:
 				regOp2 = op2.operador; // Opero entre los registros
 			}
 			else{ // Caso V+V
-				codigo += "MOV "+ regOp1 + " "+ variableEnCodigo(op1) + "\n";
+				codigo += "MOV "+ regOp1 + ", "+ variableEnCodigo(op1) + "\n";
 				regOp2 = variableEnCodigo(op2);
 			}
 		}
-		codigo+= "CMP "+regOp1+" "+regOp2+'\n';
+		codigo+= "CMP "+regOp1+", "+regOp2+'\n';
 		if (op2.esRegistro) // Si el segundo era un registro lo tengo que desocupar
 			GeneracionCodigo::desocuparRegistro(op2.operador);
 		GeneracionCodigo::apilar({true, regOp1}); // Apilo el registro donde quedó el resultado

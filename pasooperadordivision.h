@@ -48,6 +48,8 @@ public:
 		regOp2 = nuevoRegistro;
 		op2.esRegistro = true; op2.operador = nuevoRegistro;
 
+		//control de division por cero
+		codigo+= "CMP "+regOp2+", 0\nJE "+Paso::L_ERROR_DIV_CERO+"\n";
 
 		codigo += "MOV EDX, 0\n"; //Necesario, para que el número a dividir sólo sea EAX
 		if (esUlong(op1))
