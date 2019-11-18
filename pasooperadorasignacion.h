@@ -9,7 +9,7 @@ public:
 	PasoOperadorAsignacion(){
 	}
 
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
 		// Recordando que el lado derecho de la asignacion estará en el tope
         operacion op2 = GeneracionCodigo::desapilar();
 		operacion op1 = GeneracionCodigo::desapilar();

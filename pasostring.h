@@ -9,7 +9,7 @@ public:
 	PasoString(string str){
 		this->str = str;
 	}
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
 		GeneracionCodigo::apilar({false, str});
 		return "";
 	}

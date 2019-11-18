@@ -19,7 +19,7 @@ public:
 	Polaca* getPunteroPolaca(){
 		return punteroPolaca;
 	}
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
 		string codigo = "";
 
 		//Mover todas las variables del objeto a las variables de clase:

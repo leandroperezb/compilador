@@ -9,7 +9,7 @@ public:
 	PasoOperadorSuma(){
 	}
 
-    virtual string generarCodigo(){
+    virtual string generarCodigo(Polaca *polaca){
 		operacion op2= GeneracionCodigo::desapilar();
 		operacion op1= GeneracionCodigo::desapilar();
 

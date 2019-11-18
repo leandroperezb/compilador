@@ -3,7 +3,7 @@
 class PasoPrint : public Paso{
 public:
 	PasoPrint(){}
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
 		string msj = GeneracionCodigo::desapilar().operador;
 
 		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK\n";

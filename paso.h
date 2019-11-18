@@ -33,7 +33,7 @@ public:
 	static string variableEnCodigo(operacion op);
 	static string conversiones(operacion &op1, operacion &op2, bool registroEspecial = false);
 	static bool esUlong(operacion &op);
-	virtual string generarCodigo() = 0;
+	virtual string generarCodigo(Polaca *polaca) = 0;
 	virtual string toString(vector<Paso*>* tira = nullptr) = 0;
 };
 

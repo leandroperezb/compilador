@@ -11,7 +11,7 @@ public:
 		pos = numLabel++;
 	}
 
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
         string codigo = "label"+to_string(pos)+":\n";
         return codigo;
     }

@@ -34,6 +34,9 @@ string Paso::conversiones(operacion &op1, operacion &op2, bool registroEspecial)
 	string codigo = "";
 
 	if (aConvertir != nullptr){
+		//verificar que no sea de un numero negativo
+		codigo+= "CMP "+variableEnCodigo(*aConvertir)+", 0\nJL "+Paso::L_ERROR_CONVERSION+"\n";
+
 		if (aConvertir->esRegistro){
 			aConvertir->operador = "E"+ aConvertir->operador;
 			codigo += "AND "+aConvertir->operador+", 65535\n";
@@ -43,8 +46,6 @@ string Paso::conversiones(operacion &op1, operacion &op2, bool registroEspecial)
 				//codigo += "AND "+nuevoRegistro+", 65535\n";
 			aConvertir->operador = nuevoRegistro;
 			aConvertir->esRegistro = true;
-			//verificar que no sea de un numero negativo
-			codigo+= "CMP "+variableEnCodigo(*aConvertir)+", 0\nJL "+Paso::L_ERROR_CONVERSION+"\n";
 		}
 	}
 

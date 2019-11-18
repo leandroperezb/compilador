@@ -15,7 +15,7 @@ class PasoFactor : public Paso{
 		string getFactor(){
 			return factor;
 		}
-		virtual string generarCodigo(){
+		virtual string generarCodigo(Polaca *polaca){
 			GeneracionCodigo::apilar({false, factor});
 			return "";
 		}

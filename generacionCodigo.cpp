@@ -14,7 +14,7 @@ std::string GeneracionCodigo::replaceAll(std::string str, const std::string& fro
 
 string GeneracionCodigo::generarCodigo(Polaca *polaca){
 	string include = ".386\n.model flat, stdcall\noption casemap :none\ninclude \\masm32\\include\\windows.inc\ninclude \\masm32\\include\\kernel32.inc\ninclude \\masm32\\include\\user32.inc\nincludelib \\masm32\\lib\\kernel32.lib\nincludelib \\masm32\\lib\\user32.lib\n";
-	string data = include+".data\nerr1 db \"Error de conversion!\", 0\nerr2 db \"Division por 0!\", 0\n";
+	string data = include+".data\nerr1 db \"¡Error de conversion!\", 0\nerr2 db \"¡Division por 0!\", 0\n";
 
 	string metodos = "";
 	unordered_map<string, TablaSimbolos::registro> tabla = Paso::tds->getCopyTabla();
@@ -26,6 +26,7 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 			if ( it->second.tipo == TablaSimbolos::TIPO_ULONG )
 				data += "_"+simbolo+" DD ?\n";
 			else
+				data += "_"+simbolo+" DW ?\n";
 		if (it->second.tipoSimbolo == TablaSimbolos::CADENA)
 			data += "cadena"+to_string(it->second.valor) + " db \""+
 		replaceAll(replaceAll(replaceAll(it->first.substr(1, it->first.length()-2), "\\", "\\\\"), "\'", "\\\'"), "\"", "\\\"")
@@ -40,7 +41,7 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 	resultado += Paso::labelsError();
 	for(int i = 0; i < polaca->size(); i++){
 			Paso* p = polaca->get(i);
-			resultado += p->generarCodigo();
+			resultado += p->generarCodigo(polaca);
 	}
 	resultado +="invoke ExitProcess, 0\nend start\n";
 	return resultado;

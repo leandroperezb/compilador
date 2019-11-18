@@ -17,9 +17,9 @@ public:
 		op = operador;
 	}
 
-	virtual string generarCodigo(){
+	virtual string generarCodigo(Polaca *polaca){
 		// Tomo los dos operandos
-        operacion op2= GeneracionCodigo::desapilar();
+		operacion op2= GeneracionCodigo::desapilar();
 		operacion op1= GeneracionCodigo::desapilar();
 
 		string regOp1; string regOp2;
@@ -30,20 +30,24 @@ public:
 			regOp1 = op1.operador; // Uso el mismo nombre
 			regOp2 = variableEnCodigo(op2); // renombro la variable
 		}else{ // Si no es un registro
-			// Busco un registro para el primero, ya que no es una op conmutativa.
-			regOp1 = GeneracionCodigo::buscarRegistro(false);
 			if(op2.esRegistro){ // Caso V+R
-				regOp2 = op2.operador; // Opero entre los registros
+				regOp1 = variableEnCodigo(op1);
+				regOp2 = op2.operador; // Opero entre ellos comunmente
 			}
 			else{ // Caso V+V
+				regOp1 = GeneracionCodigo::buscarRegistro(tds->get(op1.operador).tipo == TablaSimbolos::TIPO_ULONG);
 				codigo += "MOV "+ regOp1 + ", "+ variableEnCodigo(op1) + "\n";
+				op1.operador = regOp1; op1.esRegistro = true;
 				regOp2 = variableEnCodigo(op2);
 			}
 		}
 		codigo+= "CMP "+regOp1+", "+regOp2+'\n';
+		if (op1.esRegistro) // Si el segundo era un registro lo tengo que desocupar
+			GeneracionCodigo::desocuparRegistro(op1.operador);
 		if (op2.esRegistro) // Si el segundo era un registro lo tengo que desocupar
 			GeneracionCodigo::desocuparRegistro(op2.operador);
-		GeneracionCodigo::apilar({true, regOp1}); // Apilo el registro donde quedó el resultado
+
+		GeneracionCodigo::apilar({(regOp1[0] == 'E'), this->toString(nullptr)}); //Apilar el comparador, para decidir luego por qué condición saltar
 
 		return codigo;
     }
