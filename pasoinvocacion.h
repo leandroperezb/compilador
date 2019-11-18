@@ -26,7 +26,7 @@ public:
 		vector<string>* variables = &AccionesSintactico::variablesDeClase[tds->get(metodo).clasePadre];
 		for (int i = 0; i < variables->size(); i++){
 			string regAux = GeneracionCodigo::buscarRegistro(tds->get((*variables)[i]).tipo == TablaSimbolos::TIPO_ULONG);
-			codigo += "MOV "+regAux+", _"+objeto+"."+(*variables)[i]+"\n";
+			codigo += "MOV "+regAux+", _"+objeto+"@"+(*variables)[i]+"\n";
 			codigo += "MOV _"+(*variables)[i]+", "+regAux+"\n";
 			GeneracionCodigo::desocuparRegistro(regAux);
 		}
@@ -37,7 +37,7 @@ public:
 		for (int i = 0; i < variables->size(); i++){
 			string regAux = GeneracionCodigo::buscarRegistro(tds->get((*variables)[i]).tipo == TablaSimbolos::TIPO_ULONG);
 			codigo += "MOV "+regAux+", _"+(*variables)[i]+"\n";
-			codigo += "MOV _"+objeto+"."+(*variables)[i]+", "+regAux+"\n";
+			codigo += "MOV _"+objeto+"@"+(*variables)[i]+", "+regAux+"\n";
 			GeneracionCodigo::desocuparRegistro(regAux);
 		}
 		return codigo;

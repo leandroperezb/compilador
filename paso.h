@@ -26,7 +26,7 @@ public:
 		labels += "lErrorConversion:\ninvoke MessageBox, NULL, addr err1, addr err1, MB_OK\ninvoke ExitProcess, 1\n";
 
 		//label de comienzo de programa
-		labels += "START:\n";
+		labels += "start:\n";
 		return labels;
 	}
 	static TablaSimbolos *tds;

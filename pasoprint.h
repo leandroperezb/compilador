@@ -7,7 +7,7 @@ public:
 		string msj = GeneracionCodigo::desapilar().operador;
 
 		string codigo = "invoke MessageBox, NULL, addr OUTPUT, addr "+msj+", MB_OK\n";
-
+ 
 		return codigo;
 	}
 	virtual string toString(vector<Paso*>* tira){
