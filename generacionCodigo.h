@@ -15,6 +15,8 @@ private:
 	inline static const string registros[4] = {"AX", "BX", "CX", "DX"};
 	inline static bool ocupado[4] = {false, false, false, false};
 	inline static stack<operacion> pilaGeneracion;
+
+	static string replaceAll(std::string str, const std::string& from, const std::string& to);
 	
 public:
 	static bool ocupadoAX(){return ocupado[0];}

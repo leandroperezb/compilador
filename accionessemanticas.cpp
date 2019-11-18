@@ -164,6 +164,7 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 
 	TablaSimbolos::registro registro;
 	registro.tipoSimbolo = TablaSimbolos::CADENA;
+	registro.valor = AccionesSemanticas::numeroCadena++;
 	lexico->agregarEnTabla("\""+lexico->identificador+"\"", registro);
 
 	lexico->identificador = "";
