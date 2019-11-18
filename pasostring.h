@@ -10,7 +10,7 @@ public:
 		this->str = str;
 	}
 	virtual string generarCodigo(Polaca *polaca){
-		GeneracionCodigo::apilar({false, str});
+		GeneracionCodigo::apilar({false, "cadena"+to_string(tds->get("\""+str+"\"").valor)});
 		return "";
 	}
 	virtual string toString(vector<Paso*>* tira){
