@@ -35,16 +35,19 @@ string Paso::conversiones(operacion &op1, operacion &op2, bool registroEspecial)
 
 	if (aConvertir != nullptr){
 		//verificar que no sea de un numero negativo
-		codigo+= "CMP "+variableEnCodigo(*aConvertir)+", 0\nJL "+Paso::L_ERROR_CONVERSION+"\n";
+		if (aConvertir->esRegistro || tds->get(aConvertir->operador).tipoSimbolo != TablaSimbolos::CONSTANTE)
+			codigo += "CMP "+variableEnCodigo(*aConvertir)+", 0\nJL "+Paso::L_ERROR_CONVERSION+"\n";
+		else if (tds->get(aConvertir->operador).valor < 0)
+			codigo += "JL "+Paso::L_ERROR_CONVERSION+"\n";
 
 		if (aConvertir->esRegistro){
 			aConvertir->operador = "E"+ aConvertir->operador;
 			codigo += "AND "+aConvertir->operador+", 65535\n";
 		}else{
-			string nuevoRegistro = GeneracionCodigo::buscarRegistro(true);
+			string nuevoRegistro = GeneracionCodigo::buscarRegistro(false);
 			codigo += "MOV "+ nuevoRegistro + ", "+ variableEnCodigo(*aConvertir) + "\n";
-				//codigo += "AND "+nuevoRegistro+", 65535\n";
-			aConvertir->operador = nuevoRegistro;
+			codigo += "AND E"+nuevoRegistro+", 65535\n";
+			aConvertir->operador = "E"+nuevoRegistro;
 			aConvertir->esRegistro = true;
 		}
 	}

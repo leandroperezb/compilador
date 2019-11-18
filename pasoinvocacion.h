@@ -31,7 +31,7 @@ public:
 			GeneracionCodigo::desocuparRegistro(regAux);
 		}
 
-		codigo += "CALL "+metodo+"\n";
+		codigo += "CALL _"+metodo+"\n";
 
 		//Mover las variables de clase a las variables del objeto:
 		for (int i = 0; i < variables->size(); i++){
