@@ -45,6 +45,7 @@ class TablaSimbolos{
 		void guardar();
 
 		void guardarPolacas();
+		unordered_map<string, TablaSimbolos::registro> getCopyTabla();
 
 	private:
 		unordered_map<string, registro> tablaSimbolos;

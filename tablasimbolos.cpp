@@ -62,3 +62,12 @@ void TablaSimbolos::guardarPolacas(){
 		}
 	}
 }
+
+unordered_map<string, TablaSimbolos::registro> TablaSimbolos::getCopyTabla(){
+	unordered_map<string, registro> tablaSimbolosCopy;
+	unordered_map<string , TablaSimbolos::registro>::iterator it;
+	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
+		tablaSimbolosCopy.insert({it->first, it->second});
+	}
+	return tablaSimbolosCopy;
+}

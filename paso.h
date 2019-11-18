@@ -20,10 +20,10 @@ public:
 	static string labelsError(){
 		string labels = "";
 		//label que contiene el codigo de error de division por cero
-		labels = "lerrorDivCero:\nMOV AX, 0x4c01\nINT 0x21\n";
+		labels = "lerrorDivCero:\ninvoke MessageBox, NULL, addr err2, addr err2, MB_OK\ninvoke ExitProcess, 1\n";
 
 		//label que contiene el codigo de error de conversion
-		labels += "lErrorConversion:\nMOV AX, 0x4c01\nINT 0x21\n";
+		labels += "lErrorConversion:\ninvoke MessageBox, NULL, addr err1, addr err1, MB_OK\ninvoke ExitProcess, 1\n";
 
 		//label de comienzo de programa
 		labels += "START:\n";
