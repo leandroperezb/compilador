@@ -7,5 +7,6 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 			Paso* p = polaca->get(i);
 			resultado += p->generarCodigo();
 	}
+	resultado +="END START\n";
 	return resultado;
 }

@@ -26,7 +26,7 @@ public:
 		labels += "lErrorConversion:\nMOV AX, 0x4c01\nINT 0x21\n";
 
 		//label de comienzo de programa
-		labels += "_start:\n";
+		labels += "START:\n";
 		return labels;
 	}
 	static TablaSimbolos *tds;
