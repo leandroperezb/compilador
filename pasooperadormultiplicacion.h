@@ -27,19 +27,23 @@ public:
 
 		regOp2 = variableEnCodigo(op2);
 
+		bool esAuxiliar = false;
+
 		//Si cayó en el registro DX por conversión, quitarlo de ahí a una variable auxiliar (no hay más registros)
 		if (op2.esRegistro){
 			if (op2.operador[0] == 'D'){
+				GeneracionCodigo::desocuparRegistro(op2.operador);
 				codigo += "MOV auxint, "+op2.operador+ "\n";
 				op2.esRegistro = false; op2.operador = "auxint";
 				regOp2 = op2.operador;
-				GeneracionCodigo::desocuparRegistro(op2.operador);
+				esAuxiliar = true;
 			}
 			if (op2.operador[1] == 'D'){
+				GeneracionCodigo::desocuparRegistro(op2.operador);
 				codigo += "MOV auxulong, "+op2.operador+ "\n";
 				op2.esRegistro = false; op2.operador = "auxulong";
 				regOp2 = op2.operador;
-				GeneracionCodigo::desocuparRegistro(op2.operador);
+				esAuxiliar = true;
 			}
 		}
 
@@ -51,9 +55,21 @@ public:
 				regOp1 = op1.operador;
 			}else{
 				//AX está ocupado por un operador que no participa de momento. Se lo mueve a otro registro mientras dure esta operacion
-				registroOperadorExterno = GeneracionCodigo::buscarRegistro(true);
-				codigo += "MOV "+registroOperadorExterno+", EAX\n"; //Muevo todo EAX a otro lado
-				TRAEROP1
+				if (op1.esRegistro){
+					if (esUlong(op1)){
+						registroOperadorExterno = op1.operador;
+					}else{
+						registroOperadorExterno = "E"+op1.operador;
+					}
+					//Intercambio lo actual con EAX
+					codigo += "XOR EAX, "+registroOperadorExterno+"\n";
+					codigo += "XOR "+registroOperadorExterno+", EAX\n";
+					codigo += "XOR EAX, "+registroOperadorExterno+"\n";
+				}else{
+					registroOperadorExterno = GeneracionCodigo::buscarRegistro(true);
+					codigo += "MOV "+registroOperadorExterno+", EAX\n"; //Muevo todo EAX a otro lado
+					TRAEROP1
+				}
 			}
 		}else{
 			//Si AX no está ocupado, muevo op1 ahí (liberando lo que tuviera previamente)
@@ -61,7 +77,7 @@ public:
 		}
 
 		//Luego para op2, si es una constante, moverla a la variable auxiliar (evita problemas si los registros ya están llenos)
-		if (!op2.esRegistro){
+		if (!op2.esRegistro && !esAuxiliar){
 			if (tds->get(op2.operador).tipoSimbolo == TablaSimbolos::CONSTANTE){
 				if (tds->get(op2.operador).tipo == TablaSimbolos::TIPO_INT){
 					codigo += "MOV auxint, "+variableEnCodigo(op2)+ "\n";
@@ -80,14 +96,15 @@ public:
 			codigo += "IMUL "+regOp2+"\n";
 
 		if (registroOperadorExterno != ""){
-			//Si hubo que quitar al operador que estaba en AX de su lugar, volver a ponerlo (uso EDX como auxiliar para intercambiar)
-			codigo += "MOV EDX, EAX\nMOV EAX, "+registroOperadorExterno+"\n";
-			if (esUlong(op1)){
-				codigo += "MOV "+registroOperadorExterno+", EDX\n";
-			}else{
+			//Si hubo que quitar al operador que estaba en AX de su lugar, volver a ponerlo (mediante el SWAP de los XOR)
+			codigo += "XOR EAX, "+registroOperadorExterno+"\n";
+			codigo += "XOR "+registroOperadorExterno+", EAX\n";
+			codigo += "XOR EAX, "+registroOperadorExterno+"\n";
+
+			if (!esUlong(op1)){
 				registroOperadorExterno = string(&registroOperadorExterno[1]);
-				codigo += "MOV "+registroOperadorExterno+", DX\n";
 			}
+
 			regOp1 = registroOperadorExterno;
 		}
 
