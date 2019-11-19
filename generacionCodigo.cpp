@@ -33,7 +33,7 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 		//replaceAll(replaceAll(replaceAll(it->first.substr(1, it->first.length()-2), "\\", "\\\\"), "\'", "\\\'"), "\"", "\\\"")
 		+"\", 0\n";
 		if (it->second.tipoSimbolo == TablaSimbolos::METODO){
-			metodos += "_"+simbolo+":\nRET\n";
+			metodos += "_"+simbolo+":\n"+it->second.polaca->generarCodigo()+"RET\n";
 		}
 	}
 

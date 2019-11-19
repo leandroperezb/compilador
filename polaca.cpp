@@ -104,6 +104,14 @@ void Polaca::guardar(string nombreArchivo){
 	ofs.close();
 }
 
+string Polaca::generarCodigo(){
+	string codigo="";
+	for (int i = 0; i < tira.size(); i++){
+		codigo += tira[i]->generarCodigo(this);
+	}
+	return codigo;
+}
+
 Paso* Polaca::getLastPaso(){
 	return tira[tira.size()-1];
 }

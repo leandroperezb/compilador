@@ -49,6 +49,7 @@ public:
 	void comparacionFor(bool descendente);
 	void terminoFor(string variable, string step);
 
+	string generarCodigo();
 	void guardar(string nombreArchivo);
 	int size();
 	Paso* get(int indice);
