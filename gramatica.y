@@ -1,6 +1,8 @@
 %token ID CTE MAYORIGUAL MENORIGUAL IGUAL DISTINTO ASIGNACION STRING IF ELSE END_IF PRINT INT BEGIN END FOR CLASS EXTENDS PUBLIC PRIVATE VOID ULONG ERROR DOWNTO
 %%
-programa: bloque_declarativo bloque_sentencias
+programa: 
+		bloque_declarativo bloque_sentencias
+	|	bloque_sentencias
 ;
 
 /* PARTE DE SENTENCIAS DECLARATIVAS */
