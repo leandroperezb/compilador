@@ -38,7 +38,7 @@ string Paso::conversiones(operacion &op1, operacion &op2, bool registroEspecial)
 		if (aConvertir->esRegistro || tds->get(aConvertir->operador).tipoSimbolo != TablaSimbolos::CONSTANTE)
 			codigo += "CMP "+variableEnCodigo(*aConvertir)+", 0\nJL "+Paso::L_ERROR_CONVERSION+"\n";
 		else if (tds->get(aConvertir->operador).valor < 0)
-			codigo += "JL "+Paso::L_ERROR_CONVERSION+"\n";
+			codigo += "JMP "+Paso::L_ERROR_CONVERSION+"\n";
 
 		if (aConvertir->esRegistro){
 			aConvertir->operador = "E"+ aConvertir->operador;
