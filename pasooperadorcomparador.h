@@ -53,8 +53,8 @@ public:
     }
     virtual string toString(vector<Paso*>* tira){
     	if (op < 256){
-    		char a[] = {(char) op};
-			return string(a);
+    		char a = (char) op;
+			return string(1, a);
 		}
 		auto operador = PasoOperadorComparador::comparadores.find(op);
 		return operador->second;
