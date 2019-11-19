@@ -53,23 +53,27 @@ int main(int argc, char** argv){
 	AccionesSintactico::inicializar(&punteros);
 
 	int resultado = yyparse();
-	if (Log::abortarCompilacion)
-		resultado = 1;
-	cout << "Resultado del parser: " << resultado << endl;
 
 	tabla.guardar();
-	Polaca::polacaMadre.guardar("polaca madre");
+	Polaca::polacaMadre.guardar("polaca_principal");
 	tabla.guardarPolacas();
 
-	ofstream ofs;
-	ofs.open ("CODIGO.txt", std::ofstream::out);
-	if(ofs.fail()){
-		return 1;
+	if (!Log::abortarCompilacion){
+		ofstream ofs;
+		ofs.open ("CODIGO.txt", std::ofstream::out);
+		if(ofs.fail()){
+			return 1;
+		}
+
+		ofs << GeneracionCodigo::generarCodigo(&Polaca::polacaMadre);
+
+		ofs.close();
+
+		cout << "Código compilado correctamente" << endl;
 	}
 
-	ofs << GeneracionCodigo::generarCodigo(&Polaca::polacaMadre);
-
-	ofs.close();
+	if (Log::abortarCompilacion)
+		cout << "Fallo en la compilación" << endl;
 
 	return 0;
 }

@@ -88,6 +88,10 @@ public:
 		cout << "Linea "<<lexico->contadorLineas << ": No se permite la operacion directa con el objeto " <<objeto<<endl;
 		abortarCompilacion = true;
 	}
+	static void incompatibilidadAsignacion(){
+		cout << "Se detectó una incompatibilidad de tipos en una asignación (lado izquierdo INT, lado derecho ULONG)"<<endl;
+		abortarCompilacion = true;
+	}
 
 };
 

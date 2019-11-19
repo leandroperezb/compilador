@@ -58,7 +58,7 @@ void TablaSimbolos::guardarPolacas(){
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
 	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
 		if (it->second.tipoSimbolo == TablaSimbolos::METODO){
-			it->second.polaca->guardar(it->first);
+			it->second.polaca->guardar(it->first + "()");
 		}
 	}
 }

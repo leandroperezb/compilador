@@ -18,7 +18,7 @@ public:
 		if (tds->get(op1.operador).tipo == TablaSimbolos::TIPO_INT && 
 		(op2.esRegistro && op2.operador[0] == 'E' || !op2.esRegistro && tds->get(op2.operador).tipo == TablaSimbolos::TIPO_ULONG)){
 			//Si el tipo de la derecha es más abarcativo que el de la izquierda, no se puede convertir. Se aborta
-			cout << "Incompatibilidad de tipos en asignación" << endl; //Hay que llevarlo a un Log
+			Log::incompatibilidadAsignacion();
 			exit(1);
 		}
 
