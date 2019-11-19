@@ -25,6 +25,24 @@ public:
 
 		string codigo = conversiones(op1, op2);
 
+		regOp2 = variableEnCodigo(op2);
+
+		//Si cayó en el registro DX por conversión, quitarlo de ahí a una variable auxiliar (no hay más registros)
+		if (op2.esRegistro){
+			if (op2.operador[0] == 'D'){
+				codigo += "MOV auxint, "+op2.operador+ "\n";
+				op2.esRegistro = false; op2.operador = "auxint";
+				regOp2 = op2.operador;
+				GeneracionCodigo::desocuparRegistro(op2.operador);
+			}
+			if (op2.operador[1] == 'D'){
+				codigo += "MOV auxulong, "+op2.operador+ "\n";
+				op2.esRegistro = false; op2.operador = "auxulong";
+				regOp2 = op2.operador;
+				GeneracionCodigo::desocuparRegistro(op2.operador);
+			}
+		}
+
 		string registroOperadorExterno = "";
 
 		if (GeneracionCodigo::ocupadoAX()){
@@ -42,16 +60,25 @@ public:
 			TRAEROP1
 		}
 
-		//Luego para op2 que no puede ser un registro, moverlo a uno (por gramática)
-		string nuevoRegistro = GeneracionCodigo::buscarRegistro(esUlong(op2));
-		codigo += "MOV "+nuevoRegistro+", "+variableEnCodigo(op2)+"\n";
-		regOp2 = nuevoRegistro;
-		op2.esRegistro = true; op2.operador = nuevoRegistro;
+		//Luego para op2, si es una constante, moverla a la variable auxiliar (evita problemas si los registros ya están llenos)
+		if (!op2.esRegistro){
+			if (tds->get(op2.operador).tipoSimbolo == TablaSimbolos::CONSTANTE){
+				if (tds->get(op2.operador).tipo == TablaSimbolos::TIPO_INT){
+					codigo += "MOV auxint, "+variableEnCodigo(op2)+ "\n";
+					op2.esRegistro = false; op2.operador = "auxint";
+				}else{
+					codigo += "MOV auxulong, "+variableEnCodigo(op2)+ "\n";
+					op2.esRegistro = false; op2.operador = "auxulong";
+				}
+				regOp2 = op2.operador;
+			}
+		}
 
 		//control de division por cero
 		codigo+= "CMP "+regOp2+", 0\nJE "+Paso::L_ERROR_DIV_CERO+"\n";
 
 		codigo += "MOV EDX, 0\n"; //Necesario, para que el número a dividir sólo sea EAX
+
 		if (esUlong(op1))
 			codigo += "DIV "+regOp2+"\n";
 		else
@@ -71,7 +98,8 @@ public:
 
 		GeneracionCodigo::apilar({true, regOp1});
 		GeneracionCodigo::ocuparAX();
-		GeneracionCodigo::desocuparRegistro(op2.operador);
+		if (op2.esRegistro)
+			GeneracionCodigo::desocuparRegistro(op2.operador);
 
 		return codigo;
     }

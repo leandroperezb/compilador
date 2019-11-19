@@ -22,7 +22,7 @@ public:
 	static bool ocupadoAX(){return ocupado[0];}
 	static void ocuparAX(){ocupado[0] = true;}
 	static string buscarRegistro(bool extendido){
-		for(int i = 1; i < 3; i++){
+		for(int i = 1; i < 4; i++){
 			if(!ocupado[i]){
 				ocupado[i] = true;
 				if(extendido)

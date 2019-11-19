@@ -14,7 +14,7 @@ std::string GeneracionCodigo::replaceAll(std::string str, const std::string& fro
 
 string GeneracionCodigo::generarCodigo(Polaca *polaca){
 	string include = ".386\n.model flat, stdcall\noption casemap :none\ninclude \\masm32\\include\\windows.inc\ninclude \\masm32\\include\\kernel32.inc\ninclude \\masm32\\include\\user32.inc\nincludelib \\masm32\\lib\\kernel32.lib\nincludelib \\masm32\\lib\\user32.lib\n";
-	string data = include+".data\nerr1 db \"¡Error de conversion!\", 0\nerr2 db \"¡Division por 0!\", 0\nOUTPUT db \"Print\", 0\n";
+	string data = include+".data\nerr1 db \"¡Error de conversion!\", 0\nerr2 db \"¡Division por 0!\", 0\nOUTPUT db \"Print\", 0\nauxint DW ?\nauxulong DD ?\n";
 
 	string metodos = "";
 	unordered_map<string, TablaSimbolos::registro> tabla = Paso::tds->getCopyTabla();
