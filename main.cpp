@@ -60,7 +60,7 @@ int main(int argc, char** argv){
 
 	if (!Log::abortarCompilacion){
 		ofstream ofs;
-		ofs.open ("CODIGO.txt", std::ofstream::out);
+		ofs.open ("CODIGO.asm", std::ofstream::out);
 		if(ofs.fail()){
 			return 1;
 		}
