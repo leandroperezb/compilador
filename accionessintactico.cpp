@@ -63,8 +63,15 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 	for (int i = 0; i < variables.size(); i++){
 		TablaSimbolos::registro* r = &tabla->get(variables[i]);
 		if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO){
-			Log::redeclaracionVariable(variables[i]);
-			return;
+			if ( r->tipoSimbolo == TablaSimbolos::VARIABLE )
+				Log::redeclaracionVariable(": Redeclaracion, Existe una variable/atributo con el nombre :\""+variables[i]+"\"");
+			else
+				if (r->tipoSimbolo == TablaSimbolos::METODO)
+					Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre :\""+variables[i]+"\"");
+				else
+					Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre :\""+variables[i]+"\"");
+				variables.clear();
+				return;
 		}
 
 		if (modificador != 0){ //Si es una declaración de una variable dentro de una clase
@@ -200,7 +207,13 @@ bool AccionesSintactico::hereda(TablaSimbolos* tabla, string claseHijo, string c
 void AccionesSintactico::nuevoMetodo(TablaSimbolos* tabla, string nombre, int visibilidad){
 	TablaSimbolos::registro* r = &tabla->get(nombre);
 	if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO){
-		Log::redeclaracionVariable(nombre);
+		if ( r->tipoSimbolo == TablaSimbolos::VARIABLE )
+			Log::redeclaracionVariable(": Redeclaracion, Existe una variable con el nombre :\""+nombre+"\"");
+		else
+			if (r->tipoSimbolo == TablaSimbolos::METODO)
+				Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre :\""+nombre+"\"");
+			else
+				Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre :\""+nombre+"\"");
 		return;
 	}
 	r->tipoSimbolo = TablaSimbolos::METODO;

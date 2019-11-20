@@ -38,8 +38,8 @@ public:
 	}
 	
 	
-	static void redeclaracionVariable(string variable){
-		cout <<"Linea "<<lexico->contadorLineas<< ": Variable \"" << variable << "\" redeclarada" << endl;
+	static void redeclaracionVariable(string mensaje){
+		cout <<"Linea "<<lexico->contadorLineas<< mensaje << endl;
 		abortarCompilacion = true;
 	}
 	static void noExisteClase(string clase){
