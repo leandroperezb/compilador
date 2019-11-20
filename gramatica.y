@@ -111,16 +111,17 @@ for : FOR '(' inicio_y_limite ';' step ')' sentencias_ejecutables {Polaca::polac
 ;
 
 step: CTE
-	|	'-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $2); punteros.push_back("-" + punteros[$2]); $$ = punteros.size() - 1;}
+	|	'-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$2]); AccionesSintactico::negativizarConstante(laTabla, punteros, $2); Polaca::polacaEnEdicion->removeLastPaso(); punteros.push_back(punteros[$2]); $$ = punteros.size() - 1;}
 	|	identificador {Polaca::polacaEnEdicion->removeLastPaso();}
 ;
 
 inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
 			|  inicio_for ';' DOWNTO factor {Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
-			|	inicio_for ';' '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
-			|	inicio_for ';' DOWNTO '-' CTE {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
+			|	inicio_for ';' '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$4]); AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
+			|	inicio_for ';' DOWNTO '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$5]); AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
 ;
 
 inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
+			| identificador ASIGNACION '-' factor {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
 ;
 %%
