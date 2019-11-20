@@ -118,7 +118,7 @@ step: CTE
 inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
 			|  inicio_for ';' DOWNTO factor {Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
 			|	inicio_for ';' '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$4]); AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
-			|	inicio_for ';' DOWNTO '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$5]); AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
+			|	inicio_for ';' DOWNTO '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$5]); AccionesSintactico::negativizarConstante(laTabla, punteros, $5); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
 ;
 
 inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
