@@ -55,10 +55,11 @@ int main(int argc, char** argv){
 	int resultado = yyparse();
 
 	tabla.guardar();
-	Polaca::polacaMadre.guardar("polaca_principal");
-	tabla.guardarPolacas();
 
 	if (!Log::abortarCompilacion){
+		Polaca::polacaMadre.guardar("polaca_principal");
+		tabla.guardarPolacas();
+
 		ofstream ofs;
 		ofs.open ("CODIGO.asm", std::ofstream::out);
 		if(ofs.fail()){

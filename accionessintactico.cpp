@@ -70,8 +70,7 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 					Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre :\""+variables[i]+"\"");
 				else
 					Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre :\""+variables[i]+"\"");
-				variables.clear();
-				return;
+				continue;
 		}
 
 		if (modificador != 0){ //Si es una declaración de una variable dentro de una clase
@@ -83,7 +82,7 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 			if (tipo >= 0){ //Si el tipo no es un primitivo, guardar en la tabla de símbolos las variables para el objeto
 				if (tabla->get((*punteros)[tipo]).tipoSimbolo != TablaSimbolos::CLASE){
 					Log::noExisteClase((*punteros)[tipo]);
-					return;
+					continue;
 				}
 				inicializarVariablesDeObjeto(tabla, variables[i], (*punteros)[tipo]);
 			}
