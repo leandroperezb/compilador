@@ -64,12 +64,15 @@ void AccionesSintactico::declararVariable(TablaSimbolos* tabla, int tipo, vector
 		TablaSimbolos::registro* r = &tabla->get(variables[i]);
 		if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO){
 			if ( r->tipoSimbolo == TablaSimbolos::VARIABLE )
-				Log::redeclaracionVariable(": Redeclaracion, Existe una variable/atributo con el nombre :\""+variables[i]+"\"");
+				if ( r->tipo ==  TablaSimbolos::TIPO_INT || r->tipo ==  TablaSimbolos::TIPO_ULONG)
+					Log::redeclaracionVariable(": Redeclaracion, Existe una variable/atributo con el nombre: \""+variables[i]+"\"");
+				else
+					Log::redeclaracionVariable(": Redeclaracion, Existe un objeto con el nombre: \""+variables[i]+"\"");
 			else
 				if (r->tipoSimbolo == TablaSimbolos::METODO)
-					Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre :\""+variables[i]+"\"");
+					Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre: \""+variables[i]+"\"");
 				else
-					Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre :\""+variables[i]+"\"");
+					Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre: \""+variables[i]+"\"");
 				continue;
 		}
 
@@ -207,12 +210,12 @@ void AccionesSintactico::nuevoMetodo(TablaSimbolos* tabla, string nombre, int vi
 	TablaSimbolos::registro* r = &tabla->get(nombre);
 	if (r->tipoSimbolo != TablaSimbolos::INDEFINIDO){
 		if ( r->tipoSimbolo == TablaSimbolos::VARIABLE )
-			Log::redeclaracionVariable(": Redeclaracion, Existe una variable con el nombre :\""+nombre+"\"");
+			Log::redeclaracionVariable(": Redeclaracion, Existe una variable con el nombre: \""+nombre+"\"");
 		else
 			if (r->tipoSimbolo == TablaSimbolos::METODO)
-				Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre :\""+nombre+"\"");
+				Log::redeclaracionVariable(": Redeclaracion, Existe un metodo con el nombre: \""+nombre+"\"");
 			else
-				Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre :\""+nombre+"\"");
+				Log::redeclaracionVariable(": Redeclaracion, Existe una clase con el nombre: \""+nombre+"\"");
 		return;
 	}
 	r->tipoSimbolo = TablaSimbolos::METODO;
