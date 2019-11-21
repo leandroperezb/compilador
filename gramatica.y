@@ -105,23 +105,29 @@ factor: CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
 			|	ID '.' ID {AccionesSintactico::nuevoFactorDeClase(laTabla, punteros[$1], punteros[$3]);
 			punteros.push_back(punteros[$1] + "." + punteros[$3]); $$ = punteros.size() - 1;}
 ;
-/* BUCLE FOR */
-for : FOR '(' inicio_y_limite ';' step ')' sentencias_ejecutables {Polaca::polacaEnEdicion->terminoFor(punteros[$3], punteros[$5]);}
+/* BUCLE FOR. En cada etapa (inicio, límite, y ste) se verifica que los involucrados sean sólo ints */
+for : argumentos_for sentencias_ejecutables {Polaca::polacaEnEdicion->terminoFor(punteros[$1]);}
 	  | FOR '(' error ')' sentencias_ejecutables {Log::informarError("for", "asignación; factor; factor", "una expresión inesperada");}
 ;
 
-step: CTE
-	|	'-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$2]); AccionesSintactico::negativizarConstante(laTabla, punteros, $2); Polaca::polacaEnEdicion->removeLastPaso(); punteros.push_back(punteros[$2]); $$ = punteros.size() - 1;}
-	|	identificador {Polaca::polacaEnEdicion->removeLastPaso();}
+argumentos_for : FOR '(' inicio_for ';' step ';' limite ')' {Polaca::polacaEnEdicion->comparacionFor(false); punteros.push_back(punteros[$3] + " " + punteros[$5]); $$ = punteros.size() - 1;}
+				| FOR '(' inicio_for ';' step ';' DOWNTO limite ')' {Polaca::polacaEnEdicion->comparacionFor(true); punteros.push_back(punteros[$3] + " " + punteros[$5]); $$ = punteros.size() - 1;}
 ;
 
-inicio_y_limite: inicio_for ';' factor {Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
-			|  inicio_for ';' DOWNTO factor {Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
-			|	inicio_for ';' '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$4]); AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->comparacionFor(false); $$ = $1;}
-			|	inicio_for ';' DOWNTO '-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$5]); AccionesSintactico::negativizarConstante(laTabla, punteros, $5); Polaca::polacaEnEdicion->comparacionFor(true); $$ = $1;}
+//El step no se tiene que introducir en la tira en el momento en el que es detectado
+step: CTE {AccionesSintactico::verificarIntFor(laTabla, punteros[$1]);}
+	|	'-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$2]); AccionesSintactico::negativizarConstante(laTabla, punteros, $2); Polaca::polacaEnEdicion->removeLastPaso(); punteros.push_back(punteros[$2]); $$ = punteros.size() - 1; AccionesSintactico::verificarIntFor(laTabla, punteros[$2]);}
+	|	identificador {Polaca::polacaEnEdicion->removeLastPaso(); AccionesSintactico::verificarIntFor(laTabla, punteros[$1]);}
 ;
 
-inicio_for : identificador ASIGNACION factor {Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
-			| identificador ASIGNACION '-' factor {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
+//El límite, además de un factor, puede ser una constante negativa, y debe introducirse en la tira en el orden que es detectada.
+limite: identificador {AccionesSintactico::verificarIntFor(laTabla, punteros[$1]);}
+	|	CTE {AccionesSintactico::verificarIntFor(laTabla, punteros[$1]); Polaca::polacaEnEdicion->cargarFactor(punteros[$1]);}
+	|	'-' CTE {Polaca::polacaEnEdicion->cargarFactor(punteros[$2]); AccionesSintactico::negativizarConstante(laTabla, punteros, $2); punteros.push_back(punteros[$2]); $$ = punteros.size() - 1; AccionesSintactico::verificarIntFor(laTabla, punteros[$2]);}
+;
+
+
+inicio_for : identificador ASIGNACION factor {AccionesSintactico::verificarIntFor(laTabla, punteros[$1]); Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
+			| identificador ASIGNACION '-' factor {AccionesSintactico::negativizarConstante(laTabla, punteros, $4); AccionesSintactico::verificarIntFor(laTabla, punteros[$1]); Polaca::polacaEnEdicion->empiezaFor(punteros[$1]); $$ = $1;}
 ;
 %%

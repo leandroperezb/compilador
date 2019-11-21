@@ -33,6 +33,8 @@ class AccionesSintactico{
 
 		static void llamadoAMetodo(TablaSimbolos* tabla, string objeto, string metodo);
 		static void llamadoAMetodo(TablaSimbolos* tabla, string metodo);
+
+		static void verificarIntFor(TablaSimbolos* tabla, string simbolo);
 };
 
 #endif

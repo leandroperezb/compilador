@@ -92,6 +92,10 @@ public:
 		cout << "Se detectó una incompatibilidad de tipos en una asignación (lado izquierdo INT, lado derecho ULONG)"<<endl;
 		abortarCompilacion = true;
 	}
+	static void seEsperabaIntEnFor(string variable){
+		cout << "Linea "<<lexico->contadorLineas <<": el argumento \"" << variable << "\" del for debe ser de tipo int" <<endl;
+		abortarCompilacion = true;
+	}
 
 };
 

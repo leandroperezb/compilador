@@ -79,12 +79,12 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 	registro.valor = numero;
 	registro.visibilidad = 1;
 	registro.tipoSimbolo = TablaSimbolos::CONSTANTE;
-	lexico->agregarEnTabla(lexico->identificador, registro);
+	lexico->agregarEnTabla(to_string(numero), registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;
 	token.id = CTE;
-	token.puntero = lexico->identificador;
+	token.puntero = to_string(numero);
 	lexico->guardarToken({token, lexico->wrnng});
 	
 

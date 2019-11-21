@@ -47,7 +47,7 @@ public:
 	void removeLastPaso();
 	void empiezaFor(string variable);
 	void comparacionFor(bool descendente);
-	void terminoFor(string variable, string step);
+	void terminoFor(string argumentos);
 
 	string generarCodigo();
 	void guardar(string nombreArchivo);

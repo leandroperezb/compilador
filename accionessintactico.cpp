@@ -11,6 +11,15 @@ void AccionesSintactico::inicializar(vector<string>* p){
 	AccionesSintactico::punteros = p;
 }
 
+void AccionesSintactico::verificarIntFor(TablaSimbolos* tabla, string simbolo){
+	if (simbolo == "-0")
+		simbolo = "0";
+	
+	TablaSimbolos::registro r = tabla->get(simbolo);
+	if (r.tipo != TablaSimbolos::TIPO_INT)
+		Log::seEsperabaIntEnFor(simbolo);
+}
+
 void AccionesSintactico::negativizarConstante(TablaSimbolos* tabla, vector<string>& punteros, int indice){
 	if (indice < 0){
 		TablaSimbolos::registro r;

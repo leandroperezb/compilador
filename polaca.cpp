@@ -73,7 +73,21 @@ void Polaca::comparacionFor(bool descendente){
 	pila.push(tira.size() - 1);
 }
 
-void Polaca::terminoFor(string variable, string step){
+void Polaca::terminoFor(string argumentos){
+	string variable = ""; string step = ""; bool editandoVariable = true;
+
+	//Decodificar la variable y el step (vienen en el mismo string, separados por un espacio)
+	for (int i = 0; i < argumentos.length(); i++){
+		if (argumentos[i] == ' '){
+			editandoVariable = false;
+		}else{
+			if (editandoVariable)
+				variable = variable + argumentos[i];
+			else
+				step = step + argumentos[i];
+		}
+	}
+
 	cargarFactor(variable); cargarFactor(variable);
 	cargarFactor(step);
 	cargarOperador('+');
