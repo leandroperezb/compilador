@@ -87,6 +87,9 @@ class AnalizadorLexico{
 		void inicializarMatrizDeTransiciones();
 
 		string identificador; //String usado para ir formando las cadenas de identificadores o constantes
+		bool retroceder = false;
+		void getCaracter(char &c);
+		char ultimoChar;
 
 		TablaSimbolos* tablaSimbolos;
 		void agregarEnTabla(string key, TablaSimbolos::registro r);

@@ -1,4 +1,6 @@
 #include "lexico.h"
+#include "log.h"
+
 
 AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	rutaCodigoFuente = ruta; tablaSimbolos = tabla;
@@ -19,10 +21,15 @@ AnalizadorLexico::AnalizadorLexico(char* ruta, TablaSimbolos* tabla){
 	palabrasReservadas.insert({"ulong", ULONG});
 	palabrasReservadas.insert({"extends", EXTENDS});
 	palabrasReservadas.insert({"void", VOID});
+	palabrasReservadas.insert({"downto", DOWNTO});
 
 	inicializarMatrizDeTransiciones();
 
 	infile.open(this->rutaCodigoFuente, std::ifstream::in);
+	if(infile.fail()){
+		cout << "Error al abrir el archivo de código fuente" << endl;
+		exit(1);
+	}
 }
 
 int AnalizadorLexico::categorizarCaracter(char& c){
@@ -81,12 +88,8 @@ int AnalizadorLexico::categorizarCaracter(char& c){
 }
 
 void AnalizadorLexico::analizarCodigo(){
-	if(infile.fail()){
-		return;
-	}
-
 	char c; transicion accion;
-	while((infile.get(c), infile.eof()) == false){
+	while((getCaracter(c), infile.eof()) == false){
 		//Por cada carácter, ejecutar la acción semántica (si existe) e ir al nuevo estado
 		accion = matrizTransiciones[estadoActual][categorizarCaracter(c)];
 		if (accion.accionSemantica != nullptr)
@@ -106,13 +109,26 @@ void AnalizadorLexico::analizarCodigo(){
 	infile.close();
 }
 
-void AnalizadorLexico::retrocederLectura(){ 
-	int pos = infile.tellg();
-	infile.seekg(pos - 1);
+void AnalizadorLexico::getCaracter(char &c){
+	if (!retroceder)
+		infile.get(c);
+	else
+		c = ultimoChar;
+	ultimoChar = c;
+	retroceder = false;
+}
+
+void AnalizadorLexico::retrocederLectura(){
+	retroceder = true;
 }
 
 void AnalizadorLexico::agregarEnTabla(string key, TablaSimbolos::registro r){
-	tablaSimbolos->agregar(key, r);
+	if (r.tipoSimbolo == TablaSimbolos::CONSTANTE && tablaSimbolos->existe(key)){
+		TablaSimbolos::registro *r = &tablaSimbolos->get(key);
+		(*r).visibilidad++;
+	}else{
+		tablaSimbolos->agregar(key, r);
+	}
 }
 
 void AnalizadorLexico::guardarToken(registroToken nuevoToken){
@@ -124,7 +140,7 @@ AnalizadorLexico::token AnalizadorLexico::getToken(){
 	registroToken resultado = colaDeTokens.front();	
 	colaDeTokens.pop();
 	if(resultado.warning != ""){
-		cout<<resultado.warning;
+		Log::warning(resultado.warning);
 	}
 	return resultado.token;
 }

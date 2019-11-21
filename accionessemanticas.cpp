@@ -26,7 +26,7 @@ void AccionesSemanticas::agregarCaracter(AnalizadorLexico* lexico, char& c){
 void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c){
 	//Control de longitud máxima
 	if (lexico->identificador.length() > 25){
-		lexico->wrnng = lexico->wrnng+"Warning: se truncó la variable en la línea "+to_string(lexico->contadorLineas)+"\n";
+		lexico->wrnng = lexico->wrnng+"Warning: se truncó el identificador "+lexico->identificador+" en la línea "+to_string(lexico->contadorLineas)+"\n";
 		lexico->identificador.resize(25);
 	}
 
@@ -42,7 +42,7 @@ void AccionesSemanticas::terminarIdentificador(AnalizadorLexico* lexico, char& c
 
 		//Agregar a la tabla de símbolos:
 		TablaSimbolos::registro registro;
-		registro.tipoSimbolo = TablaSimbolos::VARIABLE;
+		registro.tipoSimbolo = TablaSimbolos::INDEFINIDO;
 		lexico->agregarEnTabla(lexico->identificador, registro);
 	}
 	lexico->guardarToken({token, lexico->wrnng});
@@ -77,13 +77,14 @@ void AccionesSemanticas::terminarConstante(AnalizadorLexico* lexico, char& c){
 		registro.tipo = TablaSimbolos::TIPO_INT;
 	}
 	registro.valor = numero;
+	registro.visibilidad = 1;
 	registro.tipoSimbolo = TablaSimbolos::CONSTANTE;
-	lexico->agregarEnTabla(lexico->identificador, registro);
+	lexico->agregarEnTabla(to_string(numero), registro);
 
 	//Poner un nuevo token en la cola de tokens listos (para entregar)
 	AnalizadorLexico::token token;
 	token.id = CTE;
-	token.puntero = lexico->identificador;
+	token.puntero = to_string(numero);
 	lexico->guardarToken({token, lexico->wrnng});
 	
 
@@ -160,6 +161,12 @@ void AccionesSemanticas::entregarCadena(AnalizadorLexico* lexico, char& c){
 	AnalizadorLexico::token token;
 	token.id = STRING;
 	token.puntero = lexico->identificador;
+
+	TablaSimbolos::registro registro;
+	registro.tipoSimbolo = TablaSimbolos::CADENA;
+	registro.valor = AccionesSemanticas::numeroCadena++;
+	lexico->agregarEnTabla("\""+lexico->identificador+"\"", registro);
+
 	lexico->identificador = "";
 	lexico->guardarToken({token, lexico->wrnng});
 	lexico->wrnng = "";

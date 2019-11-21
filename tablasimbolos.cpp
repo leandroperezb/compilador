@@ -17,18 +17,57 @@ TablaSimbolos::registro& TablaSimbolos::get(string key){
 	}
 }
 
+bool TablaSimbolos::existe(string key){
+	auto search = tablaSimbolos.find(key);
+	return (search != tablaSimbolos.end());
+}
+
+void TablaSimbolos::constanteNegativizada(string key){
+	auto search = tablaSimbolos.find(key);
+	if (search != tablaSimbolos.end()) {
+		if (--search->second.visibilidad == 0 && search->second.valor != 0){
+			tablaSimbolos.erase(key);
+		}
+	}
+}
+
 void TablaSimbolos::guardar(){
 	ofstream ofs;
-	ofs.open ("tablaDeSimbolos.txt", std::ofstream::out);
+	ofs.open ("tablaDeSimbolos.csv", std::ofstream::out);
 	if(ofs.fail()){
 		return;
 	}
-
-	ofs << "Tabla de símbolos detectados (-1 = CONSTANTE) (-2 = VARIABLES) (-3 = CLASE) (-4 = METODO):\n(Clave)\t\t(Tipo de símbolo)\t\t(Tipo de variable)\t\t(Valor)\n";
+	string visibilidades[] = {"GLOBAL", "PRIVADO", "PUBLICO"};
+	string usos[] = {"", "CONSTANTE", "VARIABLE", "CLASE", "METODO", "CADENA", "NO DEFINIDO"};
+	string tipos[] = {"OTRO", "INT", "ULONG"};
+	ofs << "Tabla de símbolos detectados\n(Clave), (Uso), (Tipo de dato), (Clase Padre), (Visibilidad)\n";
 	unordered_map<string , TablaSimbolos::registro>::iterator it;
 	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
-		ofs << it->first << "\t\t" << it->second.tipoSimbolo << "\t\t\t" << it->second.tipo << "\t\t\t" << it->second.valor << '\n';
+		int tipoDato = (it->second.tipo < 0 ) ? -(it->second.tipo) : 0;
+		string visibilidad = "GLOBAL";
+		if (it->second.tipoSimbolo != TablaSimbolos::CONSTANTE)
+			visibilidad = visibilidades[-(it->second.visibilidad)];
+
+		ofs << it->first << ", " << usos[-(it->second.tipoSimbolo)] << ", " << tipos[tipoDato] << ", " << it->second.clasePadre << ", " << visibilidad << '\n';
 	}
 
 	ofs.close();
+}
+
+void TablaSimbolos::guardarPolacas(){
+	unordered_map<string , TablaSimbolos::registro>::iterator it;
+	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
+		if (it->second.tipoSimbolo == TablaSimbolos::METODO){
+			it->second.polaca->guardar(it->first + "()");
+		}
+	}
+}
+
+unordered_map<string, TablaSimbolos::registro> TablaSimbolos::getCopyTabla(){
+	unordered_map<string, registro> tablaSimbolosCopy;
+	unordered_map<string , TablaSimbolos::registro>::iterator it;
+	for (it = tablaSimbolos.begin(); it != tablaSimbolos.end(); ++it){
+		tablaSimbolosCopy.insert({it->first, it->second});
+	}
+	return tablaSimbolosCopy;
 }

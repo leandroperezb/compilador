@@ -8,6 +8,8 @@ using namespace std;
 class AnalizadorLexico;
 
 class AccionesSemanticas{
+	private:
+		inline static int numeroCadena = 0;
 	public:
 		static void tokenFinal(AnalizadorLexico* lexico, char& c);
 		static void nuevaLinea(AnalizadorLexico* lexico, char& c);
