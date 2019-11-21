@@ -45,5 +45,6 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 			resultado += p->generarCodigo(polaca);
 	}
 	resultado +="invoke ExitProcess, 0\nend start\n";
+	std::replace( resultado.begin(), resultado.end(), '.', '@');
 	return resultado;
 }
