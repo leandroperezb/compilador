@@ -37,7 +37,7 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 		}
 	}
 
-	string resultado = data+".code\n";
+	string resultado = "";
 	resultado += metodos;
 	resultado += Paso::labelsError();
 	for(int i = 0; i < polaca->size(); i++){
@@ -46,5 +46,7 @@ string GeneracionCodigo::generarCodigo(Polaca *polaca){
 	}
 	resultado +="invoke ExitProcess, 0\nend start\n";
 	std::replace( resultado.begin(), resultado.end(), '.', '@');
+
+	resultado = data + ".code\n" + resultado;
 	return resultado;
 }
