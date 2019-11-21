@@ -29,16 +29,16 @@ public:
 
 		bool esAuxiliar = false;
 
-		//Si cayó en el registro DX por conversión, quitarlo de ahí a una variable auxiliar (no hay más registros)
+		//Si cayó en el registro CX o DX por conversión, quitarlo de ahí a una variable auxiliar (hay riesgos de que EDX quede ocupado al operar)
 		if (op2.esRegistro){
-			if (op2.operador[0] == 'D'){
+			if (op2.operador[0] == 'D' || op2.operador[0] == 'C'){
 				GeneracionCodigo::desocuparRegistro(op2.operador);
 				codigo += "MOV auxint, "+op2.operador+ "\n";
 				op2.esRegistro = false; op2.operador = "auxint";
 				regOp2 = op2.operador;
 				esAuxiliar = true;
 			}
-			if (op2.operador[1] == 'D'){
+			if (op2.operador[1] == 'D' || op2.operador[1] == 'C'){
 				GeneracionCodigo::desocuparRegistro(op2.operador);
 				codigo += "MOV auxulong, "+op2.operador+ "\n";
 				op2.esRegistro = false; op2.operador = "auxulong";
