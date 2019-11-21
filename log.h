@@ -31,8 +31,8 @@ public:
 		}else if (token < 0){
 			nombreToken = "FIN";
 		}else{
-			char a[] = {(char) token};
-			nombreToken = string(a);
+			char a = (char) token;
+			nombreToken = string(1, a);
 		}
 		cout << "Token: " << nombreToken << endl;*/
 	}
