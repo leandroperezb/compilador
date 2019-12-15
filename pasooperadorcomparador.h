@@ -47,7 +47,7 @@ public:
 		if (op2.esRegistro) // Si el segundo era un registro lo tengo que desocupar
 			GeneracionCodigo::desocuparRegistro(op2.operador);
 
-		GeneracionCodigo::apilar({(regOp1[0] == 'E'), this->toString(nullptr)}); //Apilar el comparador, para decidir luego por qué condición saltar
+		GeneracionCodigo::apilar({!(regOp1[0] == 'E'), this->toString(nullptr)}); //Apilar el comparador, para decidir luego por qué condición saltar
 
 		return codigo;
     }
