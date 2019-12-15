@@ -93,12 +93,13 @@ public:
 		//control de division por cero
 		codigo+= "CMP "+regOp2+", 0\nJE "+Paso::L_ERROR_DIV_CERO+"\n";
 
-		codigo += "MOV EDX, 0\n"; //Necesario, para que el número a dividir sólo sea EAX
-
-		if (esUlong(op1))
+		if (esUlong(op1)){
+			codigo += "MOV EDX, 0\n"; //Necesario, para que el número a dividir sólo sea EAX
 			codigo += "DIV "+regOp2+"\n";
-		else
+		}else{
+			codigo += "CWD\n"; //Extender el signo de AX en DX
 			codigo += "IDIV "+regOp2+"\n";
+		}
 
 		if (registroOperadorExterno != ""){
 			//Si hubo que quitar al operador que estaba en AX de su lugar, volver a ponerlo (mediante el SWAP de los XOR)
