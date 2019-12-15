@@ -33,6 +33,22 @@ int yylex(){
 	return token.id;
 }
 
+char* fileOutputAsm(char* sourceFile){
+	int sizeFile = strlen(sourceFile);
+	char *output = new char[sizeFile + 1 + 4]; //+1 for \0. +4 for ".asm"
+	strncpy(output, sourceFile, sizeFile);
+	
+	int indexExtension = sizeFile;
+	for (int i = 0; i < sizeFile; i++){
+		if (sourceFile[i] == '.')
+			indexExtension = i; //Write extension since last comma finded
+	}
+
+	strncpy(output + indexExtension, ".asm", 5); //Copy extension (and \0) since output at indexExtension index
+
+	return output;
+}
+
 int main(int argc, char** argv){
 	Polaca::modificarPunteroPolaca(Polaca::polacaMadre);
 	char* rutaCodigoFuente;
@@ -61,7 +77,9 @@ int main(int argc, char** argv){
 		tabla.guardarPolacas();
 
 		ofstream ofs;
-		ofs.open ("CODIGO.asm", std::ofstream::out);
+
+		char* dir = fileOutputAsm(argv[1]);
+		ofs.open (dir, std::ofstream::out);
 		if(ofs.fail()){
 			return 1;
 		}
@@ -69,6 +87,8 @@ int main(int argc, char** argv){
 		ofs << GeneracionCodigo::generarCodigo(&Polaca::polacaMadre);
 
 		ofs.close();
+
+		delete[] dir;
 
 		cout << "Código compilado correctamente" << endl;
 	}
